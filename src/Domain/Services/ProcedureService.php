@@ -10,7 +10,7 @@ use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Domain\Repositories\Conf\ProcedureConfigRepository;
-use App\Partner\Domain\Interfaces\Services\PartnerIpServiceInterface;
+use App\Modules\Partner\Domain\Interfaces\Services\PartnerIpServiceInterface;
 use Illuminate\Container\Container;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
