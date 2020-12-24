@@ -45,7 +45,7 @@ class ProcedureService
         ResponseFormatter $responseFormatter,
         AuthServiceInterface $authPartnerService,
         ManagerServiceInterface $rbacManager,
-        PartnerIpServiceInterface $partnerIpService
+        PartnerIpServiceInterface $partnerIpService = null
     )
     {
         $this->container = $container;
@@ -218,7 +218,9 @@ class ProcedureService
 
     protected function checkIp(RpcRequestEntity $requestEntity, IdentityEntityInterface $identity)
     {
-
+        if($this->partnerIpService == null) {
+            return;
+        }
         $ip = $requestEntity->getMetaItem('ip');
         $isAvailable = $this->partnerIpService->isAvailable($ip, $identity);
         if ($isAvailable) {
@@ -227,5 +229,4 @@ class ProcedureService
             throw new UnauthorizedException("Ip blocked");
         }
     }
-
 }
