@@ -1,0 +1,22 @@
+{
+  "name": "znlib/rpc",
+  "type": "extension",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Yamshikov Vitaliy",
+      "email": "theyamshikov@yandex.ru"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "guzzlehttp/guzzle": ">5.3",
+    "symfony/serializer": "4.*|5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ZnLib\\Rpc\\": "src",
+      "ZnLib\\Rpc\\Tests\\": "tests"
+    }
+  }
+}
