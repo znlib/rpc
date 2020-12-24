@@ -5,6 +5,7 @@ namespace ZnLib\Rpc\Domain\Services;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
@@ -172,7 +173,7 @@ class ProcedureService
 
             if ($handlerEntity->getAccess()) {
 
-                $token = $requestEntity->getMetaItem('PartnerAuthorization');
+                $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
                 /** @var IdentityEntityInterface $identity */
                 $identity = $this->authPartnerService->authenticationByToken($token);
 
@@ -195,7 +196,7 @@ class ProcedureService
 
     private function partnerAuthorization(RpcRequestEntity $requestEntity, HandlerEntity $handlerEntity)
     {
-        $token = $requestEntity->getMetaItem('PartnerAuthorization');
+        $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
         if (empty($token)) {
             throw new UnauthorizedException("Empty token");
         }
