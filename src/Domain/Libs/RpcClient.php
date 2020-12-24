@@ -4,8 +4,6 @@ namespace ZnLib\Rpc\Domain\Libs;
 
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseErrorEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseResultEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -67,13 +65,7 @@ class RpcClient
     public function responseToRpcResponse(ResponseInterface $response): RpcResponseEntity
     {
         $data = RestResponseHelper::getBody($response);
-
-        if (isset($data['error'])) {
-            $rpcResponse = new RpcResponseErrorEntity();
-        } else {
-            $rpcResponse = new RpcResponseResultEntity();
-        }
-
+        $rpcResponse = new RpcResponseEntity();
         EntityHelper::setAttributes($rpcResponse, $data);
         return $rpcResponse;
     }
@@ -95,9 +87,9 @@ class RpcClient
 
 
         $response = $this->sendRequest($body, $headers);
-        if ($response instanceof RpcResponseErrorEntity && $response->getError()['code'] == HttpStatusCodeEnum::UNAUTHORIZED) {
+        /*if ($response instanceof RpcResponseEntity && $response->getError() && $response->getError()['code'] == HttpStatusCodeEnum::UNAUTHORIZED) {
             //dd(1234);
-        }
+        }*/
         return $response;
     }
 

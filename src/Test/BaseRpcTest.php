@@ -4,8 +4,6 @@ namespace ZnLib\Rpc\Test;
 
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseErrorEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseResultEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;

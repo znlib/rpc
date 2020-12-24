@@ -3,7 +3,6 @@
 namespace ZnLib\Rpc\Test;
 
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseResultEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnCore\Base\Enums\Http\HttpHeaderEnum;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;

@@ -4,8 +4,6 @@ namespace ZnLib\Rpc\Symfony4\Web\Controllers;
 
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseErrorEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseResultEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
@@ -105,12 +103,6 @@ class RpcController
     {
         $responseEntity->setJsonrpc(RpcVersionEnum::V2_0);
         $array = EntityHelper::toArray($responseEntity);
-
-        if ($responseEntity instanceof RpcResponseResultEntity) {
-            $array['result'] = $responseEntity->getResult();
-        } elseif ($responseEntity instanceof  RpcResponseErrorEntity) {
-            $array['error'] = $responseEntity->getError();
-        }
         return $array;
     }
 

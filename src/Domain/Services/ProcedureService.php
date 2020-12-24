@@ -193,8 +193,6 @@ class ProcedureService
         return $hhh;
     }
 
-
-
     private function partnerAuthorization(RpcRequestEntity $requestEntity, HandlerEntity $handlerEntity)
     {
         $token = $requestEntity->getMetaItem('PartnerAuthorization');

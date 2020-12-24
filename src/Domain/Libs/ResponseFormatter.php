@@ -3,7 +3,6 @@
 namespace ZnLib\Rpc\Domain\Libs;
 
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseErrorEntity;
 use Exception;
 use Psr\Log\LoggerInterface;
 use ZnCore\Domain\Helpers\EntityHelper;
@@ -75,7 +74,7 @@ class ResponseFormatter
     public function createRpcResponseFromArray(array $result, array $error): RpcResponseEntity
     {
         /** @var RpcResponseEntity $responseEntity */
-        $responseEntity = EntityHelper::createEntity(RpcResponseErrorEntity::class, $result);
+        $responseEntity = EntityHelper::createEntity(RpcResponseEntity::class, $result);
         $this->logger->error($error['message'], $result);
         return $responseEntity;
     }
