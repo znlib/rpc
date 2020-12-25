@@ -2,22 +2,20 @@
 
 namespace ZnLib\Rpc\Symfony4\Web\Controllers;
 
-use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
-use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
-use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
-use ZnLib\Rpc\Domain\Services\ProcedureService;
 use Exception;
 use Illuminate\Container\Container;
-use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
-use ZnTool\Dev\Dumper\Domain\Facades\Bot;
+use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
+use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
+use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
+use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
+use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 
 class RpcController
 {
@@ -29,7 +27,7 @@ class RpcController
 
     public function __construct(
         Container $container,
-        ProcedureService $procedureService,
+        ProcedureServiceInterface $procedureService,
         LoggerInterface $logger,
         ResponseFormatter $responseFormatter
     )
@@ -87,7 +85,7 @@ class RpcController
         $requestEntity->addMeta('ip', $ip);
 
         $responseEntity = $this->procedureService->run($requestEntity);
-        return  $responseEntity;
+        return $responseEntity;
     }
 
     private function sendJsonResponse(array $array): Response
@@ -100,7 +98,7 @@ class RpcController
         return $response;
     }
 
-    private function responseEntityToArray( RpcResponseEntity $responseEntity): array
+    private function responseEntityToArray(RpcResponseEntity $responseEntity): array
     {
         $responseEntity->setJsonrpc(RpcVersionEnum::V2_0);
         $array = EntityHelper::toArray($responseEntity);
