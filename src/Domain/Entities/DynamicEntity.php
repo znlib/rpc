@@ -20,35 +20,34 @@ class DynamicEntity implements ValidateEntityInterface, EntityIdInterface, Entit
         } else {
             $this->_attributes = $attributes;
         }
-
         if($entityEntity) {
             $this->_validationRules = $entityEntity->getRules();
         }
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return $this->_attributes;
     }
 
-    public function validationRules()
+    public function validationRules(): array
     {
         return $this->_validationRules;
     }
 
-    public function __get($attribute)
+    public function __get(string $attribute)
     {
         $this->checkHasAttribute($attribute);
         return $this->{$attribute} ?? null;
     }
 
-    public function __set($attribute, $value)
+    public function __set(string $attribute, $value)
     {
 //        $this->checkHasAttribute($attribute);
         $this->{$attribute} = $value;
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         $method = substr($name, 0, 3);
         $attributeName = substr($name, 3);
@@ -62,7 +61,7 @@ class DynamicEntity implements ValidateEntityInterface, EntityIdInterface, Entit
         return null;
     }
 
-    private function checkHasAttribute($attribute)
+    private function checkHasAttribute(string $attribute)
     {
         $has = in_array($attribute, $this->_attributes);
         if( ! $has) {

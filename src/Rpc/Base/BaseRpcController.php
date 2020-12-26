@@ -7,7 +7,7 @@ abstract class BaseRpcController
 
     protected $service;
 
-    public function auth()
+    public function auth(): array
     {
         return [
             "*"

@@ -2,11 +2,10 @@
 
 namespace ZnLib\Rpc\Domain\Repositories\Conf;
 
-use ZnLib\Rpc\Domain\Entities\HandlerEntity;
-use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
-use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
+use ZnLib\Rpc\Domain\Entities\HandlerEntity;
+use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
 
 class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface

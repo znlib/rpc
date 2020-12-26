@@ -104,6 +104,4 @@ class RpcController
         $array = EntityHelper::toArray($responseEntity);
         return $array;
     }
-
-
 }

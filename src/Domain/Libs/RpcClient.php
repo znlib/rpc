@@ -2,54 +2,43 @@
 
 namespace ZnLib\Rpc\Domain\Libs;
 
-use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Collection;
+use Psr\Http\Message\ResponseInterface;
 use ZnCore\Base\Enums\Http\HttpHeaderEnum;
 use ZnCore\Base\Enums\Http\HttpMethodEnum;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
-use ZnCore\Base\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
-use Psr\Http\Message\ResponseInterface;
 use ZnLib\Rest\Helpers\RestResponseHelper;
+use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
+use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 
 class RpcClient
 {
 
     private $guzzleClient;
-
-    /**
-     * @return Client
-     */
-    public function getGuzzleClient(): Client
-    {
-        return $this->guzzleClient;
-    }
-
-
     private $isStrictMode = true;
     private $accept = 'application/json';
-
-    /** @var AuthorizationInterface */
     private $authAgent;
-
-    /**
-     * @param Client $guzzleClient
-     */
-    public function setGuzzleClient(Client $guzzleClient): void
-    {
-        $this->guzzleClient = $guzzleClient;
-    }
 
     public function __construct(Client $guzzleClient, AuthorizationInterface $authAgent = null)
     {
         $this->guzzleClient = $guzzleClient;
         $this->setAuthAgent($authAgent);
+    }
+
+    public function getGuzzleClient(): Client
+    {
+        return $this->guzzleClient;
+    }
+
+    public function setGuzzleClient(Client $guzzleClient): void
+    {
+        $this->guzzleClient = $guzzleClient;
     }
 
     public function getAuthAgent(): ?AuthorizationInterface
@@ -73,24 +62,71 @@ class RpcClient
     public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
+        $headers = $this->getHeaders();
+//        $body = [
+//            'data' => json_encode(EntityHelper::toArray($requestEntity)),
+//        ];
+        $body = EntityHelper::toArray($requestEntity);
+        $response = $this->sendRequest($body, $headers);
+        return $response;
+    }
 
+
+    public function sendBatchRequest(Collection $requests): Collection
+    {
+        $arrayBody = [];
+        foreach ($requests as $rpcReq) {
+            $rpcReq->setJsonrpc(RpcVersionEnum::V2_0);
+            $body = EntityHelper::toArray($rpcReq);
+            $arrayBody[] = $body;
+        }
+        $resultBody = EntityHelper::toArray($arrayBody);
+        $response = $this->sendRawRequest($resultBody);
+        $data = RestResponseHelper::getBody($response);
+        $responseCollection = new Collection();
+        foreach ($data as $item) {
+            $rpcResponse = new RpcResponseEntity();
+            EntityHelper::setAttributes($rpcResponse, $item);
+            $responseCollection->add($rpcResponse);
+        }
+        return $responseCollection;
+    }
+
+    private function getHeaders()
+    {
         $headers = [];
         $authToken = is_object($this->authAgent) ? $this->authAgent->getAuthToken() : null;
         if ($authToken) {
             $headers[HttpHeaderEnum::AUTHORIZATION] = $authToken;
         }
-//        $body = [
-//            'data' => json_encode(EntityHelper::toArray($requestEntity)),
-//        ];
-//
-        $body = EntityHelper::toArray($requestEntity);
+        return $headers;
+    }
 
+    private function sendRawRequest(array $body = [], array $headers = []) {
+        $options = [
+            RequestOptions::JSON => $body,
+            RequestOptions::HEADERS => $headers,
+        ];
+        $options[RequestOptions::HEADERS]['Accept'] = $this->accept;
+        try {
+            $response = $this->guzzleClient->request(HttpMethodEnum::POST, '', $options);
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
 
-        $response = $this->sendRequest($body, $headers);
-        /*if ($response instanceof RpcResponseEntity && $response->getError() && $response->getError()['code'] == HttpStatusCodeEnum::UNAUTHORIZED) {
-            //dd(1234);
-        }*/
+            if ($response == null) {
+                throw new \Exception('Url not found!');
+            }
+        }
         return $response;
+    }
+
+    public function sendRequest(array $body = [], array $headers = []): RpcResponseEntity
+    {
+        $response = $this->sendRawRequest($body, $headers);
+        if ($this->isStrictMode) {
+            $this->validateResponse($response);
+        }
+        return $this->responseToRpcResponse($response);
     }
 
     private function validateResponse(ResponseInterface $response)
@@ -108,26 +144,5 @@ class RpcClient
         if (version_compare($data['jsonrpc'], RpcVersionEnum::V2_0, '<')) {
             throw new \Exception('Unsupported RPC version');
         }
-    }
-
-    public function sendRequest(array $body = [], array $headers = []): RpcResponseEntity
-    {
-        $options = [
-            RequestOptions::JSON => $body,
-            RequestOptions::HEADERS => $headers,
-        ];
-        $options[RequestOptions::HEADERS]['Accept'] = $this->accept;
-        try {
-            $response = $this->guzzleClient->request(HttpMethodEnum::POST, '', $options);
-        } catch (RequestException $e) {
-            $response = $e->getResponse();
-            if ($response == null) {
-                throw new \Exception('Url not found!');
-            }
-        }
-        if ($this->isStrictMode) {
-            $this->validateResponse($response);
-        }
-        return $this->responseToRpcResponse($response);
     }
 }

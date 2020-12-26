@@ -15,7 +15,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
      */
     protected $service;
 
-    public function all(RpcRequestEntity $requestEntity)
+    public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
         $collection = $this->service->all();

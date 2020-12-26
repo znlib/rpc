@@ -8,4 +8,3 @@ class MethodNotFoundException extends Exception
 {
 
 }
-

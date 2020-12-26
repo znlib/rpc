@@ -26,11 +26,6 @@ class RpcAssert extends BaseAssert
 //        $this->assertArrayHasKey('id', $this->getBody());
     }
 
-    /*public function getResult()
-    {
-        return ArrayHelper::getValue($this->body, 'result');
-    }*/
-
     public function assertErrorCode(int $code) {
         $this->assertEquals($code, $this->response->getError()['code']);
         return $this;
@@ -51,6 +46,11 @@ class RpcAssert extends BaseAssert
 //        $this->assertInstanceOf(RpcResponseResultEntity::class, $this->response);
         $this->assertInstanceOf(RpcResponseEntity::class, $this->response);
         return $this;
+    }
+
+    public function assertId($expected)
+    {
+        $this->assertEquals($expected, $this->response->getId());
     }
 
     public function assertResult($expectedResult)
@@ -107,5 +107,4 @@ class RpcAssert extends BaseAssert
             ->assertResult($result);
         return $this;
     }
-
 }

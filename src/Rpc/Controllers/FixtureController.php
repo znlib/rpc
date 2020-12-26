@@ -20,7 +20,7 @@ class FixtureController
         $this->service = $service;
     }
 
-    public function import(RpcRequestEntity $requestEntity)
+    public function import(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         if ($_ENV['APP_ENV'] !== 'test') {
             throw new Exception("Launch is possible only in a test environment");

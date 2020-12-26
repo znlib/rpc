@@ -41,54 +41,33 @@ class HandlerEntity {
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return bool
-     */
     public function isCheckIp(): bool
     {
         return $this->isCheckIp;
     }
 
-    /**
-     * @param bool $isCheckIp
-     */
     public function setIsCheckIp(bool $isCheckIp): void
     {
         $this->isCheckIp = $isCheckIp;
     }
 
-    /**
-     * @return array
-     */
     public function getAttributes(): array
     {
         return $this->attributes;
     }
 
-    /**
-     * @param array $attributes
-     */
     public function setAttributes(array $attributes): void
     {
         $this->attributes = $attributes;
     }
 
-    /**
-     * @return array
-     */
     public function getAccess(): array
     {
         return $this->access;
     }
 
-    /**
-     * @param array $access
-     */
     public function setAccess(array $access): void
     {
         $this->access = $access;
     }
-
-
-
 }

@@ -2,18 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use ZnLib\Rpc\Domain\Entities\HandlerEntity;
-use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
-use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
-use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
-use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
-use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
-use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
-use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
-use ZnLib\Rpc\Domain\Repositories\Conf\ProcedureConfigRepository;
 use App\Modules\Partner\Domain\Interfaces\Services\PartnerIpServiceInterface;
+use Exception;
 use Illuminate\Container\Container;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -27,7 +17,16 @@ use ZnCore\Base\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
-use Exception;
+use ZnLib\Rpc\Domain\Entities\HandlerEntity;
+use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
+use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
+use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
+use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
+use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
+use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
+use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
+use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 
 class ProcedureService implements ProcedureServiceInterface
 {
@@ -60,7 +59,7 @@ class ProcedureService implements ProcedureServiceInterface
         $this->rbacManager = $rbacManager;
     }
 
-    public function getMeta()
+    public function getMeta(): array
     {
         return $this->meta;
     }

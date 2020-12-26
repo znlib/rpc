@@ -13,6 +13,14 @@ class RpcRequestEntity implements EntityIdInterface {
     private $meta = [];
     private $id = null;
 
+    public function __construct(string $method = '', $params = [], $meta = [], int $id = null)
+    {
+        $this->method = $method;
+        $this->params = $params;
+        $this->meta = $meta;
+        $this->id = $id;
+    }
+
     public function getJsonrpc()
     {
         return $this->jsonrpc;
