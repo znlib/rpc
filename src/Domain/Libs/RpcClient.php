@@ -5,7 +5,6 @@ namespace ZnLib\Rpc\Domain\Libs;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
 use ZnCore\Base\Enums\Http\HttpHeaderEnum;
 use ZnCore\Base\Enums\Http\HttpMethodEnum;
@@ -13,7 +12,9 @@ use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
 use ZnLib\Rest\Helpers\RestResponseHelper;
+use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
+use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 
@@ -71,11 +72,10 @@ class RpcClient
         return $response;
     }
 
-
-    public function sendBatchRequest(Collection $requests): Collection
+    public function sendBatchRequest(RpcRequestCollection $rpcRequestCollection): RpcResponseCollection
     {
         $arrayBody = [];
-        foreach ($requests as $rpcReq) {
+        foreach ($rpcRequestCollection->getCollection() as $rpcReq) {
             $rpcReq->setJsonrpc(RpcVersionEnum::V2_0);
             $body = EntityHelper::toArray($rpcReq);
             $arrayBody[] = $body;
@@ -83,7 +83,7 @@ class RpcClient
         $resultBody = EntityHelper::toArray($arrayBody);
         $response = $this->sendRawRequest($resultBody);
         $data = RestResponseHelper::getBody($response);
-        $responseCollection = new Collection();
+        $responseCollection = new RpcResponseCollection();
         foreach ($data as $item) {
             $rpcResponse = new RpcResponseEntity();
             EntityHelper::setAttributes($rpcResponse, $item);
@@ -102,7 +102,8 @@ class RpcClient
         return $headers;
     }
 
-    private function sendRawRequest(array $body = [], array $headers = []) {
+    private function sendRawRequest(array $body = [], array $headers = [])
+    {
         $options = [
             RequestOptions::JSON => $body,
             RequestOptions::HEADERS => $headers,

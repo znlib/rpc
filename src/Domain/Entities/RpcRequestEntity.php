@@ -5,7 +5,8 @@ namespace ZnLib\Rpc\Domain\Entities;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
 
-class RpcRequestEntity implements EntityIdInterface {
+class RpcRequestEntity implements EntityIdInterface
+{
 
     private $jsonrpc;
     private $method;
@@ -48,7 +49,7 @@ class RpcRequestEntity implements EntityIdInterface {
 
     public function getParamItem(string $key)
     {
-        if (array_key_exists($key,$this->params)) {
+        if (array_key_exists($key, $this->params)) {
             if (!empty($this->params[$key])) {
                 return $this->params[$key];
             }

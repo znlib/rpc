@@ -2,10 +2,10 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-class RpcRequestCollection extends BaseRpcCollection
+class RpcResponseCollection extends BaseRpcCollection
 {
 
-    public function add(RpcRequestEntity $requestEntity)
+    public function add(RpcResponseEntity $requestEntity)
     {
         return $this->collection->add($requestEntity);
     }
