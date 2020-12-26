@@ -10,6 +10,7 @@ use ZnCore\Base\Enums\Http\HttpHeaderEnum;
 use ZnCore\Base\Enums\Http\HttpMethodEnum;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
 use ZnLib\Rest\Helpers\RestResponseHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
@@ -63,10 +64,14 @@ class RpcClient
     public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
+        /*if($requestEntity->getId() == null) {
+            $requestEntity->setId(1);
+        }*/
         $headers = $this->getHeaders();
 //        $body = [
 //            'data' => json_encode(EntityHelper::toArray($requestEntity)),
 //        ];
+//        ValidationHelper::validateEntity($requestEntity);
         $body = EntityHelper::toArray($requestEntity);
         $response = $this->sendRequest($body, $headers);
         return $response;

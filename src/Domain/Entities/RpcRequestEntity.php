@@ -2,14 +2,17 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
+use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
+use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 
-class RpcRequestEntity implements EntityIdInterface
+class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
 {
 
-    private $jsonrpc;
-    private $method;
+    private $jsonrpc = RpcVersionEnum::V2_0;
+    private $method = '';
     private $params = [];
     private $meta = [];
     private $id = null;
@@ -22,24 +25,40 @@ class RpcRequestEntity implements EntityIdInterface
         $this->id = $id;
     }
 
-    public function getJsonrpc()
+    public function validationRules()
+    {
+        return [
+            'id' => [
+                new Assert\NotBlank(),
+                new Assert\Positive()
+            ],
+            'method' => [
+                new Assert\NotBlank(),
+            ],
+            'jsonrpc' => [
+                new Assert\NotBlank(),
+            ],
+        ];
+    }
+
+    public function getJsonrpc(): string
     {
         return $this->jsonrpc;
     }
 
-    public function setJsonrpc($jsonrpc): void
+    public function setJsonrpc(string $jsonrpc): void
     {
-        $this->jsonrpc = $jsonrpc;
+        $this->jsonrpc = trim($jsonrpc);
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
 
-    public function setMethod($method): void
+    public function setMethod(string $method): void
     {
-        $this->method = $method;
+        $this->method = trim($method);
     }
 
     public function getParams(): array

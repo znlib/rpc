@@ -2,16 +2,14 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
+use ZnCore\Domain\Helpers\ValidationHelper;
 
 class RpcRequestCollection extends BaseRpcCollection
 {
 
     public function add(RpcRequestEntity $requestEntity)
     {
-        if($requestEntity->getId() == null) {
-            throw new UnprocessibleEntityException('Empty request ID');
-        }
+        ValidationHelper::validateEntity($requestEntity);
         return $this->collection->add($requestEntity);
     }
 }

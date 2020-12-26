@@ -2,18 +2,47 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-class RpcResponseEntity {
+use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
+use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 
-    protected $jsonrpc;
-    protected $meta = [];
-    protected $id = null;
+class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
+{
 
-    public function getJsonrpc()
+    private $jsonrpc = RpcVersionEnum::V2_0;
+    private $result = [];
+    private $error = [];
+    private $meta = [];
+    private $id = null;
+
+    public function __construct($result = [], $error = [], $meta = [], int $id = null)
+    {
+        $this->result = $result;
+        $this->error = $error;
+        $this->meta = $meta;
+        $this->id = $id;
+    }
+
+    public function validationRules()
+    {
+        return [
+            'id' => [
+                new Assert\NotBlank(),
+                new Assert\Positive()
+            ],
+            'jsonrpc' => [
+                new Assert\NotBlank(),
+            ],
+        ];
+    }
+
+    public function getJsonrpc(): string
     {
         return $this->jsonrpc;
     }
 
-    public function setJsonrpc($jsonrpc): void
+    public function setJsonrpc(string $jsonrpc): void
     {
         $this->jsonrpc = $jsonrpc;
     }
@@ -38,8 +67,6 @@ class RpcResponseEntity {
         $this->id = $id;
     }
 
-    private $error = [];
-
     public function getError(): array
     {
         return $this->error;
@@ -50,8 +77,6 @@ class RpcResponseEntity {
         $this->error = $error;
     }
 
-    protected $result = [];
-
     public function getResult()
     {
         return $this->result;
@@ -61,6 +86,4 @@ class RpcResponseEntity {
     {
         $this->result = $result;
     }
-
-
 }
