@@ -11,8 +11,8 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
 {
 
     private $jsonrpc = RpcVersionEnum::V2_0;
-    private $result = [];
-    private $error = [];
+    private $result = null;
+    private $error = null;
     private $meta = [];
     private $id = null;
 
@@ -28,8 +28,7 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
     {
         return [
             'id' => [
-                new Assert\NotBlank(),
-                new Assert\Positive()
+                new Assert\NotBlank()
             ],
             'jsonrpc' => [
                 new Assert\NotBlank(),
@@ -67,12 +66,12 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
         $this->id = $id;
     }
 
-    public function getError(): array
+    public function getError(): ?array
     {
         return $this->error;
     }
 
-    public function setError(array $error): void
+    public function setError(?array $error): void
     {
         $this->error = $error;
     }

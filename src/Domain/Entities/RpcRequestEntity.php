@@ -29,8 +29,7 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
     {
         return [
             'id' => [
-                new Assert\NotBlank(),
-                new Assert\Positive()
+                new Assert\NotBlank()
             ],
             'method' => [
                 new Assert\NotBlank(),

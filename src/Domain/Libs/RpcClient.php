@@ -64,14 +64,14 @@ class RpcClient
     public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
-        /*if($requestEntity->getId() == null) {
+        if($requestEntity->getId() == null) {
             $requestEntity->setId(1);
-        }*/
+        }
         $headers = $this->getHeaders();
 //        $body = [
 //            'data' => json_encode(EntityHelper::toArray($requestEntity)),
 //        ];
-//        ValidationHelper::validateEntity($requestEntity);
+        ValidationHelper::validateEntity($requestEntity);
         $body = EntityHelper::toArray($requestEntity);
         $response = $this->sendRequest($body, $headers);
         return $response;
