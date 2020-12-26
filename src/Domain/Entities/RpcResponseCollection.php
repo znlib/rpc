@@ -2,11 +2,16 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
+use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
+
 class RpcResponseCollection extends BaseRpcCollection
 {
 
-    public function add(RpcResponseEntity $requestEntity)
+    public function add(RpcResponseEntity $responseEntity)
     {
-        return $this->collection->add($requestEntity);
+        if($responseEntity->getId() == null) {
+            throw new UnprocessibleEntityException('Empty request ID');
+        }
+        return $this->collection->add($responseEntity);
     }
 }
