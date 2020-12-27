@@ -2,15 +2,12 @@
 
 namespace ZnLib\Rpc\Test;
 
+use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
-use ZnCore\Base\Enums\Http\HttpHeaderEnum;
-use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
-use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
-use ZnLib\Rest\Helpers\RestResponseHelper;
+use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnTool\Test\Asserts\BaseAssert;
 use ZnTool\Test\Helpers\RestHelper;
-use Psr\Http\Message\ResponseInterface;
 
 class RpcAssert extends BaseAssert
 {
@@ -20,31 +17,39 @@ class RpcAssert extends BaseAssert
     public function __construct(RpcResponseEntity $response = null)
     {
         $this->response = $response;
-        $this->assertEquals('2.0', $response->getJsonrpc());
-
-//        $this->assertEqualsBodyValue('2.0', 'jsonrpc');
-//        $this->assertArrayHasKey('id', $this->getBody());
+        $this->assertEquals(RpcVersionEnum::V2_0, $response->getJsonrpc());
     }
 
-    public function assertErrorCode(int $code) {
+    public function assertErrorCode(int $code)
+    {
+        $this->assertIsError();
         $this->assertEquals($code, $this->response->getError()['code']);
         return $this;
     }
 
-    public function assertErrorData(array $data) {
+    public function assertErrorData(array $data)
+    {
+        $this->assertIsError();
         $this->assertEquals([$data], $this->response->getError()['data']);
         return $this;
     }
 
-    public function assertIsError() {
-        $this->assertNotEmpty($this->response->getError());
+    public function assertErrorMessage(string $message)
+    {
+        $this->assertIsError();
+        $this->assertEquals($message, $this->response->getError()['message']);
         return $this;
     }
 
-    public function assertIsResult() {
-//        $this->assertNotEmpty($this->response->getResult());
-//        $this->assertInstanceOf(RpcResponseResultEntity::class, $this->response);
-        $this->assertInstanceOf(RpcResponseEntity::class, $this->response);
+    public function assertIsError()
+    {
+        $this->assertTrue($this->response->isError(), 'Response is not error');
+        return $this;
+    }
+
+    public function assertIsResult()
+    {
+        $this->assertTrue($this->response->isSuccess(), 'Response is not success');
         return $this;
     }
 
@@ -55,31 +60,20 @@ class RpcAssert extends BaseAssert
 
     public function assertResult($expectedResult)
     {
-        $this->assertEquals([], $this->response->getError());
-//        $this->assertIsResult();
-        if(is_array($expectedResult)) {
+        $this->assertIsResult();
+        if (is_array($expectedResult)) {
             $this->assertArraySubset($expectedResult, $this->response->getResult());
         } else {
             $this->assertEquals($expectedResult, $this->response->getResult());
         }
     }
 
-    public function assertErrorMessage(string $message) {
-        $this->assertEquals($message, $this->response->getError()['message']);
-        return $this;
-    }
-
-    public function assertNotFound(string $message) {
+    public function assertNotFound(string $message)
+    {
         $this->assertIsError();
         $this->assertErrorCode(HttpStatusCodeEnum::NOT_FOUND);
         $this->assertErrorMessage($message);
         return $this;
-    }
-
-    public function assertEqualsBodyValue($expected, string $key)
-    {
-        $value = $this->getBodyValue($key);
-        $this->assertEquals($expected, $value);
     }
 
     public function assertUnprocessableEntity(array $fieldNames = [])
@@ -96,15 +90,6 @@ class RpcAssert extends BaseAssert
             }
             $this->assertEquals($fieldNames, $expectedBody);
         }
-        return $this;
-    }
-
-    public function assertSuccessResponse(array $result = [], int $id = null)
-    {
-        $this
-            ->assertIsResult()
-            //->assertErrorCode(HttpStatusCodeEnum::OK)
-            ->assertResult($result);
         return $this;
     }
 }

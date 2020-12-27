@@ -85,4 +85,14 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
     {
         $this->result = $result;
     }
+
+    public function isError(): bool
+    {
+        return !empty($this->error);
+    }
+
+    public function isSuccess(): bool
+    {
+        return !$this->isError();
+    }
 }
