@@ -155,12 +155,12 @@ class ProcedureService implements ProcedureServiceInterface
     private function runProcedure(HandlerEntity $handlerEntity, string $methodName, RpcRequestEntity $requestEntity)
     {
         $requestEntity->setMeta($this->getMeta());
-        $this->container->bind(RpcRequestEntity::class, function() use ($requestEntity) {
+        $this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
             return $requestEntity;
         });
         $controllerInstance = $this->container->get($handlerEntity->getClass());
         if (!method_exists($controllerInstance, $methodName)) {
-            throw new NotFoundException('Not found method');
+            throw new MethodNotFoundException('Not found method');
         }
         $auth = null;
         if (method_exists($controllerInstance, 'auth')) {
@@ -180,7 +180,7 @@ class ProcedureService implements ProcedureServiceInterface
 
                 $isCan = false;
                 foreach ($handlerEntity->getAccess() as $permission) {
-                    $isCan =  $this->rbacManager->checkAccess($identity->getId(), $permission);
+                    $isCan = $this->rbacManager->checkAccess($identity->getId(), $permission);
                 }
 
                 if (!$isCan) {
@@ -191,8 +191,7 @@ class ProcedureService implements ProcedureServiceInterface
         }
         $attributes = $handlerEntity->getAttributes();
         EntityHelper::setAttributes($controllerInstance, $attributes);
-        $hhh = $this->container->call([$controllerInstance, $methodName]);
-        return $hhh;
+        return $this->container->call([$controllerInstance, $methodName]);
     }
 
     private function partnerAuthorization(RpcRequestEntity $requestEntity, HandlerEntity $handlerEntity)
@@ -207,7 +206,7 @@ class ProcedureService implements ProcedureServiceInterface
             throw new UnauthorizedException("Token not found");
         }
 
-        if ( ! $identity instanceof IdentityEntityInterface) {
+        if (!$identity instanceof IdentityEntityInterface) {
             throw new UnauthorizedException("Bad token");
         }
 
@@ -218,7 +217,7 @@ class ProcedureService implements ProcedureServiceInterface
 
     protected function checkIp(RpcRequestEntity $requestEntity, IdentityEntityInterface $identity)
     {
-        if($this->partnerIpService == null) {
+        if ($this->partnerIpService == null) {
             return;
         }
         $ip = $requestEntity->getMetaItem('ip');
