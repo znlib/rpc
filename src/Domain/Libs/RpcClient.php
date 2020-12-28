@@ -87,6 +87,7 @@ class RpcClient
         }
         $resultBody = EntityHelper::toArray($arrayBody);
         $response = $this->sendRawRequest($resultBody);
+        //dd($response->getBody()->getContents());
         $data = RestResponseHelper::getBody($response);
         $responseCollection = new RpcResponseCollection();
         foreach ($data as $item) {

@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Helpers\EnvHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
+use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
+use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
@@ -45,39 +47,50 @@ class RpcController
         $rawData = $request->getContent();
         $data = json_decode($rawData, true);
         try {
-            $array = $this->handleData($data);
+            if (empty($data)) {
+                $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, "Empty response");
+                return $this->rpcJsonResponse->sendEntity($responseEntity);
+//                throw new Exception("Empty response", RpcErrorCodeEnum::INVALID_REQUEST);
+            }
+            $requestCollection = $this->createRequestCollection($data);
+            $responseCollection = $this->handleData($requestCollection);
+            return $this->rpcJsonResponse->sendBatch($responseCollection);
         } catch (Exception $exception) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($exception->getCode(), $exception->getMessage());
-            $array = $this->responseEntityToArray($responseEntity);
+            return $this->rpcJsonResponse->sendEntity($responseEntity);
         }
-        return $this->rpcJsonResponse->send($array);
     }
 
-    private function handleData($data): array
+    private function createRequestCollection(array $data): RpcRequestCollection
     {
-        if (empty($data)) {
-            throw new Exception("Empty response", RpcErrorCodeEnum::INVALID_REQUEST);
-        }
-
+        $requestCollection = new RpcRequestCollection();
         if (ArrayHelper::isIndexed($data)) {
-            // выполняем батч
-            $array = [];
             foreach ($data as $item) {
-                $array[] = $this->handleProcedure($item);
+                /** @var RpcRequestEntity $requestEntity */
+                $requestEntity = EntityHelper::createEntity(RpcRequestEntity::class, $item);
+                $requestCollection->add($requestEntity);
             }
         } else {
-            // единичный
-            $array = $this->handleProcedure($data);
+            /** @var RpcRequestEntity $requestEntity */
+            $requestEntity = EntityHelper::createEntity(RpcRequestEntity::class, $data);
+            $requestCollection->add($requestEntity);
         }
-        return $array;
+        return $requestCollection;
     }
 
-    private function handleProcedure(array $data): array
+    private function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
     {
-        /** @var RpcRequestEntity $requestEntity */
-        $requestEntity = EntityHelper::createEntity(RpcRequestEntity::class, $data);
-        $responseEntity = $this->callOneProcedure($requestEntity);
-        return $this->responseEntityToArray($responseEntity);
+        $responseCollection = new RpcResponseCollection();
+        foreach ($requestCollection->getCollection() as $requestEntity) {
+            /** @var RpcRequestEntity $requestEntity */
+            try {
+                $responseEntity = $this->callOneProcedure($requestEntity);
+            } catch (Exception $exception) {
+                $responseEntity = $this->responseFormatter->forgeErrorResponse($exception->getCode(), $exception->getMessage());
+            }
+            $responseCollection->add($responseEntity);
+        }
+        return $responseCollection;
     }
 
     private function callOneProcedure(RpcRequestEntity $requestEntity): RpcResponseEntity
