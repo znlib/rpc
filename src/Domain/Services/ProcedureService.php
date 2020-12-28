@@ -91,8 +91,6 @@ class ProcedureService implements ProcedureServiceInterface
             $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
         }
 
-        $responseEntity->setId($requestEntity->getId());
-
         return $responseEntity;
         // https://www.jsonrpc.org/specification#error_object
         // http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
