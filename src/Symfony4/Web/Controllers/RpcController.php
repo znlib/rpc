@@ -21,20 +21,20 @@ class RpcController
 {
 
     private $procedureService;
-    private $container;
-    private $logger;
+//    private $container;
+//    private $logger;
     private $responseFormatter;
 
     public function __construct(
-        Container $container,
+//        Container $container,
         ProcedureServiceInterface $procedureService,
-        LoggerInterface $logger,
+//        LoggerInterface $logger,
         ResponseFormatter $responseFormatter
     )
     {
-        $this->container = $container;
+//        $this->container = $container;
         $this->procedureService = $procedureService;
-        $this->logger = $logger;
+//        $this->logger = $logger;
         $this->responseFormatter = $responseFormatter;
     }
 

@@ -5,6 +5,7 @@ namespace ZnLib\Rpc\Domain\Repositories\Conf;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
+use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
 
@@ -22,7 +23,7 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
     {
         $handler = ArrayHelper::getValue($this->busConfig, $name);
         if (!$handler) {
-            throw new MethodNotFoundException('Not found handler');
+            throw new MethodNotFoundException('Not found handler', RpcErrorCodeEnum::METHOD_NOT_FOUND);
 //            $handler = ArrayHelper::getValue($procedureMap, 'default');
         }
         $handlerEntity = EntityHelper::createEntity(HandlerEntity::class, $handler);
@@ -33,7 +34,7 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
     {
         $handler = ArrayHelper::getValue($this->busConfig, $name);
         if (!$handler) {
-            throw new MethodNotFoundException('Not found handler');
+            throw new MethodNotFoundException('Not found handler', RpcErrorCodeEnum::METHOD_NOT_FOUND);
 //            $handler = ArrayHelper::getValue($procedureMap, 'default');
         }
         return $handler;

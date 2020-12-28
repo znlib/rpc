@@ -64,32 +64,34 @@ class ProcedureService implements ProcedureServiceInterface
         return $this->meta;
     }
 
+    private function getHandlerEntityByMethod(string $method): HandlerEntity
+    {
+        try {
+            $handlerEntity = $this->procedureConfigRepository->getHandlerByName($method);
+            $action = $handlerEntity->getMethod();
+        } catch (Exception $exception) {
+            $handlerParams = explode(".", $method);
+            $controller = $handlerParams[0];
+            $action = isset($handlerParams[1]) ? $handlerParams[1] : "";
+            $handlerEntity = $this->procedureConfigRepository->getHandlerByName($controller);
+        }
+
+        $handlerEntity->setMethod($action);
+        return $handlerEntity;
+    }
+
     public function run(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         if ($requestEntity->getMeta()) {
             $this->meta = $requestEntity->getMeta();
         }
 
-        $responseEntity = $this->validateRequest($requestEntity);
-        if (isset($responseEntity)) {
-            return $responseEntity;
-        }
+        $this->validateRequest($requestEntity);
+
+        $method = $requestEntity->getMethod();
+        $handlerEntity = $this->getHandlerEntityByMethod($method);
 
         try {
-            $method = $requestEntity->getMethod();
-
-            try {
-                $handlerEntity = $this->procedureConfigRepository->getHandlerByName($method);
-                $action = $handlerEntity->getMethod();
-            } catch (Exception $exception) {
-                $handlerParams = explode(".", $method);
-                $controller = $handlerParams[0];
-                $action = isset($handlerParams[1]) ? $handlerParams[1] : "";
-                $handlerEntity = $this->procedureConfigRepository->getHandlerByName($controller);
-            }
-
-            $handlerEntity->setMethod($action);
-
             $result = $this->runProcedure($handlerEntity, $handlerEntity->getMethod(), $requestEntity);
             $responseEntity = $this->responseFormatter->forgeResultResponse($result);
         } catch (NotFoundException $e) {
@@ -124,24 +126,20 @@ class ProcedureService implements ProcedureServiceInterface
         // http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
     }
 
-    private function validateRequest(RpcRequestEntity $requestEntity): ?RpcResponseEntity
+    private function validateRequest(RpcRequestEntity $requestEntity)
     {
         if ($requestEntity->getJsonrpc() == null) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, 'Empty version', $requestEntity->getId());
+            throw new Exception('Empty version', RpcErrorCodeEnum::INVALID_REQUEST);
         }
         if ($requestEntity->getMethod() == null) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, 'Empty method', $requestEntity->getId());
+            throw new Exception('Empty method', RpcErrorCodeEnum::INVALID_REQUEST);
         }
         if ($requestEntity->getParams() === null) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, 'Empty params', $requestEntity->getId());
+            throw new Exception('Empty params', RpcErrorCodeEnum::INVALID_REQUEST);
         }
         if ($requestEntity->getJsonrpc() != RpcVersionEnum::V2_0) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, 'Unsupported RPC version', $requestEntity->getId());
+            throw new Exception('Unsupported RPC version', RpcErrorCodeEnum::INVALID_REQUEST);
         }
-        if (isset($responseEntity)) {
-            return $responseEntity;
-        }
-        return null;
     }
 
     /**
