@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Repositories\Conf;
 
+use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
@@ -22,12 +23,13 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
     {
         try {
             $handlerEntity = $this->getHandlerByName($method);
-        } catch (MethodNotFoundException $exception) {
-            $handlerParams = explode(".", $method);
-            $controller = $handlerParams[0];
-            $action = isset($handlerParams[1]) ? $handlerParams[1] : "";
-            $handlerEntity = $this->getHandlerByName($controller);
-            $handlerEntity->setMethod($action);
+        } catch (NotFoundException $exception) {
+            $args = explode(".", $method);
+            if(count($args) < 2) {
+                throw new NotFoundException('Not found handler');
+            }
+            $handlerEntity = $this->getHandlerByName($args[0]);
+            $handlerEntity->setMethod($args[1]);
         }
         return $handlerEntity;
     }
@@ -36,7 +38,7 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
     {
         $handler = ArrayHelper::getValue($this->busConfig, $name);
         if (!$handler) {
-            throw new MethodNotFoundException('Not found handler');
+            throw new NotFoundException('Not found handler');
         }
         $handlerEntity = EntityHelper::createEntity(HandlerEntity::class, $handler);
         return $handlerEntity;

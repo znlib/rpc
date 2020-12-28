@@ -57,7 +57,11 @@ class ProcedureService implements ProcedureServiceInterface
         }
 
         $method = $requestEntity->getMethod();
-        $handlerEntity = $this->procedureConfigRepository->oneByMethodName($method);
+        try {
+            $handlerEntity = $this->procedureConfigRepository->oneByMethodName($method);
+        } catch (NotFoundException $e) {
+            throw new MethodNotFoundException('Not found handler');
+        }
 
         try {
             $result = $this->controllerService->runProcedure($handlerEntity, $requestEntity);
