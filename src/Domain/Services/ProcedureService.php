@@ -27,6 +27,7 @@ use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
 use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
+use ZnLib\Rpc\Rpc\Interfaces\RpcAuthInterface;
 
 class ProcedureService implements ProcedureServiceInterface
 {
@@ -92,7 +93,7 @@ class ProcedureService implements ProcedureServiceInterface
         $handlerEntity = $this->getHandlerEntityByMethod($method);
 
         try {
-            $result = $this->runProcedure($handlerEntity, $handlerEntity->getMethod(), $requestEntity);
+            $result = $this->runProcedure($handlerEntity, $requestEntity);
             $responseEntity = $this->responseFormatter->forgeResultResponse($result);
         } catch (NotFoundException $e) {
             $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::NOT_FOUND);
@@ -150,20 +151,18 @@ class ProcedureService implements ProcedureServiceInterface
      * @throws NotFoundException
      * @throws UnprocessibleEntityException
      */
-    private function runProcedure(HandlerEntity $handlerEntity, string $methodName, RpcRequestEntity $requestEntity)
+    private function runProcedure(HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
     {
-        $requestEntity->setMeta($this->getMeta());
-        $this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
-            return $requestEntity;
-        });
+        //$requestEntity->setMeta($this->getMeta());
+
+        $methodName = $handlerEntity->getMethod();
         $controllerInstance = $this->container->get($handlerEntity->getClass());
-        if (!method_exists($controllerInstance, $methodName)) {
-            throw new MethodNotFoundException('Not found method');
-        }
+
         $auth = null;
-        if (method_exists($controllerInstance, 'auth')) {
+        if ($controllerInstance instanceof RpcAuthInterface) {
             $auth = $controllerInstance->auth();
         }
+
         if ($auth) {
 
             if ((in_array("*", $auth)) || (in_array($methodName, $auth))) {
@@ -187,8 +186,20 @@ class ProcedureService implements ProcedureServiceInterface
 
             }
         }
-        $attributes = $handlerEntity->getAttributes();
-        EntityHelper::setAttributes($controllerInstance, $attributes);
+
+        return $this->callControllerMethod($controllerInstance, $handlerEntity, $requestEntity);
+    }
+
+    private function callControllerMethod(object $controllerInstance, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity): RpcResponseEntity
+    {
+        $methodName = $handlerEntity->getMethod();
+        if (!method_exists($controllerInstance, $methodName)) {
+            throw new MethodNotFoundException();
+        }
+        $this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
+            return $requestEntity;
+        });
+        EntityHelper::setAttributes($controllerInstance, $handlerEntity->getAttributes());
         return $this->container->call([$controllerInstance, $methodName]);
     }
 

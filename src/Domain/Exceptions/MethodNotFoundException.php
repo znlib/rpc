@@ -3,8 +3,14 @@
 namespace ZnLib\Rpc\Domain\Exceptions;
 
 use Exception;
+use Throwable;
+use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 
 class MethodNotFoundException extends Exception
 {
 
+    public function __construct($message = 'Not found method', $code = RpcErrorCodeEnum::METHOD_NOT_FOUND, Throwable $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

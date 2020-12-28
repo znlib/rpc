@@ -23,7 +23,7 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
     {
         $handler = ArrayHelper::getValue($this->busConfig, $name);
         if (!$handler) {
-            throw new MethodNotFoundException('Not found handler', RpcErrorCodeEnum::METHOD_NOT_FOUND);
+            throw new MethodNotFoundException('Not found handler');
 //            $handler = ArrayHelper::getValue($procedureMap, 'default');
         }
         $handlerEntity = EntityHelper::createEntity(HandlerEntity::class, $handler);
@@ -34,7 +34,7 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
     {
         $handler = ArrayHelper::getValue($this->busConfig, $name);
         if (!$handler) {
-            throw new MethodNotFoundException('Not found handler', RpcErrorCodeEnum::METHOD_NOT_FOUND);
+            throw new MethodNotFoundException('Not found handler');
 //            $handler = ArrayHelper::getValue($procedureMap, 'default');
         }
         return $handler;

@@ -2,7 +2,9 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
-abstract class BaseRpcController
+use ZnLib\Rpc\Rpc\Interfaces\RpcAuthInterface;
+
+abstract class BaseRpcController implements RpcAuthInterface
 {
 
     protected $service;
