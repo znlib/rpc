@@ -2,62 +2,45 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use App\Modules\Partner\Domain\Interfaces\Services\PartnerIpServiceInterface;
 use Exception;
-use Illuminate\Container\Container;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use ZnBundle\Rbac\Domain\Interfaces\ManagerServiceInterface;
-use ZnBundle\User\Domain\Interfaces\Entities\IdentityEntityInterface;
-use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Base\Exceptions\ForbiddenException;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
-use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
-use ZnLib\Rpc\Domain\Entities\HandlerEntity;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
+use ZnLib\Rpc\Domain\Interfaces\Services\ControllerServiceInterface;
 use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
-use ZnLib\Rpc\Rpc\Interfaces\RpcAuthInterface;
 
 class ProcedureService implements ProcedureServiceInterface
 {
 
-    private $container;
     private $procedureConfigRepository;
     private $meta = [];
     private $logger;
     private $responseFormatter;
-    private $authPartnerService;
-    private $partnerIpService;
-    private $rbacManager;
+    private $controllerService;
 
     public function __construct(
-        Container $container,
         ProcedureConfigRepositoryInterface $procedureConfigRepository,
         LoggerInterface $logger,
         ResponseFormatter $responseFormatter,
-        AuthServiceInterface $authPartnerService,
-        ManagerServiceInterface $rbacManager,
-        PartnerIpServiceInterface $partnerIpService = null
+        ControllerServiceInterface $controllerService
     )
     {
-        $this->container = $container;
         $this->procedureConfigRepository = $procedureConfigRepository;
         $this->logger = $logger;
         $this->responseFormatter = $responseFormatter;
-        $this->authPartnerService = $authPartnerService;
-        $this->partnerIpService = $partnerIpService;
-        $this->rbacManager = $rbacManager;
+        $this->controllerService = $controllerService;
     }
 
     public function getMeta(): array
@@ -65,35 +48,19 @@ class ProcedureService implements ProcedureServiceInterface
         return $this->meta;
     }
 
-    private function getHandlerEntityByMethod(string $method): HandlerEntity
-    {
-        try {
-            $handlerEntity = $this->procedureConfigRepository->getHandlerByName($method);
-            $action = $handlerEntity->getMethod();
-        } catch (Exception $exception) {
-            $handlerParams = explode(".", $method);
-            $controller = $handlerParams[0];
-            $action = isset($handlerParams[1]) ? $handlerParams[1] : "";
-            $handlerEntity = $this->procedureConfigRepository->getHandlerByName($controller);
-        }
-
-        $handlerEntity->setMethod($action);
-        return $handlerEntity;
-    }
-
     public function run(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
+        $this->validateRequest($requestEntity);
+
         if ($requestEntity->getMeta()) {
             $this->meta = $requestEntity->getMeta();
         }
 
-        $this->validateRequest($requestEntity);
-
         $method = $requestEntity->getMethod();
-        $handlerEntity = $this->getHandlerEntityByMethod($method);
+        $handlerEntity = $this->procedureConfigRepository->oneByMethodName($method);
 
         try {
-            $result = $this->runProcedure($handlerEntity, $requestEntity);
+            $result = $this->controllerService->runProcedure($handlerEntity, $requestEntity);
             $responseEntity = $this->responseFormatter->forgeResultResponse($result);
         } catch (NotFoundException $e) {
             $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::NOT_FOUND);
@@ -140,102 +107,6 @@ class ProcedureService implements ProcedureServiceInterface
         }
         if ($requestEntity->getJsonrpc() != RpcVersionEnum::V2_0) {
             throw new Exception('Unsupported RPC version', RpcErrorCodeEnum::INVALID_REQUEST);
-        }
-    }
-
-    /**
-     * @param HandlerEntity $handlerEntity
-     * @param string $methodName
-     * @param array $params
-     * @return mixed
-     * @throws NotFoundException
-     * @throws UnprocessibleEntityException
-     */
-    private function runProcedure(HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
-    {
-        $controllerInstance = $this->container->get($handlerEntity->getClass());
-
-        $auth = null;
-        if ($controllerInstance instanceof RpcAuthInterface) {
-            $auth = $controllerInstance->auth();
-        }
-
-        if ($auth) {
-            $this->checkAuthrization($auth, $handlerEntity, $requestEntity);
-            $this->checkPermission($handlerEntity, $requestEntity);
-        }
-
-        return $this->callControllerMethod($controllerInstance, $handlerEntity, $requestEntity);
-    }
-
-    private function checkAuthrization(array $auth, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
-    {
-        $isCheckRequired = in_array("*", $auth) || in_array($handlerEntity->getMethod(), $auth);
-        if (!$isCheckRequired) {
-            return;
-        }
-        $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
-        if (empty($token)) {
-            throw new UnauthorizedException("Empty token");
-        }
-        try {
-            $identity = $this->authPartnerService->authenticationByToken($token);
-        } catch (NotFoundException $exception) {
-            throw new UnauthorizedException("Token not found");
-        }
-
-        if (!$identity instanceof IdentityEntityInterface) {
-            throw new UnauthorizedException("Bad token");
-        }
-
-        if ($handlerEntity->isCheckIp()) {
-            $this->checkIp($requestEntity, $identity);
-        }
-
-        $this->authPartnerService->setIdentity($identity);
-    }
-
-    private function checkPermission(HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
-    {
-        $access = $handlerEntity->getAccess();
-        if ($access == null) {
-            return;
-        }
-        $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
-        /** @var IdentityEntityInterface $identity */
-        $identity = $this->authPartnerService->getIdentity();
-        $isCan = false;
-        foreach ($access as $permission) {
-            $isCan = $this->rbacManager->checkAccess($identity->getId(), $permission);
-        }
-        if (!$isCan) {
-            throw new ForbiddenException('Forbidden');
-        }
-    }
-
-    private function callControllerMethod(object $controllerInstance, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity): RpcResponseEntity
-    {
-        $methodName = $handlerEntity->getMethod();
-        if (!method_exists($controllerInstance, $methodName)) {
-            throw new MethodNotFoundException();
-        }
-        EntityHelper::setAttributes($controllerInstance, $handlerEntity->getAttributes());
-        return call_user_func([$controllerInstance, $methodName], $requestEntity);
-        /*$this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
-            return $requestEntity;
-        });
-        return $this->container->call([$controllerInstance, $methodName], []);*/
-    }
-
-    protected function checkIp(RpcRequestEntity $requestEntity, IdentityEntityInterface $identity)
-    {
-        if ($this->partnerIpService == null) {
-            return;
-        }
-        $ip = $requestEntity->getMetaItem('ip');
-        $isAvailable = $this->partnerIpService->isAvailable($ip, $identity);
-        if (!$isAvailable) {
-            throw new UnauthorizedException("Ip blocked");
         }
     }
 }
