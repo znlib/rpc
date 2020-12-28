@@ -153,9 +153,6 @@ class ProcedureService implements ProcedureServiceInterface
      */
     private function runProcedure(HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
     {
-        //$requestEntity->setMeta($this->getMeta());
-
-        $methodName = $handlerEntity->getMethod();
         $controllerInstance = $this->container->get($handlerEntity->getClass());
 
         $auth = null;
@@ -164,47 +161,19 @@ class ProcedureService implements ProcedureServiceInterface
         }
 
         if ($auth) {
-
-            if ((in_array("*", $auth)) || (in_array($methodName, $auth))) {
-                $this->partnerAuthorization($requestEntity, $handlerEntity);
-            }
-
-            if ($handlerEntity->getAccess()) {
-
-                $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
-                /** @var IdentityEntityInterface $identity */
-                $identity = $this->authPartnerService->authenticationByToken($token);
-
-                $isCan = false;
-                foreach ($handlerEntity->getAccess() as $permission) {
-                    $isCan = $this->rbacManager->checkAccess($identity->getId(), $permission);
-                }
-
-                if (!$isCan) {
-                    throw new ForbiddenException('Forbidden');
-                }
-
-            }
+            $this->checkAuthrization($auth, $handlerEntity, $requestEntity);
+            $this->checkPermission($handlerEntity, $requestEntity);
         }
 
         return $this->callControllerMethod($controllerInstance, $handlerEntity, $requestEntity);
     }
 
-    private function callControllerMethod(object $controllerInstance, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity): RpcResponseEntity
+    private function checkAuthrization(array $auth, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
     {
-        $methodName = $handlerEntity->getMethod();
-        if (!method_exists($controllerInstance, $methodName)) {
-            throw new MethodNotFoundException();
+        $isCheckRequired = in_array("*", $auth) || in_array($handlerEntity->getMethod(), $auth);
+        if (!$isCheckRequired) {
+            return;
         }
-        $this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
-            return $requestEntity;
-        });
-        EntityHelper::setAttributes($controllerInstance, $handlerEntity->getAttributes());
-        return $this->container->call([$controllerInstance, $methodName]);
-    }
-
-    private function partnerAuthorization(RpcRequestEntity $requestEntity, HandlerEntity $handlerEntity)
-    {
         $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
         if (empty($token)) {
             throw new UnauthorizedException("Empty token");
@@ -222,6 +191,40 @@ class ProcedureService implements ProcedureServiceInterface
         if ($handlerEntity->isCheckIp()) {
             $this->checkIp($requestEntity, $identity);
         }
+
+        $this->authPartnerService->setIdentity($identity);
+    }
+
+    private function checkPermission(HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
+    {
+        $access = $handlerEntity->getAccess();
+        if ($access == null) {
+            return;
+        }
+        $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
+        /** @var IdentityEntityInterface $identity */
+        $identity = $this->authPartnerService->getIdentity();
+        $isCan = false;
+        foreach ($access as $permission) {
+            $isCan = $this->rbacManager->checkAccess($identity->getId(), $permission);
+        }
+        if (!$isCan) {
+            throw new ForbiddenException('Forbidden');
+        }
+    }
+
+    private function callControllerMethod(object $controllerInstance, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity): RpcResponseEntity
+    {
+        $methodName = $handlerEntity->getMethod();
+        if (!method_exists($controllerInstance, $methodName)) {
+            throw new MethodNotFoundException();
+        }
+        EntityHelper::setAttributes($controllerInstance, $handlerEntity->getAttributes());
+        return call_user_func([$controllerInstance, $methodName], $requestEntity);
+        /*$this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
+            return $requestEntity;
+        });
+        return $this->container->call([$controllerInstance, $methodName], []);*/
     }
 
     protected function checkIp(RpcRequestEntity $requestEntity, IdentityEntityInterface $identity)
@@ -231,9 +234,7 @@ class ProcedureService implements ProcedureServiceInterface
         }
         $ip = $requestEntity->getMetaItem('ip');
         $isAvailable = $this->partnerIpService->isAvailable($ip, $identity);
-        if ($isAvailable) {
-            $this->authPartnerService->setIdentity($identity);
-        } else {
+        if (!$isAvailable) {
             throw new UnauthorizedException("Ip blocked");
         }
     }
