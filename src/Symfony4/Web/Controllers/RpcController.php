@@ -15,6 +15,7 @@ use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
@@ -69,6 +70,7 @@ class RpcController
         $responseCollection = new RpcResponseCollection();
         foreach ($requestCollection->getCollection() as $requestEntity) {
             /** @var RpcRequestEntity $requestEntity */
+            $requestEntity->addMeta(HttpHeaderEnum::IP, $_SERVER['REMOTE_ADDR']);
             $responseEntity = $this->callOneProcedure($requestEntity);
             $responseCollection->add($responseEntity);
         }
@@ -77,9 +79,6 @@ class RpcController
 
     private function callOneProcedure(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-        // айпи отсекать один раз для всех запросов
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $requestEntity->addMeta('ip', $ip);
         try {
             $responseEntity = $this->procedureService->run($requestEntity);
         } catch (NotFoundException $e) {
