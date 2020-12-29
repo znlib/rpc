@@ -96,7 +96,7 @@ class ProcedureService implements ProcedureServiceInterface
         // http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
     }
 
-    private function validateRequest(RpcRequestEntity $requestEntity)
+    public function validateRequest(RpcRequestEntity $requestEntity)
     {
         if ($requestEntity->getJsonrpc() == null) {
             throw new Exception('Empty version', RpcErrorCodeEnum::INVALID_REQUEST);

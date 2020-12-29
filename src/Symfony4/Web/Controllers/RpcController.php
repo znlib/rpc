@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Helpers\EnvHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
@@ -66,13 +67,15 @@ class RpcController
         $requestCollection = new RpcRequestCollection();
         if (ArrayHelper::isIndexed($data)) {
             foreach ($data as $item) {
-                /** @var RpcRequestEntity $requestEntity */
-                $requestEntity = EntityHelper::createEntity(RpcRequestEntity::class, $item);
+                $requestEntity = new RpcRequestEntity();
+                EntityHelper::setAttributes($requestEntity, $item);
+                $this->procedureService->validateRequest($requestEntity);
                 $requestCollection->add($requestEntity);
             }
         } else {
-            /** @var RpcRequestEntity $requestEntity */
-            $requestEntity = EntityHelper::createEntity(RpcRequestEntity::class, $data);
+            $requestEntity = new RpcRequestEntity();
+            EntityHelper::setAttributes($requestEntity, $data);
+            $this->procedureService->validateRequest($requestEntity);
             $requestCollection->add($requestEntity);
         }
         return $requestCollection;
