@@ -7,6 +7,7 @@ use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
 use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
+use ZnLib\Rpc\Domain\Exceptions\ParamNotFoundException;
 
 class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
 {
@@ -73,7 +74,7 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
             }
         }
         $message = "Param \"$key\" not found";
-        throw new \InvalidArgumentException($message);
+        throw new ParamNotFoundException($message);
     }
 
     public function setParams(array $params): void

@@ -3,7 +3,6 @@
 namespace ZnLib\Rpc\Domain\Entities;
 
 use Exception;
-use InvalidArgumentException;
 use ZnCore\Domain\Interfaces\Entity\EntityAttributesInterface;
 use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
 use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
@@ -15,12 +14,12 @@ class DynamicEntity implements ValidateEntityInterface, EntityIdInterface, Entit
 
     public function __construct($entityEntity = null, array $attributes = [])
     {
-        if($entityEntity) {
+        if ($entityEntity) {
             $this->_attributes = $entityEntity->getAttributeNames();
         } else {
             $this->_attributes = $attributes;
         }
-        if($entityEntity) {
+        if ($entityEntity) {
             $this->_validationRules = $entityEntity->getRules();
         }
     }
@@ -64,7 +63,7 @@ class DynamicEntity implements ValidateEntityInterface, EntityIdInterface, Entit
     private function checkHasAttribute(string $attribute)
     {
         $has = in_array($attribute, $this->_attributes);
-        if( ! $has) {
+        if (!$has) {
             throw new Exception('Not found attribute "' . $attribute . '"!');
         }
     }

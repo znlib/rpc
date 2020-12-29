@@ -19,6 +19,7 @@ use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
+use ZnLib\Rpc\Domain\Exceptions\ParamNotFoundException;
 use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
@@ -83,29 +84,15 @@ class RpcController
 //            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::NOT_FOUND);
 //            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
         } catch (MethodNotFoundException $e) {
-//            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::METHOD_NOT_FOUND);
-//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         } catch (UnprocessibleEntityException $e) {
-//            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::INVALID_PARAMS);
-            /*$error = [
-                'code' => RpcErrorCodeEnum::INVALID_PARAMS,
-                'message' => 'Parameter validation error',
-            ];*/
             $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_PARAMS, 'Parameter validation error', $errorData);
-//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error);
         } catch (UnauthorizedException $e) {
-//            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::UNAUTHORIZED);
-//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, $e->getMessage());
-        } catch (InvalidArgumentException $e) {
-//            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::INVALID_PARAMS);
-//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_PARAMS, $e->getMessage());
+        } catch (ParamNotFoundException $e) {
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         } catch (ForbiddenException $e) {
-//            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::FORBIDDEN);
-//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::FORBIDDEN, $e->getMessage());
         } catch (Exception $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
