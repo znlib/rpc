@@ -12,28 +12,30 @@ use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
 class RequestHelper
 {
 
-    public static function createRequestCollection(array $data): RpcRequestCollection
+    public static function createRequestCollection(array $requestData): RpcRequestCollection
     {
-
         $requestCollection = new RpcRequestCollection();
-        if (ArrayHelper::isIndexed($data)) {
-
-            foreach ($data as $item) {
-                $requestEntity = new RpcRequestEntity();
-                EntityHelper::setAttributes($requestEntity, $item);
-//                self::validateRequest($requestEntity);
+        if (self::isBatchRequest($requestData)) {
+            foreach ($requestData as $item) {
+                $requestEntity = self::forgeRequestEntity($item);
                 $requestCollection->add($requestEntity);
             }
         } else {
-
-            $requestEntity = new RpcRequestEntity();
-
-            EntityHelper::setAttributes($requestEntity, $data);
-//            self::validateRequest($requestEntity);
+            $requestEntity = self::forgeRequestEntity($requestData);
             $requestCollection->add($requestEntity);
-//            print_r($requestEntity);exit;
         }
         return $requestCollection;
+    }
+
+    public static function isBatchRequest(array $requestData): bool {
+        return ArrayHelper::isIndexed($requestData);
+    }
+
+    private static function forgeRequestEntity(array $requestItem): RpcRequestEntity
+    {
+        $requestEntity = new RpcRequestEntity();
+        EntityHelper::setAttributes($requestEntity, $requestItem);
+        return $requestEntity;
     }
 
     public static function validateRequest(RpcRequestEntity $requestEntity)

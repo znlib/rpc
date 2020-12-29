@@ -15,6 +15,7 @@ use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
@@ -47,18 +48,20 @@ class RpcController
 
     public function callProcedure(Request $request): Response
     {
-        $rawData = $request->getContent();
-        $data = json_decode($rawData, true);
-        if (empty($data)) {
+        $requestRawData = $request->getContent();
+        $requestData = json_decode($requestRawData, true);
+        if (empty($requestData)) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, "Empty response");
             $responseCollection = new RpcResponseCollection();
             $responseCollection->add($responseEntity);
-//            return $this->rpcJsonResponse->sendEntity($responseEntity);
+            $batchMode = RpcBatchModeEnum::SINGLE;
         } else {
-            $requestCollection = RequestHelper::createRequestCollection($data);
+            $isBatchRequest = RequestHelper::isBatchRequest($requestData);
+            $batchMode = $isBatchRequest ? RpcBatchModeEnum::BATCH : RpcBatchModeEnum::SINGLE;
+            $requestCollection = RequestHelper::createRequestCollection($requestData);
             $responseCollection = $this->handleData($requestCollection);
         }
-        return $this->rpcJsonResponse->sendBatch($responseCollection);
+        return $this->rpcJsonResponse->send($responseCollection, $batchMode);
     }
 
     private function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection

@@ -8,37 +8,39 @@ use ZnCore\Base\Helpers\EnvHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
 
 class RpcJsonResponse
 {
 
-    public function sendBatch(RpcResponseCollection $responseCollection): JsonResponse
+    public function send(RpcResponseCollection $responseCollection, int $batchMode = RpcBatchModeEnum::AUTO): JsonResponse
+    {
+        $responseData = $this->collectionToArray($responseCollection);
+        $isAutoSingle = $batchMode == RpcBatchModeEnum::AUTO && count($responseData) == 1;
+        $isSingle = $batchMode == RpcBatchModeEnum::SINGLE;
+        if($isAutoSingle || $isSingle) {
+            $responseData = $responseData[0];
+        }
+        return $this->sendJson($responseData);
+    }
+
+    private function collectionToArray(RpcResponseCollection $responseCollection): array
     {
         $collecion = $responseCollection->getCollection();
-        if($collecion->count() == 1) {
-            return $this->sendEntity($collecion->first());
-        }
-        $items = [];
+        $responseData = [];
         foreach ($collecion as $responseEntity) {
-            $item = EntityHelper::toArray($responseEntity);
-            $items[] = $item;
+            $responseData[] = EntityHelper::toArray($responseEntity);
         }
-        return $this->send($items);
+        return $responseData;
     }
 
-    public function sendEntity(RpcResponseEntity $responseEntity): JsonResponse
-    {
-        $array = EntityHelper::toArray($responseEntity);
-        return $this->send($array);
-    }
-
-    public function send(array $array): JsonResponse
+    private function sendJson(array $responseData): JsonResponse
     {
         $response = new JsonResponse();
         if (EnvHelper::isDebug()) {
             $response->setEncodingOptions(JSON_PRETTY_PRINT);
         }
-        $response->setData($array);
+        $response->setData($responseData);
         return $response;
     }
 }
