@@ -3,6 +3,7 @@
 namespace ZnLib\Rest\Tests\Unit;
 
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
+use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
@@ -16,14 +17,18 @@ final class BatchTest extends BaseTest {
     {
         $requestCollection = new RpcRequestCollection();
         $this->expectException(UnprocessibleEntityException::class);
-        $requestCollection->add(new RpcRequestEntity('partner.oneById', ['id' => 1], [], null));
+        $requestEntity = new RpcRequestEntity('partner.oneById', ['id' => 1], [], null);
+        ValidationHelper::validateEntity($requestEntity);
+        $requestCollection->add($requestEntity);
     }
 
     public function testEmptyRequestMethod()
     {
         $requestCollection = new RpcRequestCollection();
         $this->expectException(UnprocessibleEntityException::class);
-        $requestCollection->add(new RpcRequestEntity('', ['id' => 1], [], 1));
+        $requestEntity = new RpcRequestEntity('', ['id' => 1], [], 1);
+        ValidationHelper::validateEntity($requestEntity);
+        $requestCollection->add($requestEntity);
     }
 
     public function testEmptyRequestVersion()
@@ -32,6 +37,7 @@ final class BatchTest extends BaseTest {
         $this->expectException(UnprocessibleEntityException::class);
         $requestEntity = new RpcRequestEntity('partner.oneById', ['id' => 1], [], 1);
         $requestEntity->setJsonrpc('');
+        ValidationHelper::validateEntity($requestEntity);
         $requestCollection->add($requestEntity);
     }
 
@@ -42,6 +48,7 @@ final class BatchTest extends BaseTest {
 
         $requestEntity = new RpcResponseEntity();
         $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
+        ValidationHelper::validateEntity($requestEntity);
         $requestCollection->add($requestEntity);
     }
 
@@ -53,6 +60,7 @@ final class BatchTest extends BaseTest {
         $requestEntity = new RpcResponseEntity();
         $requestEntity->setId(1);
         $requestEntity->setJsonrpc('');
+        ValidationHelper::validateEntity($requestEntity);
         $requestCollection->add($requestEntity);
     }
 }

@@ -28,9 +28,11 @@ abstract class BaseRpcTest extends BaseTest
     protected function setUp(): void
     {
         //parent::setUp();
-        $response = $this->sendRequest('fixture.import', [
-            'fixtures' => $this->fixtures(),
-        ]);
+        if($this->fixtures()) {
+            $response = $this->sendRequest('fixture.import', [
+                'fixtures' => $this->fixtures(),
+            ]);
+        }
     }
 
     protected function authBy(string $login, string $password): string

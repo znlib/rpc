@@ -57,6 +57,10 @@ class RpcClient
     {
         $data = RestResponseHelper::getBody($response);
         $rpcResponse = new RpcResponseEntity();
+        if(!is_array($data)) {
+            //dd($data);
+            throw new \Exception('Empty response');
+        }
         EntityHelper::setAttributes($rpcResponse, $data);
         return $rpcResponse;
     }
@@ -130,9 +134,10 @@ class RpcClient
     public function sendRequest(array $body = [], array $headers = []): RpcResponseEntity
     {
         $response = $this->sendRawRequest($body, $headers);
-        if ($this->isStrictMode) {
+        /*if ($this->isStrictMode) {
             $this->validateResponse($response);
-        }
+        }*/
+//        dd($response->getBody()->getContents());
         return $this->responseToRpcResponse($response);
     }
 

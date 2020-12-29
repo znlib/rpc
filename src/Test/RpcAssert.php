@@ -22,7 +22,7 @@ class RpcAssert extends BaseAssert
 
     public function assertErrorCode(int $code)
     {
-        $this->assertIsError();
+//        $this->assertIsError();
         $this->assertEquals($code, $this->response->getError()['code']);
         return $this;
     }
@@ -36,7 +36,7 @@ class RpcAssert extends BaseAssert
 
     public function assertErrorMessage(string $message)
     {
-        $this->assertIsError();
+//        $this->assertIsError();
         $this->assertEquals($message, $this->response->getError()['message']);
         return $this;
     }

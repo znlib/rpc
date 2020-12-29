@@ -16,6 +16,7 @@ use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
+use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
 use ZnLib\Rpc\Domain\Interfaces\Services\ControllerServiceInterface;
 use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
@@ -50,7 +51,7 @@ class ProcedureService implements ProcedureServiceInterface
 
     public function run(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-        $this->validateRequest($requestEntity);
+        RequestHelper::validateRequest($requestEntity);
 
         if ($requestEntity->getMeta()) {
             $this->meta = $requestEntity->getMeta();
@@ -64,8 +65,10 @@ class ProcedureService implements ProcedureServiceInterface
         }
 
         try {
+
             $result = $this->controllerService->runProcedure($handlerEntity, $requestEntity);
             $responseEntity = $this->responseFormatter->forgeResultResponse($result);
+
         } catch (NotFoundException $e) {
             $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::NOT_FOUND);
             $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
@@ -81,6 +84,8 @@ class ProcedureService implements ProcedureServiceInterface
             $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::UNAUTHORIZED);
             $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
         } catch (InvalidArgumentException $e) {
+//            var_dump($e);
+            //throw new Exception('qwe', 123);
             $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::INVALID_PARAMS);
             $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
         } catch (ForbiddenException $e) {
@@ -94,21 +99,5 @@ class ProcedureService implements ProcedureServiceInterface
         return $responseEntity;
         // https://www.jsonrpc.org/specification#error_object
         // http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
-    }
-
-    public function validateRequest(RpcRequestEntity $requestEntity)
-    {
-        if ($requestEntity->getJsonrpc() == null) {
-            throw new Exception('Empty version', RpcErrorCodeEnum::INVALID_REQUEST);
-        }
-        if ($requestEntity->getMethod() == null) {
-            throw new Exception('Empty method', RpcErrorCodeEnum::INVALID_REQUEST);
-        }
-        if ($requestEntity->getParams() === null) {
-            throw new Exception('Empty params', RpcErrorCodeEnum::INVALID_REQUEST);
-        }
-        if ($requestEntity->getJsonrpc() != RpcVersionEnum::V2_0) {
-            throw new Exception('Unsupported RPC version', RpcErrorCodeEnum::INVALID_REQUEST);
-        }
     }
 }

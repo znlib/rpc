@@ -10,7 +10,7 @@ class RpcResponseCollection extends BaseRpcCollection
 
     public function add(RpcResponseEntity $responseEntity)
     {
-        ValidationHelper::validateEntity($responseEntity);
+//        ValidationHelper::validateEntity($responseEntity);
         return $this->collection->add($responseEntity);
     }
 }
