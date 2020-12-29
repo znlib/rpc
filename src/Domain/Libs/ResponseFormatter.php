@@ -2,10 +2,10 @@
 
 namespace ZnLib\Rpc\Domain\Libs;
 
-use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use Exception;
 use Psr\Log\LoggerInterface;
 use ZnCore\Domain\Helpers\EntityHelper;
+use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 
 class ResponseFormatter
 {
@@ -21,11 +21,6 @@ class ResponseFormatter
 
     public function forgeResultResponse($result, string $id = null): RpcResponseEntity
     {
-//        $result = [
-//            'result' => $result,
-//            'id' => $id,
-//        ];
-
         $result->setId($id);
 
         /** @var RpcResponseEntity $responseEntity */
