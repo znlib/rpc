@@ -2,7 +2,6 @@
 
 namespace ZnLib\Rpc\Domain\Libs;
 
-use Exception;
 use Psr\Log\LoggerInterface;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;

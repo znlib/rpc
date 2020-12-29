@@ -2,8 +2,6 @@
 
 namespace ZnLib\Rpc\Symfony4\Web\Controllers;
 
-use Exception;
-use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +16,7 @@ use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
+use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Exceptions\ParamNotFoundException;
 use ZnLib\Rpc\Domain\Helpers\RequestHelper;
@@ -81,8 +80,7 @@ class RpcController
         try {
             $responseEntity = $this->procedureService->run($requestEntity);
         } catch (NotFoundException $e) {
-//            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::NOT_FOUND);
-//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::NOT_FOUND, $e->getMessage());
         } catch (MethodNotFoundException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         } catch (UnprocessibleEntityException $e) {
@@ -94,10 +92,12 @@ class RpcController
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         } catch (ForbiddenException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::FORBIDDEN, $e->getMessage());
-        } catch (Exception $e) {
+        } catch (InvalidRequestException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         }
-
+        /* catch (Exception $e) {
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
+        }*/
         $responseEntity->setId($requestEntity->getId());
         return $responseEntity;
     }

@@ -58,7 +58,6 @@ class RpcClient
         $data = RestResponseHelper::getBody($response);
         $rpcResponse = new RpcResponseEntity();
         if(!is_array($data)) {
-            //dd($data);
             throw new \Exception('Empty response');
         }
         EntityHelper::setAttributes($rpcResponse, $data);
