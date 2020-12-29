@@ -4,6 +4,7 @@ namespace ZnLib\Rpc\Domain\Services;
 
 use Psr\Log\LoggerInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
+use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
@@ -52,8 +53,12 @@ class ProcedureService implements ProcedureServiceInterface
         } catch (NotFoundException $e) {
             throw new MethodNotFoundException('Not found handler');
         }
-        $result = $this->controllerService->runProcedure($handlerEntity, $requestEntity);
-        return $this->responseFormatter->forgeResultResponse($result);
+        $responseEntity = $this->controllerService->runProcedure($handlerEntity, $requestEntity);
+        $this->logger->info('request', EntityHelper::toArray($requestEntity));
+        $this->logger->info('response', EntityHelper::toArray($responseEntity));
+        return $responseEntity;
+
+        //return $this->responseFormatter->forgeResultResponse($result);
         // https://www.jsonrpc.org/specification#error_object
         // http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
     }

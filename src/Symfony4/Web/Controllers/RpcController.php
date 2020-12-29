@@ -80,25 +80,33 @@ class RpcController
         try {
             $responseEntity = $this->procedureService->run($requestEntity);
         } catch (NotFoundException $e) {
-            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::NOT_FOUND);
-            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+//            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::NOT_FOUND);
+//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
         } catch (MethodNotFoundException $e) {
-            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::METHOD_NOT_FOUND);
-            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+//            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::METHOD_NOT_FOUND);
+//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         } catch (UnprocessibleEntityException $e) {
-            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::INVALID_PARAMS);
-            $error['data'] = ValidationHelper::collectionToArray($e->getErrorCollection());
-            $error['message'] = 'Parameter validation error';
-            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+//            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::INVALID_PARAMS);
+            /*$error = [
+                'code' => RpcErrorCodeEnum::INVALID_PARAMS,
+                'message' => 'Parameter validation error',
+            ];*/
+            $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_PARAMS, 'Parameter validation error', $errorData);
+//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error);
         } catch (UnauthorizedException $e) {
-            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::UNAUTHORIZED);
-            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+//            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::UNAUTHORIZED);
+//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, $e->getMessage());
         } catch (InvalidArgumentException $e) {
-            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::INVALID_PARAMS);
-            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+//            $error = $this->responseFormatter->createErrorByException($e, RpcErrorCodeEnum::INVALID_PARAMS);
+//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_PARAMS, $e->getMessage());
         } catch (ForbiddenException $e) {
-            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::FORBIDDEN);
-            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+//            $error = $this->responseFormatter->createErrorByException($e, HttpStatusCodeEnum::FORBIDDEN);
+//            $responseEntity = $this->responseFormatter->forgeErrorResponseByError($error, $requestEntity->getId());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::FORBIDDEN, $e->getMessage());
         } catch (Exception $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         }

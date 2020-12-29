@@ -66,12 +66,12 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
         $this->id = $id;
     }
 
-    public function getError(): ?array
+    public function getError()
     {
         return $this->error;
     }
 
-    public function setError(?array $error): void
+    public function setError($error): void
     {
         $this->error = $error;
     }
