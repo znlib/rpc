@@ -2,9 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use Psr\Log\LoggerInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
@@ -12,27 +10,23 @@ use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
 use ZnLib\Rpc\Domain\Interfaces\Services\ControllerServiceInterface;
 use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
-use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 
 class ProcedureService implements ProcedureServiceInterface
 {
 
     private $procedureConfigRepository;
     private $meta = [];
-    private $logger;
-    private $responseFormatter;
+//    private $logger;
     private $controllerService;
 
     public function __construct(
         ProcedureConfigRepositoryInterface $procedureConfigRepository,
-        LoggerInterface $logger,
-        ResponseFormatter $responseFormatter,
+//        LoggerInterface $logger,
         ControllerServiceInterface $controllerService
     )
     {
         $this->procedureConfigRepository = $procedureConfigRepository;
-        $this->logger = $logger;
-        $this->responseFormatter = $responseFormatter;
+//        $this->logger = $logger;
         $this->controllerService = $controllerService;
     }
 
@@ -57,8 +51,6 @@ class ProcedureService implements ProcedureServiceInterface
 //        $this->logger->info('request', EntityHelper::toArray($requestEntity));
 //        $this->logger->info('response', EntityHelper::toArray($responseEntity));
         return $responseEntity;
-
-        //return $this->responseFormatter->forgeResultResponse($result);
         // https://www.jsonrpc.org/specification#error_object
         // http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
     }
