@@ -25,7 +25,6 @@ class ControllerService implements ControllerServiceInterface
 {
 
     private $container;
-    private $meta = [];
     private $logger;
     private $authPartnerService;
     private $partnerIpService;
@@ -96,7 +95,7 @@ class ControllerService implements ControllerServiceInterface
         if ($access == null) {
             return;
         }
-        $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
+//        $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
         /** @var IdentityEntityInterface $identity */
         $identity = $this->authPartnerService->getIdentity();
         $isCan = false;

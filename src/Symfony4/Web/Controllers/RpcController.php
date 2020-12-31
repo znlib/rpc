@@ -65,11 +65,24 @@ class RpcController
         return $this->rpcJsonResponse->send($responseCollection, $batchMode);
     }
 
+    private function prepareRequestEntity(RpcRequestEntity $requestEntity) {
+        try {
+            $meta = $requestEntity->getParamItem('meta');
+            $requestEntity->setMeta($meta);
+        } catch (ParamNotFoundException $e) {}
+        try {
+            $params = $requestEntity->getParamItem('body');
+            $requestEntity->setParams($params);
+        } catch (ParamNotFoundException $e) {}
+    }
+
     private function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
     {
         $responseCollection = new RpcResponseCollection();
+
         foreach ($requestCollection->getCollection() as $requestEntity) {
             /** @var RpcRequestEntity $requestEntity */
+            $this->prepareRequestEntity($requestEntity);
             $requestEntity->addMeta(HttpHeaderEnum::IP, $_SERVER['REMOTE_ADDR']);
             $responseEntity = $this->callOneProcedure($requestEntity);
             $responseCollection->add($responseEntity);

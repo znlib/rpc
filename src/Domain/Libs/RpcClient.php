@@ -53,11 +53,12 @@ class RpcClient
         $this->authAgent = $authAgent;
     }
 
-    public function responseToRpcResponse(ResponseInterface $response): RpcResponseEntity
+    private function responseToRpcResponse(ResponseInterface $response): RpcResponseEntity
     {
         $data = RestResponseHelper::getBody($response);
         $rpcResponse = new RpcResponseEntity();
         if(!is_array($data)) {
+//            dd($data);
             throw new \Exception('Empty response');
         }
         EntityHelper::setAttributes($rpcResponse, $data);
@@ -80,16 +81,33 @@ class RpcClient
         return $response;
     }
 
+    private function prepareRequest(array $body): array {
+        $params = [];
+        if(isset($body['params'])) {
+            $params['body'] = $body['params'];
+        }
+        if(isset($body['meta'])) {
+            $params['meta'] = $body['meta'];
+            unset($body['meta']);
+        }
+        if(!empty($params)) {
+            $body['params'] = $params;
+        }
+        return $body;
+    }
+
     public function sendBatchRequest(RpcRequestCollection $rpcRequestCollection): RpcResponseCollection
     {
+        //dd($rpcRequestCollection);
         $arrayBody = [];
-        foreach ($rpcRequestCollection->getCollection() as $rpcReq) {
-            $rpcReq->setJsonrpc(RpcVersionEnum::V2_0);
-            $body = EntityHelper::toArray($rpcReq);
-            $arrayBody[] = $body;
+        foreach ($rpcRequestCollection->getCollection() as $requestEntity) {
+            $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
+            $body = EntityHelper::toArray($requestEntity);
+            $arrayBody[] = $this->prepareRequest($body);
         }
-        $resultBody = EntityHelper::toArray($arrayBody);
-        $response = $this->sendRawRequest($resultBody);
+//        dd($arrayBody);
+        //$resultBody = EntityHelper::toArray($arrayBody);
+        $response = $this->sendRawRequest($arrayBody);
         //dd($response->getBody()->getContents());
         $data = RestResponseHelper::getBody($response);
         $responseCollection = new RpcResponseCollection();
@@ -111,11 +129,11 @@ class RpcClient
         return $headers;
     }
 
-    private function sendRawRequest(array $body = [], array $headers = [])
+    private function sendRawRequest(array $body = [])
     {
         $options = [
             RequestOptions::JSON => $body,
-            RequestOptions::HEADERS => $headers,
+            RequestOptions::HEADERS => [],
         ];
         $options[RequestOptions::HEADERS]['Accept'] = $this->accept;
         try {
@@ -132,7 +150,8 @@ class RpcClient
 
     public function sendRequest(array $body = [], array $headers = []): RpcResponseEntity
     {
-        $response = $this->sendRawRequest($body, $headers);
+        $body = $this->prepareRequest($body);
+        $response = $this->sendRawRequest($body);
         /*if ($this->isStrictMode) {
             $this->validateResponse($response);
         }*/
