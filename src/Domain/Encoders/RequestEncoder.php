@@ -9,28 +9,42 @@ class RequestEncoder implements EncoderInterface
 
     public function encode($data)
     {
-        $params = [];
+        $request = [];
+        if (isset($data['jsonrpc'])) {
+            $request['jsonrpc'] = $data['jsonrpc'];
+        }
+        if (isset($data['method'])) {
+            $request['method'] = $data['method'];
+        }
         if(isset($data['params'])) {
-            $params['body'] = $data['params'];
+            $request['params']['body'] = $data['params'];
         }
         if(isset($data['meta'])) {
-            $params['meta'] = $data['meta'];
-            unset($data['meta']);
+            $request['params']['meta'] = $data['meta'];
         }
-        if(!empty($params)) {
-            $data['params'] = $params;
+        if (isset($data['id'])) {
+            $request['id'] = $data['id'];
         }
-        return $data;
+        return $request;
     }
 
-    public function decode($request)
+    public function decode($data)
     {
-        if(isset($request['params']['meta'])) {
-            $request['meta'] = $request['params']['meta'];
-            unset($request['params']['meta']);
+        $request = [];
+        if (isset($data['jsonrpc'])) {
+            $request['jsonrpc'] = $data['jsonrpc'];
         }
-        if(isset($request['params']['body'])) {
-            $request['params'] = $request['params']['body'];
+        if (isset($data['method'])) {
+            $request['method'] = $data['method'];
+        }
+        if(isset($data['params']['body'])) {
+            $request['params'] = $data['params']['body'];
+        }
+        if(isset($data['params']['meta'])) {
+            $request['meta'] = $data['params']['meta'];
+        }
+        if (isset($data['id'])) {
+            $request['id'] = $data['id'];
         }
         return $request;
     }
