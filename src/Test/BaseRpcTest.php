@@ -26,6 +26,15 @@ abstract class BaseRpcTest extends BaseTest
 {
 
     private $restClient;
+    protected $requestEncoder;
+    protected $responseEncoder;
+
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        $this->requestEncoder = new RequestEncoder();
+        $this->responseEncoder = new ResponseEncoder();
+        parent::__construct($name, $data, $dataName);
+    }
 
     protected function setUp(): void
     {
@@ -85,10 +94,8 @@ abstract class BaseRpcTest extends BaseTest
     protected function getRpcClient(): RpcClient
     {
         $guzzleClient = $this->getGuzzleClient();
-        $requestEncoder = new RequestEncoder();
-        $responseEncoder = new ResponseEncoder();
         $authAgent = $this->getAuthorizationContract($guzzleClient);
-        return new RpcClient($guzzleClient, $requestEncoder, $responseEncoder, $authAgent);
+        return new RpcClient($guzzleClient, $this->requestEncoder, $this->responseEncoder, $authAgent);
     }
 
     protected function getGuzzleClient(): Client

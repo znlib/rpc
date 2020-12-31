@@ -4,13 +4,11 @@ namespace ZnLib\Rpc\Domain\Libs;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Helpers\EnvHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
-use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
-use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
+use ZnLib\Rpc\Domain\Interfaces\Encoders\ResponseEncoderInterface;
 
 class RpcJsonResponse
 {
@@ -18,7 +16,7 @@ class RpcJsonResponse
     private $responseEncoder;
     private $logger;
 
-    public function __construct(ResponseEncoder $responseEncoder, LoggerInterface $logger)
+    public function __construct(ResponseEncoderInterface $responseEncoder, LoggerInterface $logger)
     {
         $this->responseEncoder = $responseEncoder;
         $this->logger = $logger;

@@ -2,9 +2,9 @@
 
 namespace ZnLib\Rpc\Domain\Encoders;
 
-use ZnCore\Base\Interfaces\EncoderInterface;
+use ZnLib\Rpc\Domain\Interfaces\Encoders\ResponseEncoderInterface;
 
-class ResponseEncoder implements EncoderInterface
+class ResponseEncoder implements ResponseEncoderInterface
 {
 
     public function encode($data)
