@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Test;
 
+use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
@@ -83,8 +84,9 @@ abstract class BaseRpcTest extends BaseTest
     protected function getRpcClient(): RpcClient
     {
         $guzzleClient = $this->getGuzzleClient();
+        $requestEncoder = new RequestEncoder();
         $authAgent = $this->getAuthorizationContract($guzzleClient);
-        return new RpcClient($guzzleClient, $authAgent);
+        return new RpcClient($guzzleClient, $requestEncoder, $authAgent);
     }
 
     protected function getGuzzleClient(): Client

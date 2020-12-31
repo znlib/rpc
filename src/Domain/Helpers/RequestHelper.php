@@ -4,6 +4,7 @@ namespace ZnLib\Rpc\Domain\Helpers;
 
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
+use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
@@ -16,15 +17,14 @@ class RequestHelper
     public static function createRequestCollection(array $requestData): RpcRequestCollection
     {
         $requestCollection = new RpcRequestCollection();
-        if (self::isBatchRequest($requestData)) {
-            foreach ($requestData as $item) {
-                $item = self::prepareRequest($item);
-                $requestEntity = self::forgeRequestEntity($item);
-                $requestCollection->add($requestEntity);
-            }
-        } else {
-            $requestData = self::prepareRequest($requestData);
-            $requestEntity = self::forgeRequestEntity($requestData);
+        if (!self::isBatchRequest($requestData)) {
+            $requestData = [$requestData];
+        }
+        $requestEncoder = new RequestEncoder();
+        foreach ($requestData as $item) {
+//            $item = self::prepareRequest($item);
+            $item = $requestEncoder->decode($item);
+            $requestEntity = self::forgeRequestEntity($item);
             $requestCollection->add($requestEntity);
         }
         return $requestCollection;
@@ -32,17 +32,6 @@ class RequestHelper
 
     public static function isBatchRequest(array $requestData): bool {
         return ArrayHelper::isIndexed($requestData);
-    }
-
-    private static function prepareRequest(array $request): array {
-        if(isset($request['params']['meta'])) {
-            $request['meta'] = $request['params']['meta'];
-            unset($request['params']['meta']);
-        }
-        if(isset($request['params']['body'])) {
-            $request['params'] = $request['params']['body'];
-        }
-        return $request;
     }
 
     private static function forgeRequestEntity(array $requestItem): RpcRequestEntity

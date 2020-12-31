@@ -13,6 +13,7 @@ use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
 use ZnLib\Rest\Helpers\RestResponseHelper;
+use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
@@ -26,10 +27,12 @@ class RpcClient
     private $isStrictMode = true;
     private $accept = 'application/json';
     private $authAgent;
+    private $requestEncoder;
 
-    public function __construct(Client $guzzleClient, AuthorizationInterface $authAgent = null)
+    public function __construct(Client $guzzleClient, RequestEncoder $requestEncoder, AuthorizationInterface $authAgent = null)
     {
         $this->guzzleClient = $guzzleClient;
+        $this->requestEncoder = $requestEncoder;
         $this->setAuthAgent($authAgent);
     }
 
@@ -78,27 +81,17 @@ class RpcClient
     }
 
     private function prepareRequest(array $body): array {
-        $params = [];
-        if(isset($body['params'])) {
-            $params['body'] = $body['params'];
-        }
-        if(isset($body['meta'])) {
-            $params['meta'] = $body['meta'];
-            unset($body['meta']);
-        }
-        if(!empty($params)) {
-            $body['params'] = $params;
-        }
-        return $body;
+
     }
 
     public function sendBatchRequest(RpcRequestCollection $rpcRequestCollection): RpcResponseCollection
     {
         $arrayBody = [];
+
         foreach ($rpcRequestCollection->getCollection() as $requestEntity) {
             $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
             $body = EntityHelper::toArray($requestEntity);
-            $arrayBody[] = $this->prepareRequest($body);
+            $arrayBody[] = $this->requestEncoder->encode($body);
         }
         $response = $this->sendRawRequest($arrayBody);
         $data = RestResponseHelper::getBody($response);
@@ -132,7 +125,7 @@ class RpcClient
 
     public function sendRequest(array $body = []): RpcResponseEntity
     {
-        $body = $this->prepareRequest($body);
+        $body = $this->requestEncoder->encode($body);
         $response = $this->sendRawRequest($body);
         if ($this->isStrictMode) {
             $this->validateResponse($response);

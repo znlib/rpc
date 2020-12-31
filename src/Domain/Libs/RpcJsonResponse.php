@@ -29,7 +29,11 @@ class RpcJsonResponse
         $collecion = $responseCollection->getCollection();
         $responseData = [];
         foreach ($collecion as $responseEntity) {
-            $responseData[] = EntityHelper::toArray($responseEntity);
+            $responseItem = EntityHelper::toArray($responseEntity);
+
+
+
+            $responseData[] = $responseItem;
         }
         return $responseData;
     }
