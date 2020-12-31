@@ -52,17 +52,17 @@ class RpcErrorCodeEnum
     const SERVER_ERROR_JSON_RPC_ERROR = -32603;
 
     /**
-     * application error
+     * Application error
      */
     const APPLICATION_ERROR = -32500;
 
     /**
-     * system error
+     * System error
      */
     const SYSTEM_ERROR = -32400;
 
     /**
-     * transport error
+     * Transport error
      */
     const TRANSPORT_ERROR = -32300;
 
