@@ -2,10 +2,12 @@
 
 namespace ZnLib\Rpc\Domain\Libs;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Helpers\EnvHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
+use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
@@ -13,9 +15,19 @@ use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
 class RpcJsonResponse
 {
 
+    private $responseEncoder;
+    private $logger;
+
+    public function __construct(ResponseEncoder $responseEncoder, LoggerInterface $logger)
+    {
+        $this->responseEncoder = $responseEncoder;
+        $this->logger = $logger;
+    }
+
     public function send(RpcResponseCollection $responseCollection, int $batchMode = RpcBatchModeEnum::AUTO): JsonResponse
     {
         $responseData = $this->collectionToArray($responseCollection);
+        $this->logger->info('response', $responseData);
         $isAutoSingle = $batchMode == RpcBatchModeEnum::AUTO && count($responseData) == 1;
         $isSingle = $batchMode == RpcBatchModeEnum::SINGLE;
         if($isAutoSingle || $isSingle) {
@@ -30,9 +42,7 @@ class RpcJsonResponse
         $responseData = [];
         foreach ($collecion as $responseEntity) {
             $responseItem = EntityHelper::toArray($responseEntity);
-
-
-
+            $responseItem = $this->responseEncoder->encode($responseItem);
             $responseData[] = $responseItem;
         }
         return $responseData;

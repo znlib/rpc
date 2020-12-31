@@ -14,6 +14,7 @@ use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
 use ZnLib\Rest\Helpers\RestResponseHelper;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
+use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
@@ -28,11 +29,13 @@ class RpcClient
     private $accept = 'application/json';
     private $authAgent;
     private $requestEncoder;
+    private $responseEncoder;
 
-    public function __construct(Client $guzzleClient, RequestEncoder $requestEncoder, AuthorizationInterface $authAgent = null)
+    public function __construct(Client $guzzleClient, RequestEncoder $requestEncoder, ResponseEncoder $responseEncoder, AuthorizationInterface $authAgent = null)
     {
         $this->guzzleClient = $guzzleClient;
         $this->requestEncoder = $requestEncoder;
+        $this->responseEncoder = $responseEncoder;
         $this->setAuthAgent($authAgent);
     }
 
@@ -59,6 +62,7 @@ class RpcClient
     private function responseToRpcResponse(ResponseInterface $response): RpcResponseEntity
     {
         $data = RestResponseHelper::getBody($response);
+        $data = $this->responseEncoder->decode($data);
         $rpcResponse = new RpcResponseEntity();
         if(!is_array($data)) {
 //            dd($data);
@@ -80,10 +84,6 @@ class RpcClient
         return $response;
     }
 
-    private function prepareRequest(array $body): array {
-
-    }
-
     public function sendBatchRequest(RpcRequestCollection $rpcRequestCollection): RpcResponseCollection
     {
         $arrayBody = [];
@@ -98,6 +98,7 @@ class RpcClient
         $responseCollection = new RpcResponseCollection();
         foreach ($data as $item) {
             $rpcResponse = new RpcResponseEntity();
+            $item = $this->responseEncoder->decode($item);
             EntityHelper::setAttributes($rpcResponse, $item);
             $responseCollection->add($rpcResponse);
         }

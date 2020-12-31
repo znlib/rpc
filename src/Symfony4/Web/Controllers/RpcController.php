@@ -52,6 +52,7 @@ class RpcController
     {
         $requestRawData = $request->getContent();
         $requestData = json_decode($requestRawData, true);
+        $this->logger->info('request', $requestData);
         if (empty($requestData)) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, "Empty response");
             $responseCollection = new RpcResponseCollection();
@@ -70,11 +71,11 @@ class RpcController
     {
         $responseCollection = new RpcResponseCollection();
         foreach ($requestCollection->getCollection() as $requestEntity) {
-            $this->logger->info('request', EntityHelper::toArray($requestEntity));
+//            $this->logger->info('request', EntityHelper::toArray($requestEntity));
             /** @var RpcRequestEntity $requestEntity */
             $requestEntity->addMeta(HttpHeaderEnum::IP, $_SERVER['REMOTE_ADDR']);
             $responseEntity = $this->callOneProcedure($requestEntity);
-            $this->logger->info('response', EntityHelper::toArray($responseEntity));
+//            $this->logger->info('response', EntityHelper::toArray($responseEntity));
             $responseCollection->add($responseEntity);
         }
         return $responseCollection;
