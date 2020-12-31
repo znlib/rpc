@@ -54,7 +54,7 @@ class RpcController
         $requestData = json_decode($requestRawData, true);
         $this->logger->info('request', $requestData);
         if (empty($requestData)) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_REQUEST, "Empty response");
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Empty response");
             $responseCollection = new RpcResponseCollection();
             $responseCollection->add($responseEntity);
             $batchMode = RpcBatchModeEnum::SINGLE;
@@ -71,11 +71,9 @@ class RpcController
     {
         $responseCollection = new RpcResponseCollection();
         foreach ($requestCollection->getCollection() as $requestEntity) {
-//            $this->logger->info('request', EntityHelper::toArray($requestEntity));
             /** @var RpcRequestEntity $requestEntity */
             $requestEntity->addMeta(HttpHeaderEnum::IP, $_SERVER['REMOTE_ADDR']);
             $responseEntity = $this->callOneProcedure($requestEntity);
-//            $this->logger->info('response', EntityHelper::toArray($responseEntity));
             $responseCollection->add($responseEntity);
         }
         return $responseCollection;
@@ -91,7 +89,7 @@ class RpcController
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         } catch (UnprocessibleEntityException $e) {
             $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::INVALID_PARAMS, 'Parameter validation error', $errorData);
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS, 'Parameter validation error', $errorData);
         } catch (UnauthorizedException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, $e->getMessage());
         } catch (ParamNotFoundException $e) {

@@ -6,7 +6,7 @@ use Exception;
 use Throwable;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 
-class ApplicationErrorException extends Exception
+class ApplicationErrorException extends RpcException
 {
 
     public function __construct($message = 'Application error', $code = RpcErrorCodeEnum::APPLICATION_ERROR, Throwable $previous = null)

@@ -80,7 +80,7 @@ class RpcAssert extends BaseAssert
     {
         $this->assertIsError();
         $this->assertErrorMessage('Parameter validation error');
-        $this->assertErrorCode(RpcErrorCodeEnum::INVALID_PARAMS);
+        $this->assertErrorCode(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS);
         if ($fieldNames) {
             foreach ($this->response->getError()['data'] as $item) {
                 if (empty($item['field']) || empty($item['message'])) {

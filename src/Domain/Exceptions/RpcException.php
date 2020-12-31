@@ -6,7 +6,7 @@ use Exception;
 use Throwable;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 
-abstract class ParseErrorException extends RpcException
+abstract class RpcException extends Exception
 {
 
 }
