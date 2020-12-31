@@ -71,13 +71,9 @@ class RpcClient
         if($requestEntity->getId() == null) {
             $requestEntity->setId(1);
         }
-        $headers = $this->getHeaders();
-//        $body = [
-//            'data' => json_encode(EntityHelper::toArray($requestEntity)),
-//        ];
         ValidationHelper::validateEntity($requestEntity);
         $body = EntityHelper::toArray($requestEntity);
-        $response = $this->sendRequest($body, $headers);
+        $response = $this->sendRequest($body);
         return $response;
     }
 
@@ -98,17 +94,13 @@ class RpcClient
 
     public function sendBatchRequest(RpcRequestCollection $rpcRequestCollection): RpcResponseCollection
     {
-        //dd($rpcRequestCollection);
         $arrayBody = [];
         foreach ($rpcRequestCollection->getCollection() as $requestEntity) {
             $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
             $body = EntityHelper::toArray($requestEntity);
             $arrayBody[] = $this->prepareRequest($body);
         }
-//        dd($arrayBody);
-        //$resultBody = EntityHelper::toArray($arrayBody);
         $response = $this->sendRawRequest($arrayBody);
-        //dd($response->getBody()->getContents());
         $data = RestResponseHelper::getBody($response);
         $responseCollection = new RpcResponseCollection();
         foreach ($data as $item) {
@@ -117,16 +109,6 @@ class RpcClient
             $responseCollection->add($rpcResponse);
         }
         return $responseCollection;
-    }
-
-    private function getHeaders()
-    {
-        $headers = [];
-        $authToken = is_object($this->authAgent) ? $this->authAgent->getAuthToken() : null;
-        if ($authToken) {
-            $headers[HttpHeaderEnum::AUTHORIZATION] = $authToken;
-        }
-        return $headers;
     }
 
     private function sendRawRequest(array $body = [])
@@ -148,14 +130,13 @@ class RpcClient
         return $response;
     }
 
-    public function sendRequest(array $body = [], array $headers = []): RpcResponseEntity
+    public function sendRequest(array $body = []): RpcResponseEntity
     {
         $body = $this->prepareRequest($body);
         $response = $this->sendRawRequest($body);
-        /*if ($this->isStrictMode) {
+        if ($this->isStrictMode) {
             $this->validateResponse($response);
-        }*/
-//        dd($response->getBody()->getContents());
+        }
         return $this->responseToRpcResponse($response);
     }
 

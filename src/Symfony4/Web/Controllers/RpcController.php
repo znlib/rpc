@@ -10,6 +10,7 @@ use ZnCore\Base\Exceptions\ForbiddenException;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
+use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
@@ -65,26 +66,15 @@ class RpcController
         return $this->rpcJsonResponse->send($responseCollection, $batchMode);
     }
 
-    private function prepareRequestEntity(RpcRequestEntity $requestEntity) {
-        try {
-            $meta = $requestEntity->getParamItem('meta');
-            $requestEntity->setMeta($meta);
-        } catch (ParamNotFoundException $e) {}
-        try {
-            $params = $requestEntity->getParamItem('body');
-            $requestEntity->setParams($params);
-        } catch (ParamNotFoundException $e) {}
-    }
-
     private function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
     {
         $responseCollection = new RpcResponseCollection();
-
         foreach ($requestCollection->getCollection() as $requestEntity) {
+            $this->logger->info('request', EntityHelper::toArray($requestEntity));
             /** @var RpcRequestEntity $requestEntity */
-            $this->prepareRequestEntity($requestEntity);
             $requestEntity->addMeta(HttpHeaderEnum::IP, $_SERVER['REMOTE_ADDR']);
             $responseEntity = $this->callOneProcedure($requestEntity);
+            $this->logger->info('response', EntityHelper::toArray($responseEntity));
             $responseCollection->add($responseEntity);
         }
         return $responseCollection;
