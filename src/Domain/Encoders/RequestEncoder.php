@@ -7,6 +7,15 @@ use ZnLib\Rpc\Domain\Interfaces\Encoders\RequestEncoderInterface;
 class RequestEncoder implements RequestEncoderInterface
 {
 
+    private $bodyName;
+    private $metaName;
+
+    public function __construct(string $bodyName = 'body', string $metaName = 'meta')
+    {
+        $this->bodyName = $bodyName;
+        $this->metaName = $metaName;
+    }
+
     public function encode($data)
     {
         $request = [];
@@ -17,10 +26,10 @@ class RequestEncoder implements RequestEncoderInterface
             $request['method'] = $data['method'];
         }
         if(isset($data['params'])) {
-            $request['params']['body'] = $data['params'];
+            $request['params'][$this->bodyName] = $data['params'];
         }
         if(isset($data['meta'])) {
-            $request['params']['meta'] = $data['meta'];
+            $request['params'][$this->metaName] = $data['meta'];
         }
         if (isset($data['id'])) {
             $request['id'] = $data['id'];
@@ -37,11 +46,11 @@ class RequestEncoder implements RequestEncoderInterface
         if (isset($data['method'])) {
             $request['method'] = $data['method'];
         }
-        if(isset($data['params']['body'])) {
-            $request['params'] = $data['params']['body'];
+        if(isset($data['params'][$this->bodyName])) {
+            $request['params'] = $data['params'][$this->bodyName];
         }
-        if(isset($data['params']['meta'])) {
-            $request['meta'] = $data['params']['meta'];
+        if(isset($data['params'][$this->metaName])) {
+            $request['meta'] = $data['params'][$this->metaName];
         }
         if (isset($data['id'])) {
             $request['id'] = $data['id'];
