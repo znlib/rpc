@@ -22,7 +22,6 @@ class RequestHelper
         }
         $requestEncoder = new RequestEncoder();
         foreach ($requestData as $item) {
-//            $item = self::prepareRequest($item);
             $item = $requestEncoder->decode($item);
             $requestEntity = self::forgeRequestEntity($item);
             $requestCollection->add($requestEntity);

@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
-use ZnCore\Base\Enums\Http\HttpHeaderEnum;
 use ZnCore\Base\Enums\Http\HttpMethodEnum;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Domain\Helpers\EntityHelper;
@@ -64,7 +63,7 @@ class RpcClient
         $data = RestResponseHelper::getBody($response);
         $data = $this->responseEncoder->decode($data);
         $rpcResponse = new RpcResponseEntity();
-        if(!is_array($data)) {
+        if (!is_array($data)) {
 //            dd($data);
             throw new \Exception('Empty response');
         }
@@ -75,7 +74,7 @@ class RpcClient
     public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
-        if($requestEntity->getId() == null) {
+        if ($requestEntity->getId() == null) {
             $requestEntity->setId(1);
         }
         ValidationHelper::validateEntity($requestEntity);
@@ -87,7 +86,6 @@ class RpcClient
     public function sendBatchRequest(RpcRequestCollection $rpcRequestCollection): RpcResponseCollection
     {
         $arrayBody = [];
-
         foreach ($rpcRequestCollection->getCollection() as $requestEntity) {
             $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
             $body = EntityHelper::toArray($requestEntity);
