@@ -14,11 +14,11 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
 
     private $jsonrpc = RpcVersionEnum::V2_0;
     private $method = '';
-    private $params = [];
-    private $meta = [];
+    private $params = null;
+    private $meta = null;
     private $id = null;
 
-    public function __construct(string $method = '', $params = [], $meta = [], int $id = null)
+    public function __construct(string $method = '', $params = null, $meta = null, ?int $id = null)
     {
         $this->method = $method;
         $this->params = $params;
@@ -61,14 +61,14 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
         $this->method = trim($method);
     }
 
-    public function getParams(): array
+    public function getParams(): ?array
     {
         return $this->params;
     }
 
     public function getParamItem(string $key)
     {
-        if (array_key_exists($key, $this->params)) {
+        if (!empty($this->params) && array_key_exists($key, $this->params)) {
             if (!empty($this->params[$key])) {
                 return $this->params[$key];
             }
@@ -87,18 +87,24 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
         $this->params[$key] = $value;
     }
 
-    public function getMeta(): array
+    public function getMeta(): ?array
     {
         return $this->meta;
     }
 
-    public function getMetaItem(string $key)
+    public function getMetaItem(string $key, $default = null)
     {
-        return ArrayHelper::getValue($this->meta, $key);
+        if(empty($this->meta)) {
+            return $default;
+        }
+        return ArrayHelper::getValue($this->meta, $key, $default);
     }
 
     public function addMeta(string $key, string $value): void
     {
+        if(!is_array($this->meta)) {
+            $this->meta = [];
+        }
         $this->meta[$key] = $value;
     }
 

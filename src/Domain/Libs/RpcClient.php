@@ -19,6 +19,7 @@ use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
+use ZnLib\Rpc\Domain\Exceptions\InvalidRpcVersionException;
 
 class RpcClient
 {
@@ -142,10 +143,10 @@ class RpcClient
             throw new \Exception($data);
         }
         if (is_array($data) && empty($data['jsonrpc'])) {
-            throw new \Exception(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+            throw new InvalidRpcVersionException();
         }
         if (version_compare($data['jsonrpc'], RpcVersionEnum::V2_0, '<')) {
-            throw new \Exception('Unsupported RPC version');
+            throw new InvalidRpcVersionException('Unsupported RPC version');
         }
     }
 }
