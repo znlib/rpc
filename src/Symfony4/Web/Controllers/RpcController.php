@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Symfony4\Web\Controllers;
 
+use Illuminate\Container\EntryNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,10 +53,15 @@ class RpcController
     {
         $requestRawData = $request->getContent();
         $requestData = json_decode($requestRawData, true);
-        $requestData = $requestData ?: [];
-        $this->logger->info('request', $requestData);
-        if (empty($requestData)) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Empty response");
+        $isErrorParse = json_last_error();
+        $this->logger->info('request', $requestData ?: []);
+        if($isErrorParse) {
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Invalid request. Parse JSON error!");
+            $responseCollection = new RpcResponseCollection();
+            $responseCollection->add($responseEntity);
+            $batchMode = RpcBatchModeEnum::SINGLE;
+        } elseif (empty($requestData)) {
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Invalid request. Empty request!");
             $responseCollection = new RpcResponseCollection();
             $responseCollection->add($responseEntity);
             $batchMode = RpcBatchModeEnum::SINGLE;
@@ -99,6 +105,8 @@ class RpcController
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::FORBIDDEN, $e->getMessage());
         } catch (InvalidRequestException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
+        } catch (EntryNotFoundException $e) {
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SYSTEM_ERROR, 'Server error. Bad inject dependencies in "' . $e->getMessage() . '"');
         }
         /* catch (Exception $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
