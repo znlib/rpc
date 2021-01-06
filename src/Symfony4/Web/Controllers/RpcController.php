@@ -52,6 +52,7 @@ class RpcController
     {
         $requestRawData = $request->getContent();
         $requestData = json_decode($requestRawData, true);
+        $requestData = $requestData ?: [];
         $this->logger->info('request', $requestData);
         if (empty($requestData)) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Empty response");
