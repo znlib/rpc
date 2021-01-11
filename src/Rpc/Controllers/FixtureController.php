@@ -15,7 +15,7 @@ class FixtureController
 
     public function __construct(FixtureService $service)
     {
-        if (EnvHelper::isTest()) {
+        if (!EnvHelper::isTest()) {
             throw new Exception('Fixture controller for test only!');
         }
         $this->service = $service;
