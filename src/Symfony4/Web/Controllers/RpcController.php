@@ -11,7 +11,6 @@ use ZnCore\Base\Exceptions\ForbiddenException;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
-use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
@@ -55,7 +54,7 @@ class RpcController
         $requestData = json_decode($requestRawData, true);
         $isErrorParse = json_last_error();
         $this->logger->info('request', $requestData ?: []);
-        if($isErrorParse) {
+        if ($isErrorParse) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Invalid request. Parse JSON error!");
             $responseCollection = new RpcResponseCollection();
             $responseCollection->add($responseEntity);

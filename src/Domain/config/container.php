@@ -18,5 +18,7 @@ return [
         ProcedureConfigRepositoryInterface::class => ProcedureConfigRepository::class,
         RequestEncoderInterface::class => RequestEncoder::class,
         ResponseEncoderInterface::class => ResponseEncoder::class,
+        \ZnLib\Rpc\Domain\Interfaces\Services\DocsServiceInterface::class => \ZnLib\Rpc\Domain\Services\DocsService::class,
+        \ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface::class => \ZnLib\Rpc\Domain\Repositories\File\DocsRepository::class,
     ],
 ];

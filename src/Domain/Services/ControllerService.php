@@ -114,11 +114,14 @@ class ControllerService implements ControllerServiceInterface
             throw new MethodNotFoundException();
         }
         EntityHelper::setAttributes($controllerInstance, $handlerEntity->getAttributes());
-        return call_user_func([$controllerInstance, $methodName], $requestEntity);
+        $parameters = [
+            RpcRequestEntity::class => $requestEntity
+        ];
+        //return call_user_func([$controllerInstance, $methodName], $requestEntity);
         /*$this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
             return $requestEntity;
-        });
-        return $this->container->call([$controllerInstance, $methodName], []);*/
+        });*/
+        return $this->container->call([$controllerInstance, $methodName], $parameters);
     }
 
     protected function checkIp(RpcRequestEntity $requestEntity, IdentityEntityInterface $identity)

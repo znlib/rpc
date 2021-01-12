@@ -6,7 +6,8 @@
         <hr class="my-4">
         <p>Использются служебные классы для типографики и расстояния содержимого в контейнере большего размера.</p>
         <p class="lead">
-            <a class="btn btn-primary btn-lg" href="/json-rpc" role="button">JSON-RPC</a>
+            <a class="btn btn-primary btn-lg" href="/json-rpc" role="button">Documentation</a>
+            <a class="btn btn-primary btn-lg" href="/json-rpc?name=admin" role="button">Documentation for admin panel</a>
         </p>
     </div>
 

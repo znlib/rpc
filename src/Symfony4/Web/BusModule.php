@@ -2,11 +2,11 @@
 
 namespace ZnLib\Rpc\Symfony4\Web;
 
-use ZnLib\Rpc\Symfony4\Web\Controllers\DefaultController;
-use ZnLib\Rpc\Symfony4\Web\Controllers\RpcController;
 use Illuminate\Container\Container;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use ZnLib\Rpc\Symfony4\Web\Controllers\DefaultController;
+use ZnLib\Rpc\Symfony4\Web\Controllers\DocsController;
+use ZnLib\Rpc\Symfony4\Web\Controllers\RpcController;
 use ZnLib\Web\Symfony4\MicroApp\BaseModule;
 
 class BusModule extends BaseModule
@@ -20,15 +20,35 @@ class BusModule extends BaseModule
         }, true);*/
     }
 
-    public function configRoutes(RouteCollection $routes)
+    public function configRouting(RoutingConfigurator $routes)
+    {
+        $routes
+            ->add('main_page', '/')
+            ->controller([DefaultController::class, 'index']);
+
+        $routes
+            ->add('docs', '/json-rpc')
+            ->controller([DocsController::class, 'showDocs'])
+            ->methods(['GET']);
+
+        $routes
+            ->add('call_procedure', '/json-rpc')
+            ->controller([RpcController::class, 'callProcedure'])
+            ->methods(['POST']);
+    }
+
+    /*public function configRoutes(RouteCollection $routes)
     {
         $routes->add('bus_index', new Route('/', [
             '_controller' => DefaultController::class,
             '_action' => 'index',
         ]));
-        $routes->add('bus_call_procedure', new Route('/json-rpc', [
+
+        $callProcedureRoute = new Route('/json-rpc', [
             '_controller' => RpcController::class,
             '_action' => 'callProcedure',
-        ]));
-    }
+        ]);
+
+        $routes->add('bus_call_procedure', $callProcedureRoute);
+    }*/
 }
