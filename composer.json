@@ -11,7 +11,8 @@
   "minimum-stability": "dev",
   "require": {
     "guzzlehttp/guzzle": ">5.3",
-    "zncore/base": "v0.0.*"
+    "zncore/base": "v0.0.*",
+    "znlib/rest": "v0.0.*"
   },
   "autoload": {
     "psr-4": {
