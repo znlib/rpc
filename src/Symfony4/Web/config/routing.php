@@ -9,7 +9,6 @@ return function (RoutingConfigurator $routes) {
     $routes
         ->add('main_page', '/')
         ->controller([DefaultController::class, 'index']);
-
     $routes
         ->add('docs', '/json-rpc')
         ->controller([DocsController::class, 'showDocs'])
