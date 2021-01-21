@@ -2,7 +2,6 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use App\Modules\Partner\Domain\Interfaces\Services\PartnerIpServiceInterface;
 use Illuminate\Container\Container;
 use Psr\Log\LoggerInterface;
 use ZnBundle\Rbac\Domain\Interfaces\ManagerServiceInterface;
@@ -19,6 +18,7 @@ use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Interfaces\Services\ControllerServiceInterface;
+use ZnLib\Rpc\Domain\Interfaces\Services\IpServiceInterface;
 use ZnLib\Rpc\Rpc\Interfaces\RpcAuthInterface;
 use ZnLib\Telegram\Domain\Facades\Bot;
 
@@ -36,7 +36,7 @@ class ControllerService implements ControllerServiceInterface
         LoggerInterface $logger,
         AuthServiceInterface $authPartnerService,
         ManagerServiceInterface $rbacManager,
-        PartnerIpServiceInterface $partnerIpService = null
+        IpServiceInterface $partnerIpService = null
     )
     {
         $this->container = $container;
