@@ -19,6 +19,7 @@ use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Interfaces\Services\ControllerServiceInterface;
 use ZnLib\Rpc\Rpc\Interfaces\RpcAuthInterface;
+use ZnLib\Telegram\Domain\Facades\Bot;
 
 class ControllerService implements ControllerServiceInterface
 {
@@ -48,44 +49,42 @@ class ControllerService implements ControllerServiceInterface
     {
         $controllerInstance = $this->container->get($handlerEntity->getClass());
 
-        $auth = null;
+        $auth = [];
         if ($controllerInstance instanceof RpcAuthInterface) {
             $auth = $controllerInstance->auth();
         }
 
-        if ($auth) {
+        //if ($auth) {
             $this->checkAuthrization($auth, $handlerEntity, $requestEntity);
             $this->checkPermission($handlerEntity, $requestEntity);
-        }
+        //}
 
         return $this->callControllerMethod($controllerInstance, $handlerEntity, $requestEntity);
     }
 
     private function checkAuthrization(array $auth, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
     {
-        $isCheckRequired = in_array("*", $auth) || in_array($handlerEntity->getMethod(), $auth);
-        if (!$isCheckRequired) {
-            return;
-        }
         $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
-        if (empty($token)) {
-            throw new UnauthorizedException("Empty token");
+        $isCheckRequired = in_array("*", $auth) || in_array($handlerEntity->getMethod(), $auth);
+        if ($isCheckRequired) {
+            if (empty($token)) {
+                throw new UnauthorizedException("Empty token");
+            }
         }
-        try {
-            $identity = $this->authPartnerService->authenticationByToken($token);
-        } catch (NotFoundException $exception) {
-            throw new UnauthorizedException("Token not found");
+        if($token) {
+            try {
+                $identity = $this->authPartnerService->authenticationByToken($token);
+            } catch (NotFoundException $exception) {
+                throw new UnauthorizedException("Token not found");
+            }
+            if (!$identity instanceof IdentityEntityInterface) {
+                throw new UnauthorizedException("Bad token");
+            }
+            if ($handlerEntity->isCheckIp()) {
+                $this->checkIp($requestEntity, $identity);
+            }
+            $this->authPartnerService->setIdentity($identity);
         }
-
-        if (!$identity instanceof IdentityEntityInterface) {
-            throw new UnauthorizedException("Bad token");
-        }
-
-        if ($handlerEntity->isCheckIp()) {
-            $this->checkIp($requestEntity, $identity);
-        }
-
-        $this->authPartnerService->setIdentity($identity);
     }
 
     private function checkPermission(HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
@@ -94,12 +93,17 @@ class ControllerService implements ControllerServiceInterface
         if ($access == null) {
             return;
         }
-//        $token = $requestEntity->getMetaItem(HttpHeaderEnum::PARTNER_AUTHORIZATION);
         /** @var IdentityEntityInterface $identity */
-        $identity = $this->authPartnerService->getIdentity();
+        $isGuest = $this->authPartnerService->isGuest();
+        if($isGuest) {
+            $userId = null;
+        } else {
+            $identity = $this->authPartnerService->getIdentity();
+            $userId = $identity->getId();
+        }
         $isCan = false;
         foreach ($access as $permission) {
-            $isCan = $this->rbacManager->checkAccess($identity->getId(), $permission);
+            $isCan = $this->rbacManager->checkAccess($userId, $permission);
         }
         if (!$isCan) {
             throw new ForbiddenException('Forbidden');
