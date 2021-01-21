@@ -13,6 +13,7 @@
     "guzzlehttp/guzzle": ">5.3",
     "zncore/domain": "v0.0.*",
     "symfony/http-foundation": "^4.4|^5.0",
+    "symfony/routing": "^4.4|^5.0",
     "znlib/rest": "v0.0.*"
   },
   "autoload": {
