@@ -11,6 +11,7 @@ use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Base\Exceptions\ForbiddenException;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Exceptions\UnauthorizedException;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
@@ -89,8 +90,8 @@ class ControllerService implements ControllerServiceInterface
 
     private function checkPermission(HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity)
     {
-        $access = $handlerEntity->getAccess();
-        if ($access == null) {
+        $permissions = $this->extractPermissions($handlerEntity);
+        if ($permissions == null) {
             return;
         }
         /** @var IdentityEntityInterface $identity */
@@ -101,13 +102,22 @@ class ControllerService implements ControllerServiceInterface
             $identity = $this->authPartnerService->getIdentity();
             $userId = $identity->getId();
         }
-        $isCan = false;
-        foreach ($access as $permission) {
-            $isCan = $this->rbacManager->checkAccess($userId, $permission);
+        $this->rbacManager->can($userId, $permissions);
+    }
+
+    private function extractPermissions(HandlerEntity $handlerEntity): array {
+        $access = $handlerEntity->getAccess();
+        if ($access == null) {
+            return [];
         }
-        if (!$isCan) {
-            throw new ForbiddenException('Forbidden');
+        $isAssociative = ! ArrayHelper::isIndexed($access);
+        if($isAssociative) {
+            $accessItem = $access[$handlerEntity->getMethod()];
+            $access = [
+                $accessItem
+            ];
         }
+        return $access;
     }
 
     private function callControllerMethod(object $controllerInstance, HandlerEntity $handlerEntity, RpcRequestEntity $requestEntity): RpcResponseEntity
