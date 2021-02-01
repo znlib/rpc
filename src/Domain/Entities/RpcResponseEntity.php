@@ -2,12 +2,13 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
-use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
+use ZnCore\Domain\Interfaces\Entity\ValidateEntityByMetadataInterface;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 
-class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
+class RpcResponseEntity implements EntityIdInterface, ValidateEntityByMetadataInterface
 {
 
     private $jsonrpc = RpcVersionEnum::V2_0;
@@ -24,16 +25,10 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityInterface
         $this->id = $id;
     }
 
-    public function validationRules()
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        return [
-            'id' => [
-                new Assert\NotBlank()
-            ],
-            'jsonrpc' => [
-                new Assert\NotBlank(),
-            ],
-        ];
+        $metadata->addPropertyConstraint('id', new Assert\NotBlank);
+        $metadata->addPropertyConstraint('jsonrpc', new Assert\NotBlank);
     }
 
     public function getJsonrpc(): string

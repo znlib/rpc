@@ -3,13 +3,14 @@
 namespace ZnLib\Rpc\Domain\Entities;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
-use ZnCore\Domain\Interfaces\Entity\ValidateEntityInterface;
+use ZnCore\Domain\Interfaces\Entity\ValidateEntityByMetadataInterface;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Exceptions\ParamNotFoundException;
 
-class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
+class RpcRequestEntity implements EntityIdInterface, ValidateEntityByMetadataInterface
 {
 
     private $jsonrpc = RpcVersionEnum::V2_0;
@@ -26,19 +27,11 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
         $this->id = $id;
     }
 
-    public function validationRules()
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        return [
-            'id' => [
-                new Assert\NotBlank()
-            ],
-            'method' => [
-                new Assert\NotBlank(),
-            ],
-            'jsonrpc' => [
-                new Assert\NotBlank(),
-            ],
-        ];
+        $metadata->addPropertyConstraint('id', new Assert\NotBlank);
+        $metadata->addPropertyConstraint('method', new Assert\NotBlank);
+        $metadata->addPropertyConstraint('jsonrpc', new Assert\NotBlank);
     }
 
     public function getJsonrpc(): string
@@ -94,7 +87,7 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
 
     public function getMetaItem(string $key, $default = null)
     {
-        if(empty($this->meta)) {
+        if (empty($this->meta)) {
             return $default;
         }
         return ArrayHelper::getValue($this->meta, $key, $default);
@@ -102,7 +95,7 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityInterface
 
     public function addMeta(string $key, string $value): void
     {
-        if(!is_array($this->meta)) {
+        if (!is_array($this->meta)) {
             $this->meta = [];
         }
         $this->meta[$key] = $value;
