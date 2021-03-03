@@ -22,7 +22,7 @@ class BusModule extends BaseModule
 
     public function configRouting(RoutingConfigurator $routes)
     {
-        $routes
+        /*$routes
             ->add('main_page', '/')
             ->controller([DefaultController::class, 'index']);
 
@@ -34,7 +34,7 @@ class BusModule extends BaseModule
         $routes
             ->add('call_procedure', '/json-rpc')
             ->controller([RpcController::class, 'callProcedure'])
-            ->methods(['POST']);
+            ->methods(['POST']);*/
     }
 
     /*public function configRoutes(RouteCollection $routes)

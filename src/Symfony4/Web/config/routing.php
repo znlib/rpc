@@ -7,15 +7,15 @@ use ZnLib\Rpc\Symfony4\Web\Controllers\RpcController;
 
 return function (RoutingConfigurator $routes) {
     $routes
-        ->add('main_page', '/')
+        ->add('json_rpc_main_page', '/')
         ->controller([DefaultController::class, 'index']);
     $routes
-        ->add('docs', '/json-rpc')
+        ->add('json_rpc_docs', '/json-rpc')
         ->controller([DocsController::class, 'showDocs'])
         ->methods(['GET']);
 
     $routes
-        ->add('call_procedure', '/json-rpc')
+        ->add('json_rpc_call_procedure', '/json-rpc')
         ->controller([RpcController::class, 'callProcedure'])
         ->methods(['POST']);
 };
