@@ -55,7 +55,32 @@ class RpcController
         $isErrorParse = json_last_error();
         $this->logger->info('request', $requestData ?: []);
         if ($isErrorParse) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Invalid request. Parse JSON error!");
+
+            switch ($isErrorParse) {
+                case JSON_ERROR_NONE: // Ошибок нет
+                    $errorDescription = 'No errors';
+                    break;
+                case JSON_ERROR_DEPTH: // Достигнута максимальная глубина стека
+                    $errorDescription = 'Maximum stack depth reached';
+                    break;
+                case JSON_ERROR_STATE_MISMATCH: // Некорректные разряды или несоответствие режимов
+                    $errorDescription = 'Incorrect digits or mode mismatch';
+                    break;
+                case JSON_ERROR_CTRL_CHAR: // Некорректный управляющий символ
+                    $errorDescription = 'Invalid control character';
+                    break;
+                case JSON_ERROR_SYNTAX: // Синтаксическая ошибка, некорректный JSON
+                    $errorDescription = 'Syntax error, invalid JSON';
+                    break;
+                case JSON_ERROR_UTF8: // Некорректные символы UTF-8, возможно неверно закодирован
+                    $errorDescription = 'Incorrect UTF-8 characters, possibly incorrectly encoded';
+                    break;
+                default: // Неизвестная ошибка
+                    $errorDescription = 'Unknown error';
+                    break;
+            }
+
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, "Invalid request. Parse JSON error! {$errorDescription}");
             $responseCollection = new RpcResponseCollection();
             $responseCollection->add($responseEntity);
             $batchMode = RpcBatchModeEnum::SINGLE;
