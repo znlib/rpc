@@ -112,7 +112,6 @@ class RpcController
 
     protected function callOneProcedure(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-        //dd($requestEntity);
         try {
             $responseEntity = $this->procedureService->run($requestEntity);
         } catch (NotFoundException $e) {
