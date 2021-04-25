@@ -40,7 +40,7 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityByMetadataIn
     {
         $this->jsonrpc = $jsonrpc;
     }
-
+    
     public function getMeta(): ?array
     {
         return $this->meta;
@@ -49,6 +49,14 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityByMetadataIn
     public function setMeta(array $meta): void
     {
         $this->meta = $meta;
+    }
+
+    public function addMeta(string $key, $value): void
+    {
+        if (!is_array($this->meta)) {
+            $this->meta = [];
+        }
+        $this->meta[$key] = $value;
     }
 
     public function getId()

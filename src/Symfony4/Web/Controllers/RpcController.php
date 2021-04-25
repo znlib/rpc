@@ -30,10 +30,10 @@ use ZnLib\Rpc\Domain\Libs\RpcJsonResponse;
 class RpcController
 {
 
-    private $procedureService;
-    private $logger;
-    private $responseFormatter;
-    private $rpcJsonResponse;
+    protected $procedureService;
+    protected $logger;
+    protected $responseFormatter;
+    protected $rpcJsonResponse;
 
     public function __construct(
         ProcedureServiceInterface $procedureService,
@@ -98,7 +98,7 @@ class RpcController
         return $this->rpcJsonResponse->send($responseCollection, $batchMode);
     }
 
-    private function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
+    protected function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
     {
         $responseCollection = new RpcResponseCollection();
         foreach ($requestCollection->getCollection() as $requestEntity) {
@@ -110,8 +110,9 @@ class RpcController
         return $responseCollection;
     }
 
-    private function callOneProcedure(RpcRequestEntity $requestEntity): RpcResponseEntity
+    protected function callOneProcedure(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
+        //dd($requestEntity);
         try {
             $responseEntity = $this->procedureService->run($requestEntity);
         } catch (NotFoundException $e) {
