@@ -4,6 +4,7 @@ namespace ZnLib\Rpc\Domain\Entities;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
 use ZnCore\Domain\Interfaces\Entity\ValidateEntityByMetadataInterface;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
@@ -40,7 +41,15 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityByMetadataIn
     {
         $this->jsonrpc = $jsonrpc;
     }
-    
+
+    public function getMetaItem(string $key, $default = null)
+    {
+        if (empty($this->meta)) {
+            return $default;
+        }
+        return ArrayHelper::getValue($this->meta, $key, $default);
+    }
+
     public function getMeta(): ?array
     {
         return $this->meta;
@@ -74,7 +83,7 @@ class RpcResponseEntity implements EntityIdInterface, ValidateEntityByMetadataIn
         return $this->error;
     }
 
-    public function setError(array $error): void
+    public function setError(?array $error): void
     {
         $this->error = $error;
     }
