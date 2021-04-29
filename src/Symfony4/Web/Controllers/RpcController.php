@@ -121,8 +121,8 @@ class RpcController
         } catch (UnprocessibleEntityException $e) {
             $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS, 'Parameter validation error', $errorData);
-        } catch (UnauthorizedException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, $e->getMessage());
+        } catch (UnauthorizedException | \ZnBundle\User\Domain\Exceptions\UnauthorizedException $e) {
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, 'Unauthorized');
         } catch (ParamNotFoundException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
         } catch (ForbiddenException $e) {
@@ -133,7 +133,8 @@ class RpcController
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SYSTEM_ERROR, 'Server error. Bad inject dependencies in "' . $e->getMessage() . '"');
         } catch (\Exception $e) {
             $code = $e->getCode() ?: RpcErrorCodeEnum::APPLICATION_ERROR;
-            $responseEntity = $this->responseFormatter->forgeErrorResponse($code, $e->getMessage());
+            $message = $e->getMessage() ?: 'Application error';
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($code, $message);
         }
         $responseEntity->setId($requestEntity->getId());
         return $responseEntity;

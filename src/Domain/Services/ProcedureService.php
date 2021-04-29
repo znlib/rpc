@@ -2,9 +2,11 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
+use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
@@ -18,15 +20,18 @@ class ProcedureService implements ProcedureServiceInterface
     private $meta = [];
 //    private $logger;
     private $controllerService;
+    private $authService;
 
     public function __construct(
         ProcedureConfigRepositoryInterface $procedureConfigRepository,
+        AuthServiceInterface $authService,
 //        LoggerInterface $logger,
         ControllerServiceInterface $controllerService
     )
     {
         $this->procedureConfigRepository = $procedureConfigRepository;
 //        $this->logger = $logger;
+        $this->authService = $authService;
         $this->controllerService = $controllerService;
     }
 
@@ -37,6 +42,11 @@ class ProcedureService implements ProcedureServiceInterface
 
     public function run(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
+        $authorization = $requestEntity->getMetaItem(HttpHeaderEnum::AUTHORIZATION);
+        if($authorization) {
+            $identity = $this->authService->authenticationByToken($authorization);
+            $this->authService->setIdentity($identity);
+        }
         RequestHelper::validateRequest($requestEntity);
         if ($requestEntity->getMeta()) {
             $this->meta = $requestEntity->getMeta();
