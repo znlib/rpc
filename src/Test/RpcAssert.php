@@ -3,6 +3,7 @@
 namespace ZnLib\Rpc\Test;
 
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
+use ZnCore\Base\Helpers\DeprecateHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
@@ -29,6 +30,7 @@ class RpcAssert extends BaseAssert
 
     public function assertErrorData(array $data)
     {
+        DeprecateHelper::softThrow();
         $this->assertIsError();
         $this->assertEquals([$data], $this->response->getError()['data']);
         return $this;
@@ -90,6 +92,15 @@ class RpcAssert extends BaseAssert
             }
             $this->assertEquals($fieldNames, $expectedBody);
         }
+        return $this;
+    }
+
+    public function assertUnprocessableEntityErrors(array $errors)
+    {
+        $this->assertIsError();
+        $this->assertErrorMessage('Parameter validation error');
+        $this->assertErrorCode(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS);
+        $this->assertEquals($errors, $this->response->getError()['data']);
         return $this;
     }
 }
