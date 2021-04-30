@@ -48,7 +48,7 @@ abstract class BaseRpcTest extends BaseTest
 
     protected function authBy(string $login, string $password): string
     {
-        $response = $this->sendRequest('auth.getToken', [
+        $response = $this->sendRequest('authentication.getTokenByPassword', [
             'login' => $login,
             'password' => $password,
         ]);
