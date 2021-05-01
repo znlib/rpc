@@ -133,7 +133,7 @@ class RpcController
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SYSTEM_ERROR, 'Server error. Bad inject dependencies in "' . $e->getMessage() . '"');
         } catch (\Exception $e) {
             $code = $e->getCode() ?: RpcErrorCodeEnum::APPLICATION_ERROR;
-            $message = $e->getMessage() ?: 'Application error';
+            $message = $e->getMessage() ?: 'Application error: ' . get_class($e);
             $responseEntity = $this->responseFormatter->forgeErrorResponse($code, $message);
         }
         $responseEntity->setId($requestEntity->getId());

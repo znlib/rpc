@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
+use ZnBundle\User\Domain\Exceptions\UnauthorizedException;
 use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
@@ -44,8 +45,12 @@ class ProcedureService implements ProcedureServiceInterface
     {
         $authorization = $requestEntity->getMetaItem(HttpHeaderEnum::AUTHORIZATION);
         if($authorization) {
-            $identity = $this->authService->authenticationByToken($authorization);
-            $this->authService->setIdentity($identity);
+            try {
+                $identity = $this->authService->authenticationByToken($authorization);
+                $this->authService->setIdentity($identity);
+            } catch (NotFoundException $e) {
+                throw new UnauthorizedException();
+            }
         }
         RequestHelper::validateRequest($requestEntity);
         if ($requestEntity->getMeta()) {
