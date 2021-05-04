@@ -2,25 +2,17 @@
 
 namespace ZnLib\Rpc\Test;
 
+use GuzzleHttp\Client;
+use ZnCore\Domain\Helpers\EntityHelper;
+use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
+use ZnLib\Rest\Contract\Authorization\BearerAuthorization;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
-use GuzzleHttp\Client;
-use Psr\Http\Message\ResponseInterface;
-use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
-use ZnCore\Domain\Helpers\EntityHelper;
-use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
-use ZnLib\Rest\Contract\Authorization\BearerAuthorization;
-use ZnLib\Rest\Contract\Client\RestClient;
+use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Libs\RpcClient;
-use ZnLib\Rest\Helpers\RestResponseHelper;
-use ZnTool\Test\Asserts\RestApiAssert;
-use ZnLib\Rpc\Test\RpcAssert;
-use ZnTool\Test\Base\BaseRestApiTest;
 use ZnTool\Test\Base\BaseTest;
-use ZnTool\Test\Libs\FixtureLoader;
 
 abstract class BaseRpcTest extends BaseTest
 {
@@ -28,6 +20,8 @@ abstract class BaseRpcTest extends BaseTest
     private $restClient;
     protected $requestEncoder;
     protected $responseEncoder;
+    protected $defaultPassword = 'Wwwqqq111';
+    protected $defaultRpcMethod;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -39,14 +33,33 @@ abstract class BaseRpcTest extends BaseTest
     protected function setUp(): void
     {
         //parent::setUp();
-        if($this->fixtures()) {
+        if ($this->fixtures()) {
             $response = $this->sendRequest('fixture.import', [
                 'fixtures' => $this->fixtures(),
             ]);
         }
     }
 
-    protected function assertSuccessAuthorization(string $login, string $password) {
+    protected function defaultRpcMethod(): ?string
+    {
+        return $this->defaultRpcMethod;
+    }
+
+    protected function createRequest(string $login = null): RpcRequestEntity
+    {
+        $request = new RpcRequestEntity();
+        if ($this->defaultRpcMethod()) {
+            $request->setMethod($this->defaultRpcMethod());
+        }
+        if ($login) {
+            $authorizationToken = $this->authBy($login, $this->defaultPassword);
+            $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
+        }
+        return $request;
+    }
+
+    protected function assertSuccessAuthorization(string $login, string $password)
+    {
         $response = $this->authRequest($login, $password);
         $this->getRpcAssert($response)->assertIsResult();
         $result = $response->getResult();
