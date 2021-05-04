@@ -46,12 +46,26 @@ abstract class BaseRpcTest extends BaseTest
         }
     }
 
-    protected function authBy(string $login, string $password): string
+    protected function assertSuccessAuthorization(string $login, string $password) {
+        $response = $this->authRequest($login, $password);
+        $this->getRpcAssert($response)->assertIsResult();
+        $result = $response->getResult();
+        $token = $result['token'];
+        $this->assertContains('bearer', $token);
+    }
+
+    protected function authRequest(string $login, string $password): RpcResponseEntity
     {
         $response = $this->sendRequest('authentication.getTokenByPassword', [
             'login' => $login,
             'password' => $password,
         ]);
+        return $response;
+    }
+
+    protected function authBy(string $login, string $password): string
+    {
+        $response = $this->authRequest($login, $password);
         return $response->getResult()['token'];
     }
 
