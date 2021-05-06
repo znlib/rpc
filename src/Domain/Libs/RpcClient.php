@@ -115,7 +115,6 @@ class RpcClient
             $response = $this->guzzleClient->request(HttpMethodEnum::POST, '', $options);
         } catch (RequestException $e) {
             $response = $e->getResponse();
-
             if ($response == null) {
                 throw new \Exception('Url not found!');
             }
