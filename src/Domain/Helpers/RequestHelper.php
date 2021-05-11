@@ -43,7 +43,7 @@ class RequestHelper
     public static function validateRequest(RpcRequestEntity $requestEntity)
     {
         if ($requestEntity->getJsonrpc() == null) {
-            throw new InvalidRequestException('Empty version');
+            throw new InvalidRequestException('Empty RPC version');
         }
         if ($requestEntity->getMethod() == null) {
             throw new InvalidRequestException('Empty method');

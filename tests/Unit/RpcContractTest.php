@@ -53,7 +53,7 @@ class RpcContractTest extends BaseRpcTest
         ]);
 
         $this->getRpcAssert($response)
-            ->assertErrorMessage('Empty version')
+            ->assertErrorMessage('Empty RPC version')
             ->assertErrorCode(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST);
     }
 
