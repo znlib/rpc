@@ -22,6 +22,7 @@ abstract class BaseRpcTest extends BaseTest
     protected $responseEncoder;
     protected $defaultPassword = 'Wwwqqq111';
     protected $defaultRpcMethod;
+    protected $defaultRpcMethodVersion = 1;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -45,11 +46,19 @@ abstract class BaseRpcTest extends BaseTest
         return $this->defaultRpcMethod;
     }
 
+    protected function defaultRpcMethodVersion(): ?int
+    {
+        return $this->defaultRpcMethodVersion;
+    }
+
     protected function createRequest(string $login = null): RpcRequestEntity
     {
         $request = new RpcRequestEntity();
         if ($this->defaultRpcMethod()) {
             $request->setMethod($this->defaultRpcMethod());
+        }
+        if ($this->defaultRpcMethodVersion()) {
+            $request->setMetaItem(HttpHeaderEnum::VERSION, $this->defaultRpcMethodVersion());
         }
         if ($login) {
             $authorizationToken = $this->authBy($login, $this->defaultPassword);
@@ -90,6 +99,9 @@ abstract class BaseRpcTest extends BaseTest
 
     protected function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
+        if ($requestEntity->getMetaItem(HttpHeaderEnum::VERSION) == null && $this->defaultRpcMethodVersion()) {
+            $requestEntity->setMetaItem(HttpHeaderEnum::VERSION, $this->defaultRpcMethodVersion());
+        }
         return $this->getRpcClient()->sendRequestByEntity($requestEntity);
     }
 

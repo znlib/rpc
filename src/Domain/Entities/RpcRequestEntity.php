@@ -85,6 +85,11 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityByMetadataInt
         return $this->meta;
     }
 
+    public function setMetaItem(string $key, string $value)
+    {
+        return ArrayHelper::setValue($this->meta, $key, $value);
+    }
+
     public function getMetaItem(string $key, $default = null)
     {
         if (empty($this->meta)) {
