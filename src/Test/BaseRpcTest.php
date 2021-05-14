@@ -3,6 +3,7 @@
 namespace ZnLib\Rpc\Test;
 
 use GuzzleHttp\Client;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
 use ZnLib\Rest\Contract\Authorization\BearerAuthorization;
@@ -23,6 +24,7 @@ abstract class BaseRpcTest extends BaseTest
     protected $defaultPassword = 'Wwwqqq111';
     protected $defaultRpcMethod;
     protected $defaultRpcMethodVersion = 1;
+    private $fixtures = [];
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -31,12 +33,17 @@ abstract class BaseRpcTest extends BaseTest
         parent::__construct($name, $data, $dataName);
     }
 
+    protected function addFixtures(array $fixtures) {
+        $this->fixtures = ArrayHelper::merge($this->fixtures, $fixtures);
+//        dump($this->fixtures);
+    }
+    
     protected function setUp(): void
     {
-        //parent::setUp();
-        if ($this->fixtures()) {
+        $this->addFixtures($this->fixtures());
+        if ($this->fixtures) {
             $response = $this->sendRequest('fixture.import', [
-                'fixtures' => $this->fixtures(),
+                'fixtures' => $this->fixtures,
             ]);
         }
     }

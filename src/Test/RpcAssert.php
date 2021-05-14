@@ -20,7 +20,34 @@ class RpcAssert extends BaseAssert
         $this->response = $response;
         $this->assertEquals(RpcVersionEnum::V2_0, $response->getJsonrpc());
     }
+    
+    public function assertNotFound(string $message = null)
+    {
+        $this->assertError(HttpStatusCodeEnum::NOT_FOUND, $message);
+        return $this;
+    }
 
+    public function assertForbidden(string $message = null)
+    {
+        $this->assertError(HttpStatusCodeEnum::FORBIDDEN, $message);
+        return $this;
+    }
+    
+    public function assertUnauthorized(string $message = null)
+    {
+        $this->assertError(HttpStatusCodeEnum::UNAUTHORIZED, $message);
+        return $this;
+    }
+
+    public function assertError(int $code, string $message = null)
+    {
+        $this->assertErrorCode($code);
+        if($message) {
+            $this->assertErrorMessage($message);
+        }
+        return $this;
+    }
+    
     public function assertErrorCode(int $code)
     {
 //        $this->assertIsError();
@@ -68,14 +95,6 @@ class RpcAssert extends BaseAssert
         } else {
             $this->assertEquals($expectedResult, $this->response->getResult());
         }
-    }
-
-    public function assertNotFound(string $message)
-    {
-        $this->assertIsError();
-        $this->assertErrorCode(HttpStatusCodeEnum::NOT_FOUND);
-        $this->assertErrorMessage($message);
-        return $this;
     }
 
     public function assertUnprocessableEntity(array $fieldNames = [])

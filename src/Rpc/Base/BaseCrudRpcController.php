@@ -53,6 +53,8 @@ abstract class BaseCrudRpcController extends BaseRpcController
     {
         $id = $requestEntity->getParamItem('id');
         $data = $requestEntity->getParams();
+        
+        unset($data['id']);
 
         $this->service->updateById($id, $data);
         $partnerEntity = $this->service->oneById($id);
