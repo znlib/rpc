@@ -28,7 +28,7 @@ class BusModule extends BaseModule
 
         $routes
             ->add('docs', '/json-rpc')
-            ->controller([DocsController::class, 'showDocs'])
+            ->controller([DocsController::class, 'view'])
             ->methods(['GET']);
 
         $routes

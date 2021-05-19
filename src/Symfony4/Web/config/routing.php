@@ -15,7 +15,11 @@ return function (RoutingConfigurator $routes) {
         ->methods(['GET']);
     $routes
         ->add('json_rpc_docs_view', '/json-rpc/view/{name}')
-        ->controller([DocsController::class, 'showDocs'])
+        ->controller([DocsController::class, 'view'])
+        ->methods(['GET']);
+    $routes
+        ->add('json_rpc_docs_download', '/json-rpc/download/{name}')
+        ->controller([DocsController::class, 'download'])
         ->methods(['GET']);
     $routes
         ->add('json_rpc_call_procedure', '/json-rpc')

@@ -16,7 +16,7 @@ class DocsController
         $this->docsService = $docsService;
     }
 
-    public function showDocs(Request $request): Response
+    public function view(Request $request): Response
     {
         $name = $request->query->get('name', 'partner');
         $docsHtml = $this->docsService->loadByName($name);
