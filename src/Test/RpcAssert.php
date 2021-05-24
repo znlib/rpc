@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Test;
 
+use Psr\Http\Message\ResponseInterface;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Base\Helpers\DeprecateHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
@@ -95,6 +96,22 @@ class RpcAssert extends BaseAssert
         } else {
             $this->assertEquals($expectedResult, $this->response->getResult());
         }
+    }
+
+    public function assertCollectionCount(int $expected)
+    {
+        $this->assertIsResult();
+        $this->assertCount($expected, $this->response->getResult());
+        $this->assertEquals($expected, $this->response->getMetaItem('perPage'));
+//        $this->assertEquals($expected, $this->response->getMetaItem('totalCount'));
+    }
+
+    public function assertPagination(int $totalCount = null, int $count, int $pageSize = null, int $page = 1)
+    {
+        $this->assertCollectionCount($count);
+        $this->assertEquals($totalCount, $this->response->getMetaItem('totalCount'));
+        $this->assertEquals($page, $this->response->getMetaItem('page'));
+        $this->assertEquals($pageSize, $this->response->getMetaItem('perPage'));
     }
 
     public function assertUnprocessableEntity(array $fieldNames = [])

@@ -59,12 +59,15 @@ class RpcRequestEntity implements EntityIdInterface, ValidateEntityByMetadataInt
         return $this->params;
     }
 
-    public function getParamItem(string $key)
+    public function getParamItem(string $key, $default = null)
     {
         if (!empty($this->params) && array_key_exists($key, $this->params)) {
             if (!empty($this->params[$key])) {
                 return $this->params[$key];
             }
+        }
+        if(func_get_args() > 1) {
+            return $default;
         }
         $message = "Param \"$key\" not found";
         throw new ParamNotFoundException($message);
