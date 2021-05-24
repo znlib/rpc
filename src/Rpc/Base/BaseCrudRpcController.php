@@ -25,6 +25,10 @@ abstract class BaseCrudRpcController extends BaseRpcController
         if($perPage) {
             $query->perPage($perPage);
         }
+        $page = $requestEntity->getParamItem('page', 1);
+        if($page) {
+            $query->page($page);
+        }
         $dp = $this->service->getDataProvider($query);
         $collection = $dp->getCollection();
         $resultArray = EntityHelper::collectionToArray($collection);
