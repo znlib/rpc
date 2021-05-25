@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
+use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseCrudService;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Libs\Query;
@@ -18,10 +19,11 @@ abstract class BaseCrudRpcController extends BaseRpcController
 
     public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-
         // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
         $query = new Query();
-        $perPage = $requestEntity->getParamItem('perPage');
+        $perPageMax = DotEnv::get('PAGE_SIZE_MAX', 50);
+        $perPageDefault = DotEnv::get('PAGE_SIZE_DEFAULT', 20);
+        $perPage = $requestEntity->getParamItem('perPage', $perPageDefault);
         if($perPage) {
             $query->perPage($perPage);
         }
@@ -30,6 +32,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
             $query->page($page);
         }
         $dp = $this->service->getDataProvider($query);
+        $dp->getEntity()->setMaxPageSize($perPageMax);
         $collection = $dp->getCollection();
         $resultArray = EntityHelper::collectionToArray($collection);
         $response = new RpcResponseEntity();
