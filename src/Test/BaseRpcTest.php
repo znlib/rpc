@@ -109,6 +109,9 @@ abstract class BaseRpcTest extends BaseTest
         if ($requestEntity->getMetaItem(HttpHeaderEnum::VERSION) == null && $this->defaultRpcMethodVersion()) {
             $requestEntity->setMetaItem(HttpHeaderEnum::VERSION, $this->defaultRpcMethodVersion());
         }
+
+        $requestEntity->setMetaItem(HttpHeaderEnum::TIMESTAMP, date(\DateTime::ISO8601));
+
         return $this->getRpcClient()->sendRequestByEntity($requestEntity);
     }
 
