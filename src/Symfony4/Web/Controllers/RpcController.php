@@ -7,9 +7,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
-use ZnCore\Base\Exceptions\ForbiddenException;
 use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Base\Exceptions\UnauthorizedException;
+use ZnCore\Contract\User\Exceptions\ForbiddenException;
+use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
 use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
@@ -121,7 +121,7 @@ class RpcController
         } catch (UnprocessibleEntityException $e) {
             $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
             $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS, 'Parameter validation error', $errorData);
-        } catch (UnauthorizedException | \ZnBundle\User\Domain\Exceptions\UnauthorizedException $e) {
+        } catch (UnauthorizedException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, 'Unauthorized');
         } catch (ParamNotFoundException $e) {
             $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
