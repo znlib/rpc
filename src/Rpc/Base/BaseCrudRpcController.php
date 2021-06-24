@@ -47,23 +47,23 @@ abstract class BaseCrudRpcController extends BaseRpcController
     {
         $id = $requestEntity->getParamItem('id');
 
-        $partnerEntity = $this->service->oneById($id);
+        $entity = $this->service->oneById($id);
 
-        $partner = EntityHelper::toArray($partnerEntity);
+        $data = EntityHelper::toArray($entity);
         $response = new RpcResponseEntity();
-        $response->setResult($partner);
+        $response->setResult($data);
         return $response;
     }
 
     public function add(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-        $data = $requestEntity->getParams();
+        $params = $requestEntity->getParams();
 
-        $partnerEntity = $this->service->create($data);
+        $entity = $this->service->create($params);
 
-        $partner = EntityHelper::toArray($partnerEntity);
+        $data = EntityHelper::toArray($entity);
         $response = new RpcResponseEntity();
-        $response->setResult($partner);
+        $response->setResult($data);
         return $response;
     }
 
@@ -75,11 +75,11 @@ abstract class BaseCrudRpcController extends BaseRpcController
         unset($data['id']);
 
         $this->service->updateById($id, $data);
-        $partnerEntity = $this->service->oneById($id);
+        $entity = $this->service->oneById($id);
 
-        $partner = EntityHelper::toArray($partnerEntity);
+        $data = EntityHelper::toArray($entity);
         $response = new RpcResponseEntity();
-        $response->setResult($partner);
+        $response->setResult($data);
         return $response;
     }
 
