@@ -2,49 +2,48 @@
 
 namespace ZnLib\Rpc\Test;
 
-use GuzzleHttp\Client;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
-use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
-use ZnLib\Rest\Contract\Authorization\BearerAuthorization;
-use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
-use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
+use ZnLib\Rpc\Domain\Libs\RpcAuthProvider;
 use ZnLib\Rpc\Domain\Libs\RpcClient;
+use ZnLib\Rpc\Domain\Libs\RpcFixtureProvider;
+use ZnLib\Rpc\Domain\Libs\RpcProvider;
 use ZnTool\Test\Base\BaseTest;
 
 abstract class BaseRpcTest extends BaseTest
 {
 
-    private $restClient;
-    protected $requestEncoder;
-    protected $responseEncoder;
     protected $defaultPassword = 'Wwwqqq111';
     protected $defaultRpcMethod;
     protected $defaultRpcMethodVersion = 1;
     private $fixtures = [];
+    private $rpcProvider;
+    private $authProvider;
+    private $fixtureProvider;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
-        $this->requestEncoder = new RequestEncoder();
-        $this->responseEncoder = new ResponseEncoder();
         parent::__construct($name, $data, $dataName);
+        $this->rpcProvider = new RpcProvider();
+        $this->rpcProvider->setDefaultRpcMethod($this->defaultRpcMethod());
+        $this->rpcProvider->setDefaultRpcMethodVersion($this->defaultRpcMethodVersion());
+        $this->authProvider = new RpcAuthProvider($this->rpcProvider);
+        $this->fixtureProvider = new RpcFixtureProvider($this->rpcProvider);
     }
 
-    protected function addFixtures(array $fixtures) {
+    protected function addFixtures(array $fixtures)
+    {
         $this->fixtures = ArrayHelper::merge($this->fixtures, $fixtures);
-//        dump($this->fixtures);
     }
-    
+
     protected function setUp(): void
     {
         $this->addFixtures($this->fixtures());
         if ($this->fixtures) {
-            $response = $this->sendRequest('fixture.import', [
-                'fixtures' => $this->fixtures,
-            ]);
+            $this->fixtureProvider->import($this->fixtures);
         }
     }
 
@@ -68,34 +67,38 @@ abstract class BaseRpcTest extends BaseTest
             $request->setMetaItem(HttpHeaderEnum::VERSION, $this->defaultRpcMethodVersion());
         }
         if ($login) {
-            $authorizationToken = $this->authBy($login, $this->defaultPassword);
+            $authorizationToken = $this->authProvider->authBy($login, $this->defaultPassword);
             $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
         }
         return $request;
     }
 
+    protected function getRpcClient(): RpcClient
+    {
+        return $this->rpcProvider->getRpcClient();
+    }
+
     protected function assertSuccessAuthorization(string $login, string $password)
     {
-        $response = $this->authRequest($login, $password);
+        $response = $this->authProvider->authRequest($login, $password);
         $this->getRpcAssert($response)->assertIsResult();
         $result = $response->getResult();
         $token = $result['token'];
         $this->assertContains('bearer', $token);
     }
 
-    protected function authRequest(string $login, string $password): RpcResponseEntity
+    /*protected function authRequest(string $login, string $password): RpcResponseEntity
     {
         $response = $this->sendRequest('authentication.getTokenByPassword', [
             'login' => $login,
             'password' => $password,
         ]);
         return $response;
-    }
+    }*/
 
     protected function authBy(string $login, string $password): string
     {
-        $response = $this->authRequest($login, $password);
-        return $response->getResult()['token'];
+        return $this->authProvider->authBy($login, $password);
     }
 
     protected function getRpcAssert(RpcResponseEntity $response = null): RpcAssert
@@ -106,24 +109,13 @@ abstract class BaseRpcTest extends BaseTest
 
     protected function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-        if ($requestEntity->getMetaItem(HttpHeaderEnum::VERSION) == null && $this->defaultRpcMethodVersion()) {
-            $requestEntity->setMetaItem(HttpHeaderEnum::VERSION, $this->defaultRpcMethodVersion());
-        }
 
-        $requestEntity->setMetaItem(HttpHeaderEnum::TIMESTAMP, date(\DateTime::ISO8601));
-
-        return $this->getRpcClient()->sendRequestByEntity($requestEntity);
+        return $this->rpcProvider->sendRequestByEntity($requestEntity);
     }
 
     protected function sendRequest(string $method, array $params = [], array $meta = [], int $id = null): RpcResponseEntity
     {
-        $request = new RpcRequestEntity();
-        $request->setMethod($method);
-        $request->setParams($params);
-        $request->setMeta($meta);
-        $request->setId($id);
-        $response = $this->sendRequestByEntity($request);
-        return $response;
+        return $this->rpcProvider->sendRequest($method, $params, $meta, $id);
     }
 
     protected function printContent(RpcResponseEntity $response = null, string $filter = null)
@@ -133,33 +125,5 @@ abstract class BaseRpcTest extends BaseTest
             $content = $filter($content);
         }
         dd($content);
-    }
-
-    protected function getAuthorizationContract(Client $guzzleClient): AuthorizationInterface
-    {
-        return new BearerAuthorization($guzzleClient);
-    }
-
-    protected function getRpcClient(): RpcClient
-    {
-        $guzzleClient = $this->getGuzzleClient();
-        $authAgent = $this->getAuthorizationContract($guzzleClient);
-        return new RpcClient($guzzleClient, $this->requestEncoder, $this->responseEncoder, $authAgent);
-    }
-
-    protected function getGuzzleClient(): Client
-    {
-        $config = [
-            'base_uri' => $this->getBaseUrl(),
-        ];
-        $client = new Client($config);
-        return $client;
-    }
-
-    protected function getBaseUrl(): string
-    {
-        $baseUrl = $_ENV['API_URL'];
-        $baseUrl = trim($baseUrl, '/');
-        return $baseUrl;
     }
 }
