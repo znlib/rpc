@@ -10,6 +10,7 @@ use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Base\Exceptions\ForbiddenException;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Exceptions\UnauthorizedException;
+use ZnCore\Base\Helpers\InstanceHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
@@ -134,7 +135,8 @@ class ControllerService implements ControllerServiceInterface
         /*$this->container->bind(RpcRequestEntity::class, function () use ($requestEntity) {
             return $requestEntity;
         });*/
-        return $this->container->call([$controllerInstance, $methodName], $parameters);
+        return InstanceHelper::callMethod($controllerInstance, $methodName, $parameters);
+//        return $this->container->call([$controllerInstance, $methodName], $parameters);
     }
 
     protected function checkIp(RpcRequestEntity $requestEntity, IdentityEntityInterface $identity)
