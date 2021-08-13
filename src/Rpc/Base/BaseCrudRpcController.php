@@ -26,6 +26,17 @@ abstract class BaseCrudRpcController extends BaseRpcController
         ];
     }
 
+    private function forgeWith(RpcRequestEntity $requestEntity, Query $query) {
+        $with = $requestEntity->getParamItem('with');
+        if ($with) {
+            foreach ($with as $relationName) {
+                if(in_array($relationName, $this->allowRelations())) {
+                    $query->with($relationName);
+                }
+            }
+        }
+    }
+
     public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
@@ -40,14 +51,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
         if ($page) {
             $query->page($page);
         }
-        $with = $requestEntity->getParamItem('with');
-        if ($with) {
-            foreach ($with as $relationName) {
-                if(in_array($relationName, $this->allowRelations())) {
-                    $query->with($relationName);
-                }
-            }
-        }
+
         $dp = $this->service->getDataProvider($query);
         $dp->getEntity()->setMaxPageSize($perPageMax);
         $collection = $dp->getCollection();
@@ -62,11 +66,13 @@ abstract class BaseCrudRpcController extends BaseRpcController
 
     public function oneById(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
+        $query = new Query();
+        $this->forgeWith($requestEntity, $query);
         $id = $requestEntity->getParamItem('id');
 
-        $entity = $this->service->oneById($id);
+        $entity = $this->service->oneById($id, $query);
 
-        $data = EntityHelper::toArray($entity);
+        $data = EntityHelper::toArray($entity, true);
         $response = new RpcResponseEntity();
         $response->setResult($data);
         return $response;
