@@ -19,6 +19,13 @@ abstract class BaseCrudRpcController extends BaseRpcController
     protected $pageSizeMax;
     protected $pageSizeDefault;
 
+    public function allowRelations(): array
+    {
+        return [
+
+        ];
+    }
+
     public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
@@ -26,12 +33,20 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $perPageMax = $this->pageSizeMax ?? DotEnv::get('PAGE_SIZE_MAX', 50);
         $perPageDefault = $this->pageSizeDefault ?? DotEnv::get('PAGE_SIZE_DEFAULT', 20);
         $perPage = $requestEntity->getParamItem('perPage', $perPageDefault);
-        if($perPage) {
+        if ($perPage) {
             $query->perPage($perPage);
         }
         $page = $requestEntity->getParamItem('page', 1);
-        if($page) {
+        if ($page) {
             $query->page($page);
+        }
+        $with = $requestEntity->getParamItem('with');
+        if ($with) {
+            foreach ($with as $relationName) {
+                if(in_array($relationName, $this->allowRelations())) {
+                    $query->with($relationName);
+                }
+            }
         }
         $dp = $this->service->getDataProvider($query);
         $dp->getEntity()->setMaxPageSize($perPageMax);
@@ -73,7 +88,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
     {
         $id = $requestEntity->getParamItem('id');
         $data = $requestEntity->getParams();
-        
+
         unset($data['id']);
 
         $this->service->updateById($id, $data);
