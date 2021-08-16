@@ -7,6 +7,7 @@ use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
+use ZnLib\Rpc\Domain\Libs\ArrayAuthProvider;
 use ZnLib\Rpc\Domain\Libs\RpcAuthProvider;
 use ZnLib\Rpc\Domain\Libs\RpcClient;
 use ZnLib\Rpc\Domain\Libs\RpcFixtureProvider;
@@ -32,6 +33,26 @@ abstract class BaseRpcTest extends BaseTest
         $this->rpcProvider->setDefaultRpcMethodVersion($this->defaultRpcMethodVersion());
         $this->authProvider = new RpcAuthProvider($this->rpcProvider);
         $this->fixtureProvider = new RpcFixtureProvider($this->rpcProvider);
+    }
+
+    public function getRpcProvider(): RpcProvider
+    {
+        return $this->rpcProvider;
+    }
+
+    public function setRpcProvider(RpcProvider $rpcProvider): void
+    {
+        $this->rpcProvider = $rpcProvider;
+    }
+
+    public function getAuthProvider(): object
+    {
+        return $this->authProvider;
+    }
+
+    public function setAuthProvider(object $authProvider): void
+    {
+        $this->authProvider = $authProvider;
     }
 
     protected function addFixtures(array $fixtures)
