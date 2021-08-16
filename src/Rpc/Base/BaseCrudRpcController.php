@@ -41,6 +41,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
     {
         // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
         $query = new Query();
+        $this->forgeWith($requestEntity, $query);
         $perPageMax = $this->pageSizeMax ?? DotEnv::get('PAGE_SIZE_MAX', 50);
         $perPageDefault = $this->pageSizeDefault ?? DotEnv::get('PAGE_SIZE_DEFAULT', 20);
         $perPage = $requestEntity->getParamItem('perPage', $perPageDefault);
