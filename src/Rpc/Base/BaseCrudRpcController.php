@@ -55,14 +55,17 @@ abstract class BaseCrudRpcController extends BaseRpcController
 
         $dp = $this->service->getDataProvider($query);
         $dp->getEntity()->setMaxPageSize($perPageMax);
-        $collection = $dp->getCollection();
+
+        return $this->serializeResult($dp);
+
+        /*$collection = $dp->getCollection();
         $resultArray = EntityHelper::collectionToArray($collection);
         $response = new RpcResponseEntity();
         $response->setResult($resultArray);
         $response->addMeta('perPage', $dp->getPageSize());
         $response->addMeta('totalCount', $dp->getTotalCount());
         $response->addMeta('page', $dp->getPage());
-        return $response;
+        return $response;*/
     }
 
     public function oneById(RpcRequestEntity $requestEntity): RpcResponseEntity
@@ -70,25 +73,27 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $query = new Query();
         $this->forgeWith($requestEntity, $query);
         $id = $requestEntity->getParamItem('id');
-
         $entity = $this->service->oneById($id, $query);
 
-        $data = EntityHelper::toArray($entity, true);
+        return $this->serializeResult($entity);
+
+        /*$data = EntityHelper::toArray($entity, true);
         $response = new RpcResponseEntity();
         $response->setResult($data);
-        return $response;
+        return $response;*/
     }
 
     public function add(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $params = $requestEntity->getParams();
-
         $entity = $this->service->create($params);
 
-        $data = EntityHelper::toArray($entity);
+        return $this->serializeResult($entity);
+
+        /*$data = EntityHelper::toArray($entity);
         $response = new RpcResponseEntity();
         $response->setResult($data);
-        return $response;
+        return $response;*/
     }
 
     public function update(RpcRequestEntity $requestEntity): RpcResponseEntity
@@ -101,10 +106,12 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $this->service->updateById($id, $data);
         $entity = $this->service->oneById($id);
 
-        $data = EntityHelper::toArray($entity);
+        return $this->serializeResult($entity);
+
+        /*$data = EntityHelper::toArray($entity);
         $response = new RpcResponseEntity();
         $response->setResult($data);
-        return $response;
+        return $response;*/
     }
 
     public function delete(RpcRequestEntity $requestEntity): RpcResponseEntity
@@ -112,17 +119,19 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $id = $requestEntity->getParamItem('id');
 
         $this->service->deleteById($id);
-        $result = "";
+//        $result = "";
         $response = new RpcResponseEntity();
-        $response->setResult($result);
+//        $response->setResult($result);
         return $response;
     }
 
     public function count(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $result = $this->service->count();
-        $response = new RpcResponseEntity();
+        return $this->serializeResult($result);
+
+        /*$response = new RpcResponseEntity();
         $response->setResult($result);
-        return $response;
+        return $response;*/
     }
 }
