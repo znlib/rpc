@@ -9,7 +9,7 @@ use ZnCore\Domain\Libs\DataProvider;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
 
-class DefaultSerializer implements SerializerInterface
+class CrudSerializer implements SerializerInterface
 {
 
     private $attributesOnly;
@@ -96,10 +96,5 @@ class DefaultSerializer implements SerializerInterface
         $meta['totalCount'] = $dataProvider->getTotalCount();
         $meta['page'] = $dataProvider->getPage();
         return $meta;
-    }
-
-    public function decode($encodedData)
-    {
-        // TODO: Implement decode() method.
     }
 }

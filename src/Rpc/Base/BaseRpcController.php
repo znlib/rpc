@@ -2,21 +2,33 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
-use Illuminate\Support\Collection;
-use ZnCore\Base\Encoders\AggregateEncoder;
+use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
 use ZnLib\Rpc\Rpc\Interfaces\RpcAuthInterface;
 use ZnLib\Rpc\Rpc\Serializers\DefaultSerializer;
+use ZnLib\Rpc\Rpc\Serializers\SerializerInterface;
 
 abstract class BaseRpcController implements RpcAuthInterface
 {
 
     protected $service;
 
-    public function serializers(): array
+    public function attributesOnly(): array
     {
-        return [
-            new DefaultSerializer(),
-        ];
+        return [];
+    }
+
+    public function attributesExclude(): array
+    {
+        return [];
+    }
+
+    public function serializer(): SerializerInterface
+    {
+        $serializer = new DefaultSerializer();
+        $serializer->setAttributesOnly($this->attributesOnly());
+        $serializer->setAttributesExclude($this->attributesExclude());
+        return $serializer;
     }
 
     public function auth(): array
@@ -26,13 +38,10 @@ abstract class BaseRpcController implements RpcAuthInterface
         ];
     }
 
-    protected function serializeResult($result) {
-
-        $serializers = $this->serializers();
-        if($serializers) {
-            $encoders = new AggregateEncoder(new Collection($serializers));
-            $result = $encoders->encode($result);
-        }
-        return $result;
+    protected function serializeResult($result): RpcResponseEntity
+    {
+        $serializer = $this->serializer();
+        $result = $serializer->encode($result);
+        return ResponseHelper::forgeRpcResponseEntity($result);
     }
 }

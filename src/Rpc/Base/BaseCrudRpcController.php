@@ -4,7 +4,6 @@ namespace ZnLib\Rpc\Rpc\Base;
 
 use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseCrudService;
-use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Libs\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
@@ -26,11 +25,12 @@ abstract class BaseCrudRpcController extends BaseRpcController
         ];
     }
 
-    private function forgeWith(RpcRequestEntity $requestEntity, Query $query) {
+    private function forgeWith(RpcRequestEntity $requestEntity, Query $query)
+    {
         $with = $requestEntity->getParamItem('with');
         if ($with) {
             foreach ($with as $relationName) {
-                if(in_array($relationName, $this->allowRelations())) {
+                if (in_array($relationName, $this->allowRelations())) {
                     $query->with($relationName);
                 }
             }
@@ -57,15 +57,6 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $dp->getEntity()->setMaxPageSize($perPageMax);
 
         return $this->serializeResult($dp);
-
-        /*$collection = $dp->getCollection();
-        $resultArray = EntityHelper::collectionToArray($collection);
-        $response = new RpcResponseEntity();
-        $response->setResult($resultArray);
-        $response->addMeta('perPage', $dp->getPageSize());
-        $response->addMeta('totalCount', $dp->getTotalCount());
-        $response->addMeta('page', $dp->getPage());
-        return $response;*/
     }
 
     public function oneById(RpcRequestEntity $requestEntity): RpcResponseEntity
@@ -76,11 +67,6 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $entity = $this->service->oneById($id, $query);
 
         return $this->serializeResult($entity);
-
-        /*$data = EntityHelper::toArray($entity, true);
-        $response = new RpcResponseEntity();
-        $response->setResult($data);
-        return $response;*/
     }
 
     public function add(RpcRequestEntity $requestEntity): RpcResponseEntity
@@ -89,11 +75,6 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $entity = $this->service->create($params);
 
         return $this->serializeResult($entity);
-
-        /*$data = EntityHelper::toArray($entity);
-        $response = new RpcResponseEntity();
-        $response->setResult($data);
-        return $response;*/
     }
 
     public function update(RpcRequestEntity $requestEntity): RpcResponseEntity
@@ -107,31 +88,18 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $entity = $this->service->oneById($id);
 
         return $this->serializeResult($entity);
-
-        /*$data = EntityHelper::toArray($entity);
-        $response = new RpcResponseEntity();
-        $response->setResult($data);
-        return $response;*/
     }
 
     public function delete(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $id = $requestEntity->getParamItem('id');
-
         $this->service->deleteById($id);
-//        $result = "";
-        $response = new RpcResponseEntity();
-//        $response->setResult($result);
-        return $response;
+        return new RpcResponseEntity();
     }
 
     public function count(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $result = $this->service->count();
         return $this->serializeResult($result);
-
-        /*$response = new RpcResponseEntity();
-        $response->setResult($result);
-        return $response;*/
     }
 }
