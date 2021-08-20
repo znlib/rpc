@@ -5,6 +5,7 @@ namespace ZnLib\Rpc\Rpc\Serializers;
 use Illuminate\Support\Collection;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Libs\DataProvider;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
@@ -27,7 +28,6 @@ class DefaultSerializer implements SerializerInterface
 
     public function encode($data): RpcResponseEntity
     {
-        $result = null;
         if ($data instanceof Collection) {
             $result = $this->encodeCollection($data);
         } elseif ($data instanceof DataProvider) {
@@ -51,19 +51,11 @@ class DefaultSerializer implements SerializerInterface
     protected function filterEntityAttributes(array $array): array
     {
         if ($this->attributesOnly) {
-            $newArray = [];
-            foreach ($this->attributesOnly as $key) {
-                if (in_array($key, $this->attributesOnly)) {
-                    $newArray[$key] = $array[$key];
-                }
-            }
-            $array = $newArray;
+            $array = ArrayHelper::filter($array, $this->attributesOnly);
         }
         if ($this->attributesExclude) {
             foreach ($this->attributesExclude as $key) {
-                if (in_array($key, $this->attributesExclude)) {
-                    unset($array[$key]);
-                }
+                ArrayHelper::removeItem($array, $key);
             }
         }
         return $array;
