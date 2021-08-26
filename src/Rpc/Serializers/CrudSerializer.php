@@ -9,7 +9,7 @@ use ZnCore\Domain\Libs\DataProvider;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
 
-class CrudSerializer implements SerializerInterface
+class _______CrudSerializer implements SerializerInterface
 {
 
     private $attributesOnly;
