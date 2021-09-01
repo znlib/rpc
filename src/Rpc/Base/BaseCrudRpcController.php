@@ -2,11 +2,17 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseCrudService;
+use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
+use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnCore\Domain\Libs\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
 
 abstract class BaseCrudRpcController extends BaseRpcController
 {
@@ -17,6 +23,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
     protected $service;
     protected $pageSizeMax;
     protected $pageSizeDefault;
+    protected $filterModel;
 
     public function allowRelations(): array
     {
@@ -35,6 +42,33 @@ abstract class BaseCrudRpcController extends BaseRpcController
                 }
             }
         }
+    }
+
+    private function forgeFilterModel(RpcRequestEntity $requestEntity): object {
+
+        $filterAttributes = $requestEntity->getParamItem('filter');
+        $filterAttributes = $filterAttributes ? $this->removeEmptyParameters($filterAttributes) : [];
+        $filterModel = EntityHelper::createEntity($this->filterModel, $filterAttributes);
+        try {
+            ValidationHelper::validateEntity($filterModel);
+        } catch (UnprocessibleEntityException $e) {
+            $errorCollection = $e->getErrorCollection();
+            $errors = [];
+            foreach ($errorCollection as $errorEntity) {
+                $errors[] = $errorEntity->getField() . ': ' . $errorEntity->getMessage();
+            }
+            throw new InvalidRequestException(implode(PHP_EOL, $errors));
+        }
+        return $filterModel;
+    }
+
+    private function removeEmptyParameters(array $filterAttributes): array {
+        foreach ($filterAttributes as $attribute => $value) {
+            if($value === '') {
+                unset($filterAttributes[$attribute]);
+            }
+        }
+        return $filterAttributes;
     }
 
     public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
@@ -56,6 +90,10 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $dp = $this->service->getDataProvider($query);
         $dp->getEntity()->setMaxPageSize($perPageMax);
 
+        if ($this->filterModel) {
+            $filterModel = $this->forgeFilterModel($requestEntity);
+            $dp->setFilterModel($filterModel);
+        }
         return $this->serializeResult($dp);
     }
 
