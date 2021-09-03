@@ -115,26 +115,26 @@ class RpcController
         try {
             $responseEntity = $this->procedureService->run($requestEntity);
         } catch (NotFoundException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::NOT_FOUND, $e->getMessage());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::NOT_FOUND, $e->getMessage(), null, $e);
         } catch (MethodNotFoundException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage(), null, $e);
         } catch (UnprocessibleEntityException $e) {
             $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS, 'Parameter validation error', $errorData);
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS, 'Parameter validation error', $errorData, $e);
         } catch (UnauthorizedException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, 'Unauthorized');
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, 'Unauthorized', null, $e);
         } catch (ParamNotFoundException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage(), null, $e);
         } catch (ForbiddenException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::FORBIDDEN, $e->getMessage());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::FORBIDDEN, $e->getMessage(), null, $e);
         } catch (InvalidRequestException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage());
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($e->getCode(), $e->getMessage(), null, $e);
         } catch (EntryNotFoundException $e) {
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SYSTEM_ERROR, 'Server error. Bad inject dependencies in "' . $e->getMessage() . '"');
+            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SYSTEM_ERROR, 'Server error. Bad inject dependencies in "' . $e->getMessage() . '"', null, $e);
         } catch (\Exception $e) {
             $code = $e->getCode() ?: RpcErrorCodeEnum::APPLICATION_ERROR;
             $message = $e->getMessage() ?: 'Application error: ' . get_class($e);
-            $responseEntity = $this->responseFormatter->forgeErrorResponse($code, $message);
+            $responseEntity = $this->responseFormatter->forgeErrorResponse($code, $message, null, $e);
         }
         $responseEntity->setId($requestEntity->getId());
         return $responseEntity;

@@ -9,7 +9,7 @@ use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 class ResponseFormatter
 {
 
-    public function forgeErrorResponse(int $code, string $message = null, $data = null): RpcResponseEntity
+    public function forgeErrorResponse(int $code, string $message = null, $data = null, \Throwable $e = null): RpcResponseEntity
     {
         $error = [
             'code' => $code,
@@ -18,6 +18,12 @@ class ResponseFormatter
         ];
 
         if(EnvHelper::isDebug()) {
+            if(empty($data)) {
+                $data = [];
+            }
+            if($e instanceof \Throwable) {
+                $data['previous'] = $e->getPrevious();
+            }
             $error['data'] = $data;
         }
 
