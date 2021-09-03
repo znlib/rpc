@@ -25,27 +25,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
     protected $pageSizeDefault;
     protected $filterModel;
 
-    public function allowRelations(): array
-    {
-        return [
-
-        ];
-    }
-
-    private function forgeWith(RpcRequestEntity $requestEntity, Query $query)
-    {
-        $with = $requestEntity->getParamItem('with');
-        if ($with) {
-            foreach ($with as $relationName) {
-                if (in_array($relationName, $this->allowRelations())) {
-                    $query->with($relationName);
-                }
-            }
-        }
-    }
-
     private function forgeFilterModel(RpcRequestEntity $requestEntity): object {
-
         $filterAttributes = $requestEntity->getParamItem('filter');
         $filterAttributes = $filterAttributes ? $this->removeEmptyParameters($filterAttributes) : [];
         $filterModel = EntityHelper::createEntity($this->filterModel, $filterAttributes);

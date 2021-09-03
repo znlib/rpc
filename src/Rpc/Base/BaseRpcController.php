@@ -2,6 +2,8 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
+use ZnCore\Domain\Libs\Query;
+use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
 use ZnLib\Rpc\Rpc\Interfaces\RpcAuthInterface;
@@ -43,5 +45,24 @@ abstract class BaseRpcController implements RpcAuthInterface
         $serializer = $this->serializer();
         $result = $serializer->encode($result);
         return ResponseHelper::forgeRpcResponseEntity($result);
+    }
+
+    public function allowRelations(): array
+    {
+        return [
+
+        ];
+    }
+
+    protected function forgeWith(RpcRequestEntity $requestEntity, Query $query)
+    {
+        $with = $requestEntity->getParamItem('with');
+        if ($with) {
+            foreach ($with as $relationName) {
+                if (in_array($relationName, $this->allowRelations())) {
+                    $query->with($relationName);
+                }
+            }
+        }
     }
 }
