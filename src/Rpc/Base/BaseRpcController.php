@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
+use ZnCore\Base\Legacy\Yii\Helpers\Inflector;
 use ZnCore\Domain\Libs\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
@@ -59,10 +60,30 @@ abstract class BaseRpcController implements RpcAuthInterface
         $with = $requestEntity->getParamItem('with');
         if ($with) {
             foreach ($with as $relationName) {
-                if (in_array($relationName, $this->allowRelations())) {
-                    $query->with($relationName);
+                $relationNameSnakeCase = $this->underscore($relationName);
+                $relationNameCamelCase = $this->variablize($relationName);
+                if (in_array($relationNameSnakeCase, $this->allowRelations()) || in_array($relationNameCamelCase, $this->allowRelations())) {
+                    $query->with($relationNameSnakeCase);
                 }
             }
         }
+    }
+
+    protected function underscore(string $name): string
+    {
+        $names = explode('.', $name);
+        foreach ($names as &$nameItem) {
+            $nameItem = Inflector::underscore($nameItem);
+        }
+        return implode('.', $names);
+    }
+
+    protected function variablize(string $name): string
+    {
+        $names = explode('.', $name);
+        foreach ($names as &$nameItem) {
+            $nameItem = Inflector::variablize($nameItem);
+        }
+        return implode('.', $names);
     }
 }
