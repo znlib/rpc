@@ -3,6 +3,7 @@
 namespace ZnLib\Rpc\Rpc\Serializers;
 
 use Illuminate\Support\Collection;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
@@ -40,9 +41,17 @@ class DefaultSerializer implements SerializerInterface
         return ResponseHelper::forgeRpcResponseEntity($result);
     }
 
+    protected function normalizers(): array
+    {
+        return [
+            new DateTimeNormalizer(),
+            new ObjectNormalizer(),
+        ];
+    }
+
     protected function encodeEntity(object $entity)
     {
-        $serializer = new Serializer([new ObjectNormalizer()]);
+        $serializer = new Serializer($this->normalizers());
         $array = $serializer->normalize($entity);
         $array = $this->filterEntityAttributes($array);
         return $array;
