@@ -76,14 +76,17 @@ class RpcProvider
         $this->defaultRpcMethodVersion = $defaultRpcMethodVersion;
     }
 
-    public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
+    public function prepareRequestEntity(RpcRequestEntity $requestEntity): void
     {
         if ($requestEntity->getMetaItem(HttpHeaderEnum::VERSION) == null && $this->getDefaultRpcMethodVersion()) {
             $requestEntity->setMetaItem(HttpHeaderEnum::VERSION, $this->getDefaultRpcMethodVersion());
         }
-
         $requestEntity->setMetaItem(HttpHeaderEnum::TIMESTAMP, date(\DateTime::ISO8601));
+    }
 
+    public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
+    {
+        $this->prepareRequestEntity($requestEntity);
         return $this->getRpcClient()->sendRequestByEntity($requestEntity);
     }
 
