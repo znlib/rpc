@@ -30,6 +30,7 @@ class RpcClient
     private $authAgent;
     private $requestEncoder;
     private $responseEncoder;
+    protected $headers = [];
 
     public function __construct(Client $guzzleClient, RequestEncoder $requestEncoder, ResponseEncoder $responseEncoder, AuthorizationInterface $authAgent = null)
     {
@@ -37,6 +38,16 @@ class RpcClient
         $this->requestEncoder = $requestEncoder;
         $this->responseEncoder = $responseEncoder;
         $this->setAuthAgent($authAgent);
+    }
+
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    public function setHeaders(array $headers): void
+    {
+        $this->headers = $headers;
     }
 
     public function getGuzzleClient(): Client
@@ -108,7 +119,7 @@ class RpcClient
     {
         $options = [
             RequestOptions::JSON => $body,
-            RequestOptions::HEADERS => [],
+            RequestOptions::HEADERS => $this->headers,
         ];
         $options[RequestOptions::HEADERS]['Accept'] = $this->accept;
         try {

@@ -29,6 +29,9 @@ abstract class BaseRpcTest extends BaseTest
     {
         parent::__construct($name, $data, $dataName);
         $this->rpcProvider = new RpcProvider();
+        $this->rpcProvider->getRpcClient()->setHeaders([
+            'env-name' => 'test',
+        ]);
         $this->rpcProvider->setDefaultRpcMethod($this->defaultRpcMethod());
         $this->rpcProvider->setDefaultRpcMethodVersion($this->defaultRpcMethodVersion());
         $this->authProvider = new RpcAuthProvider($this->rpcProvider);

@@ -21,6 +21,7 @@ class RpcProvider
     protected $defaultPassword = 'Wwwqqq111';
     protected $defaultRpcMethod;
     protected $defaultRpcMethodVersion = 1;
+    protected $rpcClient;
 
     public function __construct(RequestEncoderInterface $requestEncoder = null, ResponseEncoderInterface $responseEncoder = null)
     {
@@ -35,9 +36,12 @@ class RpcProvider
 
     public function getRpcClient(): RpcClient
     {
-        $guzzleClient = $this->getGuzzleClient();
-        $authAgent = $this->getAuthorizationContract($guzzleClient);
-        return new RpcClient($guzzleClient, $this->requestEncoder, $this->responseEncoder, $authAgent);
+        if(empty($this->rpcClient)) {
+            $guzzleClient = $this->getGuzzleClient();
+            $authAgent = $this->getAuthorizationContract($guzzleClient);
+            $this->rpcClient = new RpcClient($guzzleClient, $this->requestEncoder, $this->responseEncoder, $authAgent);
+        }
+        return $this->rpcClient;
     }
 
     protected function getGuzzleClient(): Client
