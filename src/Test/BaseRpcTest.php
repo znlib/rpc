@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Test;
 
+use Tests\Helpers\FixtureHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
@@ -13,32 +14,49 @@ use ZnLib\Rpc\Domain\Libs\RpcClient;
 use ZnLib\Rpc\Domain\Libs\RpcFixtureProvider;
 use ZnLib\Rpc\Domain\Libs\RpcProvider;
 use ZnTool\Test\Base\BaseTest;
+use ZnTool\Test\Traits\AssertTrait;
+use ZnTool\Test\Traits\BaseUrlTrait;
+use ZnTool\Test\Traits\FixtureTrait;
+use PHPUnit\Framework\TestCase;
 
-abstract class BaseRpcTest extends BaseTest
+abstract class BaseRpcTest extends TestCase
 {
+
+    use FixtureTrait;
+    use BaseUrlTrait;
+    use AssertTrait;
 
     protected $defaultPassword = 'Wwwqqq111';
     protected $defaultRpcMethod;
     protected $defaultRpcMethodVersion = 1;
-    private $fixtures = [];
+//    private $fixtures = [];
     private $rpcProvider;
     private $authProvider;
-    private $fixtureProvider;
+//    private $fixtureProvider;
 
+    /*public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        //$this->authProvider = new RpcAuthProvider($this->rpcProvider);
+        //$this->setBaseUrl($_ENV['WEB_URL']);
+        $this->addFixtures(FixtureHelper::getCommonFixtures());
+    }*/
+    
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $this->rpcProvider = new RpcProvider();
+        $this->rpcProvider = $this->getRpcProvider($_ENV['API_URL']);
+        /*$this->rpcProvider = new RpcProvider();
         $this->rpcProvider->getRpcClient()->setHeaders([
             'env-name' => 'test',
         ]);
         $this->rpcProvider->setDefaultRpcMethod($this->defaultRpcMethod());
-        $this->rpcProvider->setDefaultRpcMethodVersion($this->defaultRpcMethodVersion());
+        $this->rpcProvider->setDefaultRpcMethodVersion($this->defaultRpcMethodVersion());*/
         $this->authProvider = new RpcAuthProvider($this->rpcProvider);
-        $this->fixtureProvider = new RpcFixtureProvider($this->rpcProvider);
+        //$this->fixtureProvider = new RpcFixtureProvider($this->rpcProvider);
     }
 
-    public function getRpcProvider(): RpcProvider
+    /*public function getRpcProvider(): RpcProvider
     {
         return $this->rpcProvider;
     }
@@ -69,7 +87,7 @@ abstract class BaseRpcTest extends BaseTest
         if ($this->fixtures) {
             $this->fixtureProvider->import($this->fixtures);
         }
-    }
+    }*/
 
     protected function defaultRpcMethod(): ?string
     {
@@ -99,7 +117,7 @@ abstract class BaseRpcTest extends BaseTest
 
     protected function getRpcClient(): RpcClient
     {
-        return $this->rpcProvider->getRpcClient();
+        return $this->getRpcProvider($this->getBaseUrl())->getRpcClient();
     }
 
     protected function assertSuccessAuthorization(string $login, string $password)
@@ -133,13 +151,14 @@ abstract class BaseRpcTest extends BaseTest
 
     protected function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-
-        return $this->rpcProvider->sendRequestByEntity($requestEntity);
+        return $this->getRpcProvider($this->getBaseUrl())->sendRequestByEntity($requestEntity);
+        //return $this->rpcProvider->sendRequestByEntity($requestEntity);
     }
 
     protected function sendRequest(string $method, array $params = [], array $meta = [], int $id = null): RpcResponseEntity
     {
-        return $this->rpcProvider->sendRequest($method, $params, $meta, $id);
+        return$this->getRpcProvider($this->getBaseUrl())->sendRequest($method, $params, $meta, $id);
+//        return $this->rpcProvider->sendRequest($method, $params, $meta, $id);
     }
 
     protected function printContent(RpcResponseEntity $response = null, string $filter = null)

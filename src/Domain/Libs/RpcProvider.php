@@ -22,6 +22,7 @@ class RpcProvider
     protected $defaultRpcMethod;
     protected $defaultRpcMethodVersion = 1;
     protected $rpcClient;
+    protected $baseUrl;
 
     public function __construct(RequestEncoderInterface $requestEncoder = null, ResponseEncoderInterface $responseEncoder = null)
     {
@@ -55,9 +56,16 @@ class RpcProvider
 
     protected function getBaseUrl(): string
     {
-        $baseUrl = $_ENV['API_URL'];
-        $baseUrl = trim($baseUrl, '/');
-        return $baseUrl;
+        if(empty($this->baseUrl)) {
+            /** @todo костыль */
+            $this->setBaseUrl($_ENV['API_URL']);
+        }
+        return $this->baseUrl;
+    }
+
+    public function setBaseUrl($baseUrl): void
+    {
+        $this->baseUrl = rtrim($baseUrl, '/');
     }
 
     public function getDefaultRpcMethod()
