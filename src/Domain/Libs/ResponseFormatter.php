@@ -2,7 +2,9 @@
 
 namespace ZnLib\Rpc\Domain\Libs;
 
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use ZnCore\Base\Helpers\EnvHelper;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 
@@ -17,12 +19,20 @@ class ResponseFormatter
             'data' => null,
         ];
 
-        if(EnvHelper::isDebug()) {
-            if(empty($data)) {
+        if (EnvHelper::isDebug()) {
+            if (empty($data)) {
                 $data = [];
             }
-            if($e instanceof \Throwable) {
-                $data['previous'] = $e->getPrevious();
+            if ($e instanceof \Throwable) {
+                try {
+                    $attributes = EntityHelper::toArray($e);
+                    $data = ArrayHelper::merge($attributes, $data);
+                } catch (NoSuchPropertyException $e) {}
+                if ($e->getPrevious() instanceof \Throwable) {
+                    try {
+                        $data['previous'] = EntityHelper::toArray($e->getPrevious());
+                    } catch (NoSuchPropertyException $e) {}
+                }
             }
             $error['data'] = $data;
         }

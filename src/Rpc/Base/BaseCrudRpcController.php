@@ -83,7 +83,6 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $this->forgeWith($requestEntity, $query);
         $id = $requestEntity->getParamItem('id');
         $entity = $this->service->oneById($id, $query);
-
         return $this->serializeResult($entity);
     }
 
@@ -91,7 +90,6 @@ abstract class BaseCrudRpcController extends BaseRpcController
     {
         $params = $requestEntity->getParams();
         $entity = $this->service->create($params);
-
         return $this->serializeResult($entity);
     }
 
