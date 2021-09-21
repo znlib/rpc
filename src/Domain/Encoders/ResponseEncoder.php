@@ -34,6 +34,9 @@ class ResponseEncoder implements ResponseEncoderInterface
         if (isset($data['id'])) {
             $response['id'] = $data['id'];
         }
+        if(empty($response['result']) && empty($data['error'])) {
+            $response['result'] = null;
+        }
         return $response;
     }
 
