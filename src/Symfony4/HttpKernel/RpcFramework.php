@@ -21,6 +21,14 @@ use ZnLib\Web\Symfony4\MicroApp\Enums\ControllerEventEnum;
 use ZnLib\Web\Symfony4\MicroApp\Events\ControllerEvent;
 use ZnSandbox\Sandbox\Rpc\Domain\Helpers\ErrorHelper;
 use ZnSandbox\Sandbox\Rpc\Domain\Services\ProcedureService;
+use ZnSandbox\Sandbox\Rpc\Domain\Services\ProcedureService2;
+use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
+use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\CheckAccessSubscriber;
+use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\CryptoProviderSubscriber;
+use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\LanguageSubscriber;
+use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\LogSubscriber;
+use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\TimestampSubscriber;
+use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\UserAuthenticationSubscriber;
 
 class RpcFramework implements HttpKernel\HttpKernelInterface
 {
@@ -36,12 +44,14 @@ class RpcFramework implements HttpKernel\HttpKernelInterface
         LoggerInterface $logger,
         ResponseFormatter $responseFormatter,
         RpcJsonResponse $rpcJsonResponse,
-        ProcedureService $procedureService
+        EventDispatcherInterface $dispatcher,
+        ProcedureService2 $procedureService
     )
     {
         $this->logger = $logger;
         $this->responseFormatter = $responseFormatter;
         $this->rpcJsonResponse = $rpcJsonResponse;
+        $this->setEventDispatcher($dispatcher);
         $this->procedureService = $procedureService;
     }
 
@@ -64,7 +74,6 @@ class RpcFramework implements HttpKernel\HttpKernelInterface
             $batchMode = RpcBatchModeEnum::SINGLE;
         } else {
             //$this->logger->info('request', $requestData ?: []);
-            
 //            $controllerEvent = new ControllerEvent($controllerInstance, $actionName, $request);
 //            $this->getEventDispatcher()->dispatch($controllerEvent, ControllerEventEnum::BEFORE_ACTION);
             
