@@ -43,6 +43,11 @@ abstract class BaseRpcTest extends TestCase
         return $this->defaultRpcMethodVersion;
     }
 
+    public function setAuthProvider(object $authProvider): void
+    {
+        $this->authProvider = $authProvider;
+    }
+
     protected function createRequest(string $login = null): RpcRequestEntity
     {
         $request = new RpcRequestEntity();
