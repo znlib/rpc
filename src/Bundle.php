@@ -31,7 +31,7 @@ class Bundle extends BaseBundle
     public function migration(): array
     {
         return [
-
+            //'/vendor/znlib/rpc/src/Domain/Migrations',
         ];
     }
 

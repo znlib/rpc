@@ -130,6 +130,7 @@ class RpcClient
                 throw new \Exception('Url not found!');
             }
         }
+//        exit($response->getBody()->getContents());
         return $response;
     }
 
