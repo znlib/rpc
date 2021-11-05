@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use ZnSandbox\Sandbox\Rpc\Domain\Entities\SettingsEntity;
+use ZnLib\Rpc\Domain\Entities\SettingsEntity;
 use ZnSandbox\Sandbox\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
 use ZnSandbox\Sandbox\Settings\Domain\Interfaces\Services\SystemServiceInterface;
 use ZnCore\Domain\Helpers\EntityHelper;
