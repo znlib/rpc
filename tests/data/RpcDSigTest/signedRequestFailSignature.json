@@ -1,0 +1,21 @@
+{
+    "jsonrpc": "2.0",
+    "method": "user.oneById",
+    "params": {
+        "id": 123
+    },
+    "meta": {
+        "Language": "ru",
+        "signature": {
+            "c14nMethod": "sort-string,hex-string,json-unescaped-unicode",
+            "digestMethod": "sha256",
+            "digestFormat": "base64",
+            "digestValue": "JyEjUZwq3ChWjOjYQunrb2m3eEuJZ1k1f2lQJiMUW4c=",
+            "signatureMethod": "openssl-sha256",
+            "signatureFormat": "base64",
+            "signatureValue": "qkctX1fU74sU93tXgqPAKUpgBmnT30vA5VTYA6wEhIrRKFO9L5fLN2fgU+ruXs+pVAl5mZCieQSPPRaXQfRFgCwvtQC3Uys6GCp0lgxA/GjU0tVMFDsjFW3rzFTrrPmbODW2tUV7K+Lvt7PmZwHcsxHL0SdA89LjIafPfoMkCPL09l87cqHy44Z02mIEsxt/lBy2K42Quewm1JKfk2ZCpzK2qjzqSSveDjpDRqnehVWRgl6kp/AgoPesuaqZLsxtTvBF5g08vCdhQfs2iZBSudxihykHwqkMi8+3EF3Cv/MIPo9UeY6E6ljxK8h6Hwx6w36yBvOGtMuxsUv6jed7Yw==",
+            "x509Certificate": "MIIEFzCCAv+gAwIBAgIESZYC0jANBgkqhkiG9w0BAQsFADCBjzELMAkGA1UEBhMCS1oxSDBGBgNVBAMMP9Kw0JvQotCi0KvSmiDQmtCj05jQm9CQ0J3QlNCr0KDQo9Co0Ksg0J7QoNCi0JDQm9Cr0pogVEVTVCAoUlNBKTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMB4XDTIxMDQyNTA3NDc0MFoXDTMxMDQyMzA3NDc0MFowgbUxHjAcBgNVBAMMFdCf0JXQotCg0J7QkiDQmNCS0JDQnTEVMBMGA1UEBAwM0J\/QldCi0KDQntCSMRgwFgYDVQQFEw9JSU44NTExMTUzNTAyNDgxCzAJBgNVBAYTAktaMR0wGwYDVQQqDBTQktCQ0KHQmNCb0KzQldCS0JjQpzETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsRrJKy1oB\/TZRX52WWznxN97a7VVH2j++oPuZqemLOKT+nRgnH3Xj1VXlVqz5UA0vAEw5Pt3EbVK33zMDDZeLstagGwIykhAKDcSw0anf+Z4EwJQjRifyManc1Abr2X7UgOgLZEUNezYjraJ8WUnXg+AIF5EQfwhRC\/5SwHIllQKxice\/7RULyHhylZy\/deilyqInZZodpcJ6iLj3SC4XnmK5yOJT3KTFGBDQh8hKS0h42vgt9BN7xPwXjLVweZDs9SdaYZmrgO1Viir7dE1CgSgkB+C3\/gSI+ACrh8FE3fMCyaOhRNJvkWJ1Cxh45rV0QNmVrbeZC3Cdp9cyfbZqQIDAQABo1MwUTAdBgNVHQ4EFgQUXnq7UTT4dUgmbEDSWe0Usjq\/od8wHwYDVR0jBBgwFoAUX2Bq1HS7pxJSm7640+VAuL\/8YeAwDwYDVR0TAQH\/BAUwAwEB\/zANBgkqhkiG9w0BAQsFAAOCAQEAZk9EcETPKg4k3PugfK7+5J4MSl68vWTMdQQ9sQqLVNf\/xOn6elbFUZZg0IfHrPAqsveZLt3tNbQETpRzS4PSQVWU8ClVghdXaNhNBraE1FSoTq6yBgsZJ\/7BpHYBrM9yHPtkBtgeT3L7ay90za3wWRqHOE0YxyOf9F2FhQTAdlWl4ZzaA\/s4AZPpfpqOP8vc+hNTWYBjeiZmMW+rA\/cnLAEnLVQdumIwwr8leDegxwJOsfrycHcj9aoV5rRZVNCg1GEnVSm9CGpaeYeuM5QCiqtBuTOrnb\/6yeC\/qBxhOYSIa5M\/bIkHU28NL8QVfI0lIV5eP1\/bpzzgUtNy12Uy3Q=="
+        }
+    },
+    "id": 1
+}
