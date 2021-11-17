@@ -58,7 +58,6 @@ abstract class BaseRpcController implements RpcAuthInterface
     protected function forgeWith(RpcRequestEntity $requestEntity, Query $query)
     {
         $with = $requestEntity->getParamItem('with');
-        //dd($with);
         if ($with) {
             foreach ($with as $relationName) {
                 $relationNameSnakeCase = $this->underscore($relationName);
