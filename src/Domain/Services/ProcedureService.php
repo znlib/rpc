@@ -5,6 +5,7 @@ namespace ZnLib\Rpc\Domain\Services;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use ZnCore\Domain\Exceptions\BadFilterValidateException;
 use ZnSandbox\Sandbox\Rpc\Domain\Entities\MethodEntity;
 use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcEventEnum;
 use ZnSandbox\Sandbox\Rpc\Domain\Events\RpcRequestEvent;
@@ -133,6 +134,11 @@ class ProcedureService
     private function handleUnprocessibleEntityException(UnprocessibleEntityException $e): RpcResponseEntity
     {
         $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
-        return $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS, 'Parameter validation error', $errorData);
+        if($e instanceof BadFilterValidateException) {
+            $message = 'Filter parameter validation error';
+        } else {
+            $message = 'Parameter validation error';
+        }
+        return $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS, $message, $errorData);
     }
 }

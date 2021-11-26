@@ -25,7 +25,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
     protected $pageSizeDefault;
     protected $filterModel;
 
-    private function forgeFilterModel(RpcRequestEntity $requestEntity): object {
+    protected function forgeFilterModel(RpcRequestEntity $requestEntity): object {
         $filterAttributes = $requestEntity->getParamItem('filter');
         $filterAttributes = $filterAttributes ? $this->removeEmptyParameters($filterAttributes) : [];
         $filterModel = EntityHelper::createEntity($this->filterModel, $filterAttributes);
