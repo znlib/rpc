@@ -21,6 +21,10 @@ abstract class BaseRpcController implements RpcAuthInterface
         return [];
     }
 
+    /**
+     * Атрибуты сущности, исключенные из сериализации
+     * @return array
+     */
     public function attributesExclude(): array
     {
         return [];
