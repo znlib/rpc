@@ -2,8 +2,6 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseCrudService;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
@@ -25,7 +23,8 @@ abstract class BaseCrudRpcController extends BaseRpcController
     protected $pageSizeDefault;
     protected $filterModel;
 
-    protected function forgeFilterModel(RpcRequestEntity $requestEntity): object {
+    protected function forgeFilterModel(RpcRequestEntity $requestEntity): object
+    {
         $filterAttributes = $requestEntity->getParamItem('filter');
         $filterAttributes = $filterAttributes ? $this->removeEmptyParameters($filterAttributes) : [];
         $filterModel = EntityHelper::createEntity($this->filterModel, $filterAttributes);
@@ -42,21 +41,19 @@ abstract class BaseCrudRpcController extends BaseRpcController
         return $filterModel;
     }
 
-    private function removeEmptyParameters(array $filterAttributes): array {
+    private function removeEmptyParameters(array $filterAttributes): array
+    {
         foreach ($filterAttributes as $attribute => $value) {
-            if($value === '') {
+            if ($value === '') {
                 unset($filterAttributes[$attribute]);
             }
         }
         return $filterAttributes;
     }
 
-    public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
+    private function forgeQueryByRequest(Query $query, RpcRequestEntity $requestEntity): void
     {
-        // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
-        $query = new Query();
         $this->forgeWith($requestEntity, $query);
-        $perPageMax = $this->pageSizeMax ?? DotEnv::get('PAGE_SIZE_MAX', 50);
         $perPageDefault = $this->pageSizeDefault ?? DotEnv::get('PAGE_SIZE_DEFAULT', 20);
         $perPage = $requestEntity->getParamItem('perPage', $perPageDefault);
         if ($perPage) {
@@ -66,12 +63,20 @@ abstract class BaseCrudRpcController extends BaseRpcController
         if ($page) {
             $query->page($page);
         }
+    }
 
+    public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
+    {
+        // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
+        $query = new Query();
+        $this->forgeQueryByRequest($query, $requestEntity);
         $dp = $this->service->getDataProvider($query);
+        $perPageMax = $this->pageSizeMax ?? DotEnv::get('PAGE_SIZE_MAX', 50);
         $dp->getEntity()->setMaxPageSize($perPageMax);
 
         if ($this->filterModel) {
             $filterModel = $this->forgeFilterModel($requestEntity);
+            $query->setFilterModel($filterModel);
             $dp->setFilterModel($filterModel);
         }
         return $this->serializeResult($dp);
