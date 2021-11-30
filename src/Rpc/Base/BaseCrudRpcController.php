@@ -72,6 +72,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
 
         if ($this->filterModel) {
             $filterModel = $this->forgeFilterModel($requestEntity);
+            $query->setFilterModel($filterModel);
             $dp->setFilterModel($filterModel);
         }
         return $this->serializeResult($dp);
