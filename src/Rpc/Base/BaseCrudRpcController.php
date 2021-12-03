@@ -51,7 +51,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
         return $filterAttributes;
     }
 
-    private function forgeQueryByRequest(Query $query, RpcRequestEntity $requestEntity): void
+    protected function forgeQueryByRequest(Query $query, RpcRequestEntity $requestEntity): void
     {
         $this->forgeWith($requestEntity, $query);
         $perPageDefault = $this->pageSizeDefault ?? DotEnv::get('PAGE_SIZE_DEFAULT', 20);
