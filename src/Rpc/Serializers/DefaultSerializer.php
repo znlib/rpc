@@ -35,6 +35,8 @@ class DefaultSerializer implements SerializerInterface
             $result = $this->encodeDataProvider($data);
         } elseif (is_object($data)) {
             $result = $this->encodeEntity($data);
+        } elseif (is_array($data)) {
+            $result = $this->encodeArray($data);
         } else {
             $result = $data;
         }
@@ -50,6 +52,14 @@ class DefaultSerializer implements SerializerInterface
     }
 
     protected function encodeEntity(object $entity)
+    {
+        $serializer = new Serializer($this->normalizers());
+        $array = $serializer->normalize($entity);
+        $array = $this->filterEntityAttributes($array);
+        return $array;
+    }
+
+    protected function encodeArray(array $entity)
     {
         $serializer = new Serializer($this->normalizers());
         $array = $serializer->normalize($entity);
