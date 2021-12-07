@@ -53,6 +53,12 @@ abstract class BaseCrudRpcController extends BaseRpcController
 
     protected function forgeQueryByRequest(Query $query, RpcRequestEntity $requestEntity): void
     {
+        $this->forgeQueryPagination($query, $requestEntity);
+    }
+
+    protected function forgeQueryPagination(Query $query, RpcRequestEntity $requestEntity): void
+    {
+        // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
         $this->forgeWith($requestEntity, $query);
         $perPageDefault = $this->pageSizeDefault ?? DotEnv::get('PAGE_SIZE_DEFAULT', 20);
         $perPage = $requestEntity->getParamItem('perPage', $perPageDefault);
@@ -65,10 +71,8 @@ abstract class BaseCrudRpcController extends BaseRpcController
         }
     }
 
-    public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
+    protected function forgeQueryOrder(Query $query, RpcRequestEntity $requestEntity): void
     {
-        // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
-        $query = new Query();
         $order = $requestEntity->getParamItem('order');
         if ($order) {
             $orders = [
@@ -82,7 +86,20 @@ abstract class BaseCrudRpcController extends BaseRpcController
 
             $query->orderBy($order);
         }
-        $this->forgeQueryByRequest($query, $requestEntity);
+    }
+
+    protected function forgeQueryFilterModel(Query $query, RpcRequestEntity $requestEntity): void
+    {
+
+    }
+
+    public function all(RpcRequestEntity $requestEntity): RpcResponseEntity
+    {
+        // todo: получать data provider, в meta передавать параметры пагинации: totalCount, pageCount, currentPage, perPage
+        $query = new Query();
+        $this->forgeQueryOrder($query, $requestEntity);
+        $this->forgeQueryPagination($query, $requestEntity);
+
         $dp = $this->service->getDataProvider($query);
         $perPageMax = $this->pageSizeMax ?? DotEnv::get('PAGE_SIZE_MAX', 50);
         $dp->getEntity()->setMaxPageSize($perPageMax);
