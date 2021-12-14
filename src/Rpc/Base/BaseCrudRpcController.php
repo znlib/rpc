@@ -121,6 +121,14 @@ abstract class BaseCrudRpcController extends BaseRpcController
         return $this->serializeResult($entity);
     }
 
+    public function persist(RpcRequestEntity $requestEntity): RpcResponseEntity
+    {
+        $params = $requestEntity->getParams();
+        $entity = $this->service->createEntity($params);
+        $this->service->persist($entity);
+        return $this->serializeResult($entity);
+    }
+
     public function add(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $params = $requestEntity->getParams();
