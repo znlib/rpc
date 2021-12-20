@@ -63,13 +63,15 @@ abstract class BaseRpcController implements RpcAuthInterface
     {
         $with = $requestEntity->getParamItem('with');
         if ($with) {
+            $withItems = [];
             foreach ($with as $relationName) {
                 $relationNameSnakeCase = $this->underscore($relationName);
                 $relationNameCamelCase = $this->variablize($relationName);
                 if (in_array($relationNameSnakeCase, $this->allowRelations()) || in_array($relationNameCamelCase, $this->allowRelations())) {
-                    $query->with($relationNameSnakeCase);
+                    $withItems[] = $relationNameSnakeCase;
                 }
             }
+            $query->with($withItems);
         }
     }
 
