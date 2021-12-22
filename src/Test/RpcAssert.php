@@ -108,10 +108,18 @@ class RpcAssert extends BaseAssert
 
     public function assertPagination(int $totalCount = null, int $count, int $pageSize = null, int $page = 1)
     {
-        $this->assertCollectionCount($count);
-        $this->assertEquals($totalCount, $this->response->getMetaItem('totalCount'));
+
+        if($totalCount !== null) {
+            $this->assertEquals($totalCount, $this->response->getMetaItem('totalCount'));
+        }
+//        if($count) {
+            $this->assertCollectionCount($count);
+//        }
+        if($pageSize !== null) {
+            $this->assertEquals($pageSize, $this->response->getMetaItem('perPage'));
+        }
+
         $this->assertEquals($page, $this->response->getMetaItem('page'));
-        $this->assertEquals($pageSize, $this->response->getMetaItem('perPage'));
     }
 
     public function assertUnprocessableEntity(array $fieldNames = [])
