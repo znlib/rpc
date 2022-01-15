@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
+use ZnCore\Base\Helpers\ClassHelper;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
 use ZnCore\Domain\Base\BaseCrudService;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
@@ -22,6 +23,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
     protected $pageSizeMax;
     protected $pageSizeDefault;
     protected $filterModel;
+    protected $formClass;
 
     protected function forgeFilterModel(RpcRequestEntity $requestEntity): object
     {
@@ -120,10 +122,21 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $entity = $this->service->oneById($id, $query);
         return $this->serializeResult($entity);
     }
+    
+    protected function prepareForm(array $params) {
+        if($this->formClass) {
+            $formInstance = ClassHelper::createInstance($this->formClass);
+            EntityHelper::setAttributes($formInstance, $params);
+            ValidationHelper::validateEntity($formInstance);
+            $params = EntityHelper::toArray($formInstance);
+        }
+        return $params;
+    }
 
     public function persist(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $params = $requestEntity->getParams();
+        $params = $this->prepareForm($params);
         $entity = $this->service->createEntity($params);
         $this->service->persist($entity);
         return $this->serializeResult($entity);
@@ -132,6 +145,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
     public function add(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $params = $requestEntity->getParams();
+        $params = $this->prepareForm($params);
         $entity = $this->service->create($params);
         return $this->serializeResult($entity);
     }
@@ -141,8 +155,12 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $id = $requestEntity->getParamItem('id');
         $data = $requestEntity->getParams();
 
-        unset($data['id']);
-
+        $data = $this->prepareForm($data);
+        
+        if(isset($data['id'])) {
+            unset($data['id']);
+        }
+        
         $this->service->updateById($id, $data);
         $entity = $this->service->oneById($id);
 
