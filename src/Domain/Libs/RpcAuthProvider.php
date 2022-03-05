@@ -32,9 +32,10 @@ class RpcAuthProvider
         return $response;
     }
 
-    public function authBy(string $login, string $password): string
+    public function authBy(string $login, string $password): ?string
     {
         $response = $this->authRequest($login, $password);
-        return $response->getResult()['token'];
+        $token = $response->getResult()['token'] ?? null;
+        return $token;
     }
 }
