@@ -10,7 +10,7 @@ use ZnCore\Contract\User\Interfaces\Entities\IdentityEntityInterface;
 use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Base\Exceptions\ForbiddenException;
 use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Base\Exceptions\UnauthorizedException;
+use ZnBundle\User\Domain\Exceptions\UnauthorizedException;
 use ZnCore\Base\Helpers\InstanceHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;

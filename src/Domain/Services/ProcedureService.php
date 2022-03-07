@@ -93,7 +93,7 @@ class ProcedureService
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::NOT_FOUND, $e->getMessage(), EntityHelper::toArray($e), $e);
         } catch (UnprocessibleEntityException $e) {
             $responseEntity = $this->handleUnprocessibleEntityException($e);
-        } catch (\ZnCore\Base\Exceptions\UnauthorizedException | UnauthorizedException $e) {
+        } catch (UnauthorizedException $e) {
             $message = $e->getMessage() ?: 'Unauthorized';
             $responseEntity = $this->responseFormatter->forgeErrorResponse(HttpStatusCodeEnum::UNAUTHORIZED, $message, EntityHelper::toArray($e), $e);
         } catch (ForbiddenException $e) {
