@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Interfaces\Services;
 
-use ZnBundle\User\Domain\Interfaces\Entities\IdentityEntityInterface;
+use ZnCore\Contract\User\Interfaces\Entities\IdentityEntityInterface;
 
 interface IpServiceInterface
 {
