@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rest\Tests\Unit\DSig;
 
-use Tests\Traits\DataTestTrait;
+use ZnLib\Rpc\Test\Traits\DataTestTrait;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCrypt\Base\Domain\Exceptions\FailSignatureException;
 use ZnCrypt\Base\Domain\Exceptions\InvalidDigestException;
