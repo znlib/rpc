@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Test\Traits;
 
-use Tests\Libs\DynamicFileRepository;
+use ZnTool\Test\Repositories\DynamicFileRepository;
 use ZnCore\Base\Libs\App\Helpers\ContainerHelper;
 
 trait RepositoryTestTrait
