@@ -71,15 +71,15 @@ class RpcAssert extends BaseAssert
         return $this;
     }
 
-    public function assertIsError()
+    public function assertIsError(string $message = 'Response is not error')
     {
-        $this->assertTrue($this->response->isError(), 'Response is not error');
+        $this->assertTrue($this->response->isError(), $message);
         return $this;
     }
 
-    public function assertIsResult()
+    public function assertIsResult(string $message = 'Response is not success')
     {
-        $this->assertTrue($this->response->isSuccess(), 'Response is not success');
+        $this->assertTrue($this->response->isSuccess(), $message);
         return $this;
     }
 
