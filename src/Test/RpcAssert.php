@@ -21,7 +21,7 @@ class RpcAssert extends BaseAssert
         $this->response = $response;
         $this->assertEquals(RpcVersionEnum::V2_0, $response->getJsonrpc());
     }
-    
+
     public function assertNotFound(string $message = null)
     {
         $this->assertError(HttpStatusCodeEnum::NOT_FOUND, $message);
@@ -33,7 +33,7 @@ class RpcAssert extends BaseAssert
         $this->assertError(HttpStatusCodeEnum::FORBIDDEN, $message);
         return $this;
     }
-    
+
     public function assertUnauthorized(string $message = null)
     {
         $this->assertError(HttpStatusCodeEnum::UNAUTHORIZED, $message);
@@ -43,12 +43,12 @@ class RpcAssert extends BaseAssert
     public function assertError(int $code, string $message = null)
     {
         $this->assertErrorCode($code);
-        if($message) {
+        if ($message) {
             $this->assertErrorMessage($message);
         }
         return $this;
     }
-    
+
     public function assertErrorCode(int $code)
     {
 //        $this->assertIsError();
@@ -98,7 +98,30 @@ class RpcAssert extends BaseAssert
         }
     }
 
-    public function assertCollectionCount(int $expected)
+    public function assertCollectionSize(int $expected)
+    {
+        $this->assertCount($expected, $this->response->getResult());
+    }
+
+    public function assertCollection($data)
+    {
+        $this->assertResult($data);
+        $this->assertCollectionSize(count($data));
+    }
+
+    public function assertCollectionItemsById(array $ids)
+    {
+        $this->assertCollectionSize(count($ids));
+        $data = [];
+        foreach ($ids as $id) {
+            $data[] = [
+                'id' => $id,
+            ];
+        }
+        $this->assertResult($data);
+    }
+
+    private function assertCollectionCount(int $expected)
     {
         $this->assertIsResult();
         $this->assertCount($expected, $this->response->getResult());
@@ -109,13 +132,13 @@ class RpcAssert extends BaseAssert
     public function assertPagination(int $totalCount = null, int $count, int $pageSize = null, int $page = 1)
     {
 
-        if($totalCount !== null) {
+        if ($totalCount !== null) {
             $this->assertEquals($totalCount, $this->response->getMetaItem('totalCount'));
         }
 //        if($count) {
-            $this->assertCollectionCount($count);
+        $this->assertCollectionCount($count);
 //        }
-        if($pageSize !== null) {
+        if ($pageSize !== null) {
             $this->assertEquals($pageSize, $this->response->getMetaItem('perPage'));
         }
 

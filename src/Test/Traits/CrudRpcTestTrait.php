@@ -2,7 +2,9 @@
 
 namespace ZnLib\Rpc\Test\Traits;
 
+use Tests\Enums\UserEnum;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Test\RpcAssert;
@@ -72,7 +74,7 @@ trait CrudRpcTestTrait
         $request = $this->createRequest($login);
         $request->setMethod($this->baseMethod() . '.oneById');
         $request->setParamItem('id', $id);
-        if($params) {
+        if ($params) {
             foreach ($params as $paramKey => $paramValue) {
                 $request->setParamItem($paramKey, $paramValue);
             }
@@ -85,6 +87,26 @@ trait CrudRpcTestTrait
         $response = $this->oneById($id, $login);
         $expectedItem = $this->getRepository()->oneByIdAsArray($id);
         $this->getRpcAssert($response)->assertResult(['id' => $expectedItem['id']]);
+    }
+
+    protected function assertDeleteById(int $id, string $login = null, bool $checkInCollection = false)
+    {
+        if($checkInCollection) {
+            $response = $this->all(['perPage' => 1000], $login);
+            $ids = ArrayHelper::getColumn($response->getResult(), 'id');
+        }
+
+        $response = $this->deleteById($id, $login);
+        $this->getRpcAssert($response)->assertIsResult();
+
+        // check deleted entity
+        $this->assertNotFoundById($id, $login);
+
+        if($checkInCollection && in_array($id, $ids)) {
+            ArrayHelper::removeByValue($id, $ids);
+            $response = $this->all(['perPage' => 1000], $login);
+            $this->getRpcAssert($response)->assertCollectionItemsById($ids);
+        }
     }
 
     protected function assertNotFoundById(int $id, string $login = null)
@@ -102,22 +124,16 @@ trait CrudRpcTestTrait
     protected function assertAuthActions(array $arr)
     {
         foreach ($arr as $methodName => $isRequireAuth) {
-            if(!is_null($isRequireAuth)) {
+            if (!is_null($isRequireAuth)) {
                 $request = $this->createRequest();
                 $request->setMethod($this->baseMethod() . '.' . $methodName);
                 $request->setParams([]);
                 $response = $this->sendRequestByEntity($request);
-                if($isRequireAuth) {
-
+                if ($isRequireAuth) {
                     $this->getRpcAssert($response)->assertTrue($response->getError()['code'] == HttpStatusCodeEnum::UNAUTHORIZED, 'Unauthorized required method ' . $methodName);
-
-//                    $this->getRpcAssert($response)->assertUnauthorized(/*'Unauthorized required method'*/);
                 } else {
 
                     $this->getRpcAssert($response)->assertTrue($response->getError()['code'] != HttpStatusCodeEnum::UNAUTHORIZED, 'authorized not required method ' . $methodName);
-
-
-//                    $this->getRpcAssert($response)->assertIsResult(/*'Authorized not required method'*/);
                 }
             }
         }
@@ -132,49 +148,6 @@ trait CrudRpcTestTrait
             'update' => $update,
             'delete' => $delete,
         ];
-
         $this->assertAuthActions($arr);
-
-        /*
-        if(!is_null($all)) {
-            $response = $this->all();
-            if($all) {
-                $this->getRpcAssert($response)->assertUnauthorized();
-            } else {
-                $this->getRpcAssert($response)->assertIsResult();
-            }
-        }
-        if(!is_null($one)) {
-            $response = $this->oneById($this->getExistedId());
-            if($one) {
-                $this->getRpcAssert($response)->assertUnauthorized();
-            } else {
-                $this->getRpcAssert($response)->assertIsResult();
-            }
-        }
-        if(!is_null($create)) {
-            $response = $this->create([]);
-            if($create) {
-                $this->getRpcAssert($response)->assertUnauthorized();
-            } else {
-                $this->getRpcAssert($response)->assertIsResult();
-            }
-        }
-        if(!is_null($update)) {
-            $response = $this->update([]);
-            if($update) {
-                $this->getRpcAssert($response)->assertUnauthorized();
-            } else {
-                $this->getRpcAssert($response)->assertIsResult();
-            }
-        }
-        if(!is_null($delete)) {
-            $response = $this->deleteById($this->getExistedId());
-            if($delete) {
-                $this->getRpcAssert($response)->assertUnauthorized();
-            } else {
-                $this->getRpcAssert($response)->assertIsResult();
-            }
-        }*/
     }
 }
