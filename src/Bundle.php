@@ -10,7 +10,7 @@ class Bundle extends BaseBundle
     public function symfonyRpc(): array
     {
         return [
-            __DIR__ . '/Rpc/config/routes.php',
+            __DIR__ . '/Rpc/config/fixture-routes.php',
         ];
     }
 
