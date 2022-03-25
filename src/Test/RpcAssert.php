@@ -5,6 +5,7 @@ namespace ZnLib\Rpc\Test;
 use Psr\Http\Message\ResponseInterface;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Base\Helpers\DeprecateHelper;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
@@ -111,14 +112,13 @@ class RpcAssert extends BaseAssert
 
     public function assertCollectionItemsById(array $ids)
     {
+        $this->assertIsResult();
         $this->assertCollectionSize(count($ids));
-        $data = [];
-        foreach ($ids as $id) {
-            $data[] = [
-                'id' => $id,
-            ];
-        }
-        $this->assertResult($data);
+
+        $actualIds = ArrayHelper::getColumn($this->response->getResult(), 'id');
+        sort($ids);
+        sort($actualIds);
+        $this->assertEquals($ids, $actualIds);
     }
 
     private function assertCollectionCount(int $expected)
