@@ -102,6 +102,20 @@ class RpcAssert extends BaseAssert
     public function assertCollectionSize(int $expected)
     {
         $this->assertCount($expected, $this->response->getResult());
+        $totalCount = $this->response->getMetaItem('totalCount', null);
+        if($totalCount !== null) {
+            $this->assertEquals($expected, $totalCount);
+        }
+    }
+
+    public function assertCollectionSizeByPath(int $expected, string $path)
+    {
+        $data = ArrayHelper::getValue($this->response->getResult(), $path);
+        $this->assertCount($expected, $data);
+        /*$totalCount = $this->response->getMetaItem('totalCount', null);
+        if($totalCount !== null) {
+            $this->assertEquals($expected, $totalCount);
+        }*/
     }
 
     public function assertCollection($data)
