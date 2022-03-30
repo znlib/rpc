@@ -124,6 +124,12 @@ class RpcAssert extends BaseAssert
         $this->assertCollectionSize(count($data));
     }
 
+    public function assertCollectionIsEmpty()
+    {
+        $this->assertIsResult();
+        $this->assertCollectionSize(0);
+    }
+
     public function assertCollectionItemsById(array $ids)
     {
         $this->assertIsResult();

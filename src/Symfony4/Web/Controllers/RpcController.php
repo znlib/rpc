@@ -55,7 +55,6 @@ class RpcController
         $isErrorParse = json_last_error();
         $this->logger->info('request', $requestData ?: []);
         if ($isErrorParse) {
-
             switch ($isErrorParse) {
                 case JSON_ERROR_NONE: // Ошибок нет
                     $errorDescription = 'No errors';
