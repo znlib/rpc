@@ -81,11 +81,9 @@ abstract class BaseCrudRpcController extends BaseRpcController
                 'asc' => SORT_ASC,
                 'desc' => SORT_DESC
             ];
-
             foreach ($order as $key => $value) {
                 $order[$key] = $orders[$value];
             }
-
             $query->orderBy($order);
         }
     }
