@@ -141,6 +141,17 @@ class RpcAssert extends BaseAssert
         $this->assertEquals($ids, $actualIds);
     }
 
+    public function assertCollectionItemsByAttribute(array $values, string $attributeName)
+    {
+        $this->assertIsResult();
+        $this->assertCollectionSize(count($values));
+
+        $actualIds = ArrayHelper::getColumn($this->response->getResult(), $attributeName);
+        sort($values);
+        sort($actualIds);
+        $this->assertEquals($values, $actualIds);
+    }
+
     private function assertCollectionCount(int $expected)
     {
         $this->assertIsResult();
