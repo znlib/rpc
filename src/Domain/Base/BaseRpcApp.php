@@ -34,7 +34,7 @@ abstract class BaseRpcApp extends BaseApp
 
     public function import(): array
     {
-        return ['i18next', 'container', 'symfonyRpc'];
+        return ['i18next', 'container', 'rbac', 'symfonyRpc'];
     }
 
     protected function configContainer(ContainerConfiguratorInterface $containerConfigurator): void
