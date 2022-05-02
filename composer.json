@@ -11,11 +11,11 @@
   "minimum-stability": "dev",
   "require": {
     "guzzlehttp/guzzle": ">5.3",
-    "zncore/domain": "v0.0.*",
+    "zncore/domain": "0.x-dev",
     "symfony/http-foundation": "^4.4|^5.0",
     "symfony/routing": "^4.4|^5.0",
     "symfony/config": "^4.4|^5.0",
-    "znlib/rest": "v0.0.*"
+    "znlib/rest": "0.x-dev"
   },
   "autoload": {
     "psr-4": {
