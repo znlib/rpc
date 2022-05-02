@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rest\Tests\Unit\DSig;
 
-use ZnSandbox\Sandbox\Rpc\Symfony4\Web\Libs\JsonDSigCryptoProvider;
+use ZnLib\Rpc\Symfony4\Web\Libs\JsonDSigCryptoProvider;
 use ZnCrypt\Pki\Domain\Helpers\RsaKeyLoaderHelper;
 use ZnTool\Test\Base\BaseTest;
 

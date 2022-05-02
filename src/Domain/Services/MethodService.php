@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use ZnSandbox\Sandbox\Rpc\Domain\Entities\MethodEntity;
-use ZnSandbox\Sandbox\Rpc\Domain\Interfaces\Services\MethodServiceInterface;
+use ZnLib\Rpc\Domain\Entities\MethodEntity;
+use ZnLib\Rpc\Domain\Interfaces\Services\MethodServiceInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Domain\Base\BaseCrudService;
 use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;

@@ -19,8 +19,8 @@ use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Web\Symfony4\MicroApp\Libs\CookieValue;
-use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcEventEnum;
-use ZnSandbox\Sandbox\Rpc\Domain\Events\RpcRequestEvent;
+use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
+use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 
 class RpcFirewallSubscriber implements EventSubscriberInterface
 {

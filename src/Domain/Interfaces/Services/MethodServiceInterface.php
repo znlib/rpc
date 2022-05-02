@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Interfaces\Services;
 
-use ZnSandbox\Sandbox\Rpc\Domain\Entities\MethodEntity;
+use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnCore\Domain\Interfaces\Service\CrudServiceInterface;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 

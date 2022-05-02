@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Subscribers;
 
-use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcEventEnum;
-use ZnSandbox\Sandbox\Rpc\Domain\Events\RpcRequestEvent;
+use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
+use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnBundle\User\Domain\Exceptions\UnauthorizedException;
 use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
@@ -14,7 +14,7 @@ use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 
 /**
  * Class UserAuthenticationSubscriber
- * @package ZnSandbox\Sandbox\Rpc\Domain\Subscribers
+ * @package ZnLib\Rpc\Domain\Subscribers
  * @deprecated 
  * @uses RpcFirewallSubscriber
  */

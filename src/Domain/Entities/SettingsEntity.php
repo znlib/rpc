@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Entities;
 
 use ZnCore\Domain\Constraints\Boolean;
 use ZnCore\Domain\Constraints\Enum;
-use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcCryptoProviderStrategyEnum;
+use ZnLib\Rpc\Domain\Enums\RpcCryptoProviderStrategyEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Base\Helpers\EnumHelper;

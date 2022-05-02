@@ -6,8 +6,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnBundle\Language\Domain\Interfaces\Services\RuntimeLanguageServiceInterface;
 use ZnCore\Domain\Traits\EntityManagerTrait;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
-use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcEventEnum;
-use ZnSandbox\Sandbox\Rpc\Domain\Events\RpcRequestEvent;
+use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
+use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 
 class LanguageSubscriber implements EventSubscriberInterface
 {

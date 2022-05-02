@@ -8,14 +8,14 @@ use ZnCore\Base\Libs\App\Interfaces\ContainerConfiguratorInterface;
 use ZnLib\Rpc\Symfony4\HttpKernel\RpcFramework;
 use ZnSandbox\Sandbox\App\Base\BaseApp;
 use ZnSandbox\Sandbox\App\Subscribers\WebDetectTestEnvSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\CheckAccessSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\CryptoProviderSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\LanguageSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\LogSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\RpcFirewallSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\TimestampSubscriber;
-use ZnSandbox\Sandbox\Rpc\Domain\Subscribers\UserAuthenticationSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\CheckAccessSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\CryptoProviderSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\LanguageSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\LogSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\RpcFirewallSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\TimestampSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\UserAuthenticationSubscriber;
 
 abstract class BaseRpcApp extends BaseApp
 {

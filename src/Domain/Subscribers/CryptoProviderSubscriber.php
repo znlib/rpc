@@ -2,12 +2,12 @@
 
 namespace ZnLib\Rpc\Domain\Subscribers;
 
-use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcCryptoProviderStrategyEnum;
-use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcEventEnum;
-use ZnSandbox\Sandbox\Rpc\Domain\Events\RpcRequestEvent;
-use ZnSandbox\Sandbox\Rpc\Domain\Events\RpcResponseEvent;
-use ZnSandbox\Sandbox\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
-use ZnSandbox\Sandbox\Rpc\Symfony4\Web\Libs\CryptoProviderInterface;
+use ZnLib\Rpc\Domain\Enums\RpcCryptoProviderStrategyEnum;
+use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
+use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
+use ZnLib\Rpc\Domain\Events\RpcResponseEvent;
+use ZnLib\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
+use ZnLib\Rpc\Symfony4\Web\Libs\CryptoProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Domain\Traits\EntityManagerTrait;
 

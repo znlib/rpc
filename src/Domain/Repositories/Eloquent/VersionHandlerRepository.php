@@ -3,8 +3,8 @@
 namespace ZnLib\Rpc\Domain\Repositories\Eloquent;
 
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
-use ZnSandbox\Sandbox\Rpc\Domain\Entities\VersionHandlerEntity;
-use ZnSandbox\Sandbox\Rpc\Domain\Interfaces\Repositories\VersionHandlerRepositoryInterface;
+use ZnLib\Rpc\Domain\Entities\VersionHandlerEntity;
+use ZnLib\Rpc\Domain\Interfaces\Repositories\VersionHandlerRepositoryInterface;
 
 class VersionHandlerRepository extends BaseEloquentCrudRepository implements VersionHandlerRepositoryInterface
 {

@@ -9,8 +9,8 @@ use ZnCore\Domain\Base\Repositories\BaseFileCrudRepository;
 use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
 use ZnCore\Domain\Libs\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
-use ZnSandbox\Sandbox\Rpc\Domain\Entities\MethodEntity;
-use ZnSandbox\Sandbox\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;
+use ZnLib\Rpc\Domain\Entities\MethodEntity;
+use ZnLib\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 
 class MethodRepository extends BaseFileCrudRepository implements MethodRepositoryInterface

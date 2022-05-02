@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Subscribers;
 
-use ZnSandbox\Sandbox\Rpc\Domain\Enums\RpcEventEnum;
-use ZnSandbox\Sandbox\Rpc\Domain\Events\RpcResponseEvent;
+use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
+use ZnLib\Rpc\Domain\Events\RpcResponseEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Domain\Helpers\EntityHelper;

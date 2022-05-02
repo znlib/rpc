@@ -11,6 +11,7 @@ class Bundle extends BaseBundle
     {
         return [
             __DIR__ . '/Rpc/config/fixture-routes.php',
+            __DIR__ . '/Rpc/config/settings-routes.php',
         ];
     }
 
@@ -31,7 +32,7 @@ class Bundle extends BaseBundle
     public function migration(): array
     {
         return [
-            //'/vendor/znlib/rpc/src/Domain/Migrations',
+            '/vendor/znlib/rpc/src/Domain/Migrations',
         ];
     }
 
@@ -39,6 +40,7 @@ class Bundle extends BaseBundle
     {
         return [
             __DIR__ . '/Domain/config/container.php',
+            __DIR__ . '/Domain/config/container-script.php',
         ];
     }
 }
