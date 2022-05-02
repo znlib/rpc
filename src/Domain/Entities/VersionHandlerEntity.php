@@ -8,7 +8,7 @@ use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Domain\Constraints\Enum;
 use ZnCore\Domain\Interfaces\Entity\ValidateEntityByMetadataInterface;
 use ZnCore\Domain\Interfaces\Entity\UniqueInterface;
-use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
+use ZnCore\Contract\Domain\Interfaces\Entities\EntityIdInterface;
 
 class VersionHandlerEntity implements ValidateEntityByMetadataInterface, UniqueInterface, EntityIdInterface
 {

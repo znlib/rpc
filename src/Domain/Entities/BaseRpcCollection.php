@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Entities;
 
 use Illuminate\Support\Collection;
 use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Domain\Interfaces\Entity\EntityIdInterface;
+use ZnCore\Contract\Domain\Interfaces\Entities\EntityIdInterface;
 
 class BaseRpcCollection
 {

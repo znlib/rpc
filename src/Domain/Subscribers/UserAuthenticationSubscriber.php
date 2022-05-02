@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Domain\Subscribers;
 use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
 use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ZnBundle\User\Domain\Exceptions\UnauthorizedException;
+use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Domain\Traits\EntityManagerTrait;

@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Enums\Rbac;
 
-use ZnCore\Base\Interfaces\GetLabelsInterface;
+use ZnCore\Contract\Enum\Interfaces\GetLabelsInterface;
 
 class FixturePermissionEnum implements GetLabelsInterface
 {
