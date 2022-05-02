@@ -23,7 +23,6 @@ return [
 //        \ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface::class => \ZnLib\Rpc\Domain\Repositories\File\DocsRepository::class,
 
         'ZnLib\\Rpc\\Domain\\Interfaces\\Services\\ProcedureServiceInterface' => 'ZnLib\\Rpc\\Domain\\Services\\ProcedureService',
-        'ZnLib\\Rpc\\Domain\\Interfaces\\Services\\ControllerServiceInterface' => 'ZnLib\\Rpc\\Domain\\Services\\ControllerService',
         'ZnLib\\Rpc\\Domain\\Interfaces\\Repositories\\ProcedureConfigRepositoryInterface' => 'ZnLib\\Rpc\\Domain\\Repositories\\Conf\\ProcedureConfigRepository',
         'ZnLib\\Rpc\\Domain\\Interfaces\\Encoders\\RequestEncoderInterface' => 'ZnLib\\Rpc\\Domain\\Encoders\\RequestEncoder',
         'ZnLib\\Rpc\\Domain\\Interfaces\\Encoders\\ResponseEncoderInterface' => 'ZnLib\\Rpc\\Domain\\Encoders\\ResponseEncoder',
