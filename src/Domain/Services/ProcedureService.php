@@ -2,40 +2,39 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Illuminate\Container\EntryNotFoundException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
+use ZnCore\Base\Exceptions\NotFoundException;
+use ZnCore\Base\Libs\Event\Traits\EventDispatcherTrait;
+use ZnCore\Base\Libs\InstanceProvider;
+use ZnCore\Contract\User\Exceptions\ForbiddenException;
+use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Exceptions\BadFilterValidateException;
+use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
+use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Domain\Helpers\ValidationHelper;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
+use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
+use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
+use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
 use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 use ZnLib\Rpc\Domain\Events\RpcResponseEvent;
+use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
+use ZnLib\Rpc\Domain\Exceptions\SystemErrorException;
+use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Interfaces\Services\MethodServiceInterface;
+use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\CheckAccessSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\CryptoProviderSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\LanguageSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\LogSubscriber;
+use ZnLib\Rpc\Domain\Subscribers\RpcFirewallSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\TimestampSubscriber;
-use ZnLib\Rpc\Domain\Subscribers\UserAuthenticationSubscriber;
-use Illuminate\Container\EntryNotFoundException;
-use ZnCore\Contract\User\Exceptions\UnauthorizedException;
-use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
-use ZnCore\Contract\User\Exceptions\ForbiddenException;
-use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Base\Libs\Event\Traits\EventDispatcherTrait;
-use ZnCore\Base\Libs\InstanceProvider;
-use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
-use ZnCore\Domain\Helpers\EntityHelper;
-use ZnCore\Domain\Helpers\ValidationHelper;
-use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
-use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
-use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
-use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
-use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
-use ZnLib\Rpc\Domain\Exceptions\SystemErrorException;
-use ZnLib\Rpc\Domain\Helpers\RequestHelper;
-use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 
 class ProcedureService
 {
@@ -64,7 +63,7 @@ class ProcedureService
     {
         return [
             ApplicationAuthenticationSubscriber::class, // Аутентификация приложения
-            UserAuthenticationSubscriber::class, // Аутентификация пользователя
+            RpcFirewallSubscriber::class, // Аутентификация пользователя
             CheckAccessSubscriber::class, // Проверка прав доступа
             TimestampSubscriber::class, // Проверка метки времени запроса и подстановка метки времени ответа
             CryptoProviderSubscriber::class, // Проверка подписи запроса и подписание ответа
@@ -134,7 +133,7 @@ class ProcedureService
     private function handleUnprocessibleEntityException(UnprocessibleEntityException $e): RpcResponseEntity
     {
         $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
-        if($e instanceof BadFilterValidateException) {
+        if ($e instanceof BadFilterValidateException) {
             $message = 'Filter parameter validation error';
         } else {
             $message = 'Parameter validation error';

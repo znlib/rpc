@@ -14,27 +14,17 @@ use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
+use ZnLib\Rpc\Domain\Helpers\ErrorHelper;
 use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Domain\Libs\RpcJsonResponse;
-use ZnLib\Web\Symfony4\MicroApp\Enums\ControllerEventEnum;
-use ZnLib\Web\Symfony4\MicroApp\Events\ControllerEvent;
-use ZnLib\Rpc\Domain\Helpers\ErrorHelper;
-use ZnLib\Rpc\Domain\Services\ProcedureService;
 use ZnLib\Rpc\Domain\Services\ProcedureService2;
-use ZnLib\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
-use ZnLib\Rpc\Domain\Subscribers\CheckAccessSubscriber;
-use ZnLib\Rpc\Domain\Subscribers\CryptoProviderSubscriber;
-use ZnLib\Rpc\Domain\Subscribers\LanguageSubscriber;
-use ZnLib\Rpc\Domain\Subscribers\LogSubscriber;
-use ZnLib\Rpc\Domain\Subscribers\TimestampSubscriber;
-use ZnLib\Rpc\Domain\Subscribers\UserAuthenticationSubscriber;
 
 class RpcFramework implements HttpKernel\HttpKernelInterface
 {
 
     use EventDispatcherTrait;
-    
+
     protected $procedureService;
     protected $logger;
     protected $responseFormatter;
@@ -76,7 +66,7 @@ class RpcFramework implements HttpKernel\HttpKernelInterface
             //$this->logger->info('request', $requestData ?: []);
 //            $controllerEvent = new ControllerEvent($controllerInstance, $actionName, $request);
 //            $this->getEventDispatcher()->dispatch($controllerEvent, ControllerEventEnum::BEFORE_ACTION);
-            
+
             $isBatchRequest = RequestHelper::isBatchRequest($requestData);
             $batchMode = $isBatchRequest ? RpcBatchModeEnum::BATCH : RpcBatchModeEnum::SINGLE;
             $requestCollection = RequestHelper::createRequestCollection($requestData);
