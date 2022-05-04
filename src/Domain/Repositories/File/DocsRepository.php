@@ -4,6 +4,7 @@ namespace ZnLib\Rpc\Domain\Repositories\File;
 
 use Illuminate\Support\Collection;
 use ZnCore\Base\Exceptions\NotFoundException;
+use ZnCore\Base\Helpers\FindFileHelper;
 use ZnCore\Base\Helpers\HtmlHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\FileHelper;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
@@ -29,7 +30,7 @@ class DocsRepository implements DocsRepositoryInterface
     public function all(): Collection
     {
         $dir = $this->distDirectory();
-        $files = FileHelper::scanDir($dir);
+        $files = FindFileHelper::scanDir($dir);
         $collection = new Collection();
         foreach ($files as &$file) {
             if (FileHelper::fileExt($file) == 'html') {
