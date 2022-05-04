@@ -2,7 +2,6 @@
 
 namespace ZnLib\Rpc\Test;
 
-use Psr\Http\Message\ResponseInterface;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Base\Helpers\DeprecateHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
@@ -103,7 +102,7 @@ class RpcAssert extends BaseAssert
     {
         $this->assertCount($expected, $this->response->getResult());
         $totalCount = $this->response->getMetaItem('totalCount', null);
-        if($totalCount !== null) {
+        if ($totalCount !== null) {
             $this->assertEquals($expected, $totalCount);
         }
     }
@@ -146,10 +145,8 @@ class RpcAssert extends BaseAssert
         $this->assertIsResult();
         $this->assertCollectionSize(count($values));
 
-        $actualIds = ArrayHelper::getColumn($this->response->getResult(), $attributeName);
-        sort($values);
-        sort($actualIds);
-        $this->assertEquals($values, $actualIds);
+        $collection = $this->response->getResult();
+        $this->assertItemsByAttribute($values, $attributeName, $collection);
     }
 
     private function assertCollectionCount(int $expected)
