@@ -56,14 +56,6 @@ class RpcAssert extends BaseAssert
         return $this;
     }
 
-    public function assertErrorData(array $data)
-    {
-        DeprecateHelper::softThrow();
-        $this->assertIsError();
-        $this->assertEquals([$data], $this->response->getError()['data']);
-        return $this;
-    }
-
     public function assertErrorMessage(string $message)
     {
 //        $this->assertIsError();
