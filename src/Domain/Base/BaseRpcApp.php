@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Base;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use ZnCore\Base\Libs\App\Interfaces\ContainerConfiguratorInterface;
+use ZnCore\Base\Libs\Container\Interfaces\ContainerConfiguratorInterface;
 use ZnLib\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\CheckAccessSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\CryptoProviderSubscriber;

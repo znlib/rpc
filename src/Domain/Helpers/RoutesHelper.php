@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Domain\Helpers;
 
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
-use ZnCore\Base\Libs\App\Helpers\ContainerHelper;
+use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnCore\Base\Libs\App\Interfaces\ConfigManagerInterface;
 
 class RoutesHelper
