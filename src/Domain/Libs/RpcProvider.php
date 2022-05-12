@@ -58,7 +58,7 @@ class RpcProvider
     {
         if(empty($this->baseUrl)) {
             /** @todo костыль */
-            $this->setBaseUrl($_ENV['API_URL']);
+            $this->setBaseUrl($_ENV['RPC_URL']);
         }
         return $this->baseUrl;
     }
