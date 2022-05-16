@@ -10,6 +10,10 @@ use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
+use ZnLib\Rpc\Domain\Forms\BaseRpcAuthForm;
+use ZnLib\Rpc\Domain\Forms\RpcAuthByLoginForm;
+use ZnLib\Rpc\Domain\Forms\RpcAuthByTokenForm;
+use ZnLib\Rpc\Domain\Forms\RpcAuthGuestForm;
 use ZnLib\Rpc\Domain\Interfaces\Encoders\RequestEncoderInterface;
 use ZnLib\Rpc\Domain\Interfaces\Encoders\ResponseEncoderInterface;
 
@@ -23,11 +27,25 @@ class RpcProvider
     protected $defaultRpcMethodVersion = 1;
     protected $rpcClient;
     protected $baseUrl;
+    
+    /** @var RpcAuthProvider */
+    private $authProvider;
+    private $authToken;
 
     public function __construct(RequestEncoderInterface $requestEncoder = null, ResponseEncoderInterface $responseEncoder = null)
     {
         $this->requestEncoder = $requestEncoder ?? new RequestEncoder();
         $this->responseEncoder = $responseEncoder ?? new ResponseEncoder();
+    }
+
+    public function getAuthProvider(): RpcAuthProvider
+    {
+        return $this->authProvider ?: new RpcAuthProvider($this);
+    }
+
+    public function setAuthProvider(RpcAuthProvider $authProvider): void
+    {
+        $this->authProvider = $authProvider;
     }
 
     /*protected function getAuthorizationContract(Client $guzzleClient): AuthorizationInterface
@@ -96,13 +114,57 @@ class RpcProvider
         $requestEntity->setMetaItem(HttpHeaderEnum::TIMESTAMP, date(\DateTime::ISO8601));
     }
 
-    public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
-    {
-        $this->prepareRequestEntity($requestEntity);
-        return $this->getRpcClient()->sendRequestByEntity($requestEntity);
+    public function authByLogin(string $login, string $password): void {
+        $this->authByForm(new RpcAuthByLoginForm($login, $password));
+//        $this->authToken = $this->getAuthProvider()->authBy($login, $password);
     }
 
-    public function sendRequest(string $method, array $params = [], array $meta = [], int $id = null): RpcResponseEntity
+    public function authByForm(BaseRpcAuthForm $authForm): void {
+        $this->authToken = $this->getTokenByForm($authForm);
+    }
+
+    public function getTokenByForm(BaseRpcAuthForm $authForm): ?string {
+        $token = null;
+        /*if($authForm == null && $this->authToken) {
+            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $this->authToken);
+        }*/
+        if($authForm instanceof RpcAuthGuestForm) {
+//            $requestEntity->setMetaItem(HttpHeaderEnum::AUTHORIZATION, null);
+            $token = null;
+        }
+        if($authForm instanceof RpcAuthByLoginForm) {
+            $authorizationToken = $this
+                ->getAuthProvider()
+                ->authBy($authForm->getLogin(), $authForm->getPassword());
+            
+//            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
+            $token = $authorizationToken;
+        }
+        if($authForm instanceof RpcAuthByTokenForm) {
+            $token = $authForm->getToken();
+        }
+        return $token;
+    }
+
+    protected function prepareAuth(RpcRequestEntity $requestEntity, ?BaseRpcAuthForm $authForm): void {
+        if(!$authForm && $this->authToken) {
+            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $this->authToken);
+        } elseif($authForm) {
+            $token = $this->getTokenByForm($authForm);
+            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $token);
+        }
+    }
+
+    public function sendRequestByEntity(RpcRequestEntity $requestEntity, ?BaseRpcAuthForm $authForm = null): RpcResponseEntity
+    {
+        $this->prepareRequestEntity($requestEntity);
+        $this->prepareAuth($requestEntity, $authForm);
+        return $this
+            ->getRpcClient()
+            ->sendRequestByEntity($requestEntity);
+    }
+
+    /*public function sendRequest(string $method, array $params = [], array $meta = [], int $id = null): RpcResponseEntity
     {
         $request = new RpcRequestEntity();
         $request->setMethod($method);
@@ -111,5 +173,5 @@ class RpcProvider
         $request->setId($id);
         $response = $this->sendRequestByEntity($request);
         return $response;
-    }
+    }*/
 }

@@ -33,11 +33,15 @@ class RpcClientFacade
         $authPassword = $authPassword ?: $this->authPassword;
         
         $rpcProvider = self::createRpcProvider($_ENV['RPC_URL']);
-        $authProvider = new RpcAuthProvider($rpcProvider);
-        $authorizationToken = $authProvider->authBy($authLogin, $authPassword);
+        $rpcProvider->authByLogin($authLogin, $authPassword);
+        
+//        $authProvider = new RpcAuthProvider($rpcProvider);
+//        $authorizationToken = $authProvider->authBy($authLogin, $authPassword);
 
         //$request = new RpcRequestEntity();
-        $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
+//        $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
+        
+        
         //$request->setMethod('requestMessage.all');
 
         $response = $rpcProvider->sendRequestByEntity($request);

@@ -29,8 +29,8 @@ abstract class BaseRpcTest extends TestCase
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $rpcProvider = $this->getRpcProvider($this->getBaseUrl());
-        $this->authProvider = new RpcAuthProvider($rpcProvider);
+        $this->rpcProvider = $this->getRpcProvider($this->getBaseUrl());
+        $this->authProvider = new RpcAuthProvider($this->rpcProvider);
     }
 
     protected function defaultRpcMethod(): ?string
@@ -89,7 +89,7 @@ abstract class BaseRpcTest extends TestCase
 
     protected function authBy(string $login, string $password): string
     {
-        return $this->authProvider->authBy($login, $password);
+        return $this->rpcProvider->authByLogin($login, $password);
     }
 
     protected function getRpcAssert(RpcResponseEntity $response = null): RpcAssert
@@ -106,7 +106,14 @@ abstract class BaseRpcTest extends TestCase
 
     protected function sendRequest(string $method, array $params = [], array $meta = [], int $id = null): RpcResponseEntity
     {
-        return $this->getRpcProvider($this->getBaseUrl())->sendRequest($method, $params, $meta, $id);
+        $request = new RpcRequestEntity();
+        $request->setMethod($method);
+        $request->setParams($params);
+        $request->setMeta($meta);
+        $request->setId($id);
+        return $this->sendRequestByEntity($request);
+        
+//        return $this->getRpcProvider($this->getBaseUrl())->sendRequest($method, $params, $meta, $id);
 //        return $this->rpcProvider->sendRequest($method, $params, $meta, $id);
     }
 

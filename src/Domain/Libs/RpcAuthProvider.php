@@ -16,7 +16,7 @@ class RpcAuthProvider
         $this->rpcProvider = $rpcProvider;
     }
 
-    public function getAuthMethod(): string
+    /*public function getAuthMethod(): string
     {
         return $this->authMethod;
     }
@@ -24,6 +24,13 @@ class RpcAuthProvider
     public function setAuthMethod(string $authMethod): void
     {
         $this->authMethod = $authMethod;
+    }*/
+    
+    public function authBy(string $login, string $password): ?string
+    {
+        $response = $this->authRequest($login, $password);
+        $token = $response->getResult()['token'] ?? null;
+        return $token;
     }
 
     public function authRequest(string $login, string $password): RpcResponseEntity
@@ -41,12 +48,5 @@ class RpcAuthProvider
             'password' => $password,
         ]);*/
         return $response;
-    }
-
-    public function authBy(string $login, string $password): ?string
-    {
-        $response = $this->authRequest($login, $password);
-        $token = $response->getResult()['token'] ?? null;
-        return $token;
     }
 }
