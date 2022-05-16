@@ -70,19 +70,6 @@ class RpcClient
         $this->authAgent = $authAgent;
     }*/
 
-    private function responseToRpcResponse(ResponseInterface $response): RpcResponseEntity
-    {
-        $data = RestResponseHelper::getBody($response);
-        $data = $this->responseEncoder->decode($data);
-        $rpcResponse = new RpcResponseEntity();
-        if (!is_array($data)) {
-//            dd($data);
-            throw new \Exception('Empty response');
-        }
-        EntityHelper::setAttributes($rpcResponse, $data);
-        return $rpcResponse;
-    }
-
     public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
         $requestEntity->setJsonrpc(RpcVersionEnum::V2_0);
@@ -115,6 +102,29 @@ class RpcClient
         return $responseCollection;
     }
 
+    public function sendRequest(array $body = []): RpcResponseEntity
+    {
+        $body = $this->requestEncoder->encode($body);
+        $response = $this->sendRawRequest($body);
+        if ($this->isStrictMode) {
+            $this->validateResponse($response);
+        }
+        return $this->responseToRpcResponse($response);
+    }
+
+    private function responseToRpcResponse(ResponseInterface $response): RpcResponseEntity
+    {
+        $data = RestResponseHelper::getBody($response);
+        $data = $this->responseEncoder->decode($data);
+        $rpcResponse = new RpcResponseEntity();
+        if (!is_array($data)) {
+//            dd($data);
+            throw new \Exception('Empty response');
+        }
+        EntityHelper::setAttributes($rpcResponse, $data);
+        return $rpcResponse;
+    }
+
     private function sendRawRequest(array $body = [])
     {
         $options = [
@@ -132,16 +142,6 @@ class RpcClient
         }
 //        exit($response->getBody()->getContents());
         return $response;
-    }
-
-    public function sendRequest(array $body = []): RpcResponseEntity
-    {
-        $body = $this->requestEncoder->encode($body);
-        $response = $this->sendRawRequest($body);
-        if ($this->isStrictMode) {
-            $this->validateResponse($response);
-        }
-        return $this->responseToRpcResponse($response);
     }
 
     private function validateResponse(ResponseInterface $response)

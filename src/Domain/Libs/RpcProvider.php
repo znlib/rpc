@@ -30,17 +30,17 @@ class RpcProvider
         $this->responseEncoder = $responseEncoder ?? new ResponseEncoder();
     }
 
-    protected function getAuthorizationContract(Client $guzzleClient): AuthorizationInterface
+    /*protected function getAuthorizationContract(Client $guzzleClient): AuthorizationInterface
     {
         return new BearerAuthorization($guzzleClient);
-    }
+    }*/
 
     public function getRpcClient(): RpcClient
     {
         if(empty($this->rpcClient)) {
             $guzzleClient = $this->getGuzzleClient();
-            $authAgent = $this->getAuthorizationContract($guzzleClient);
-            $this->rpcClient = new RpcClient($guzzleClient, $this->requestEncoder, $this->responseEncoder, $authAgent);
+//            $authAgent = $this->getAuthorizationContract($guzzleClient);
+            $this->rpcClient = new RpcClient($guzzleClient, $this->requestEncoder, $this->responseEncoder/*, $authAgent*/);
         }
         return $this->rpcClient;
     }
