@@ -8,7 +8,7 @@ use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Forms\RpcAuthByLoginForm;
-use ZnLib\Rpc\Domain\Libs\RpcAuthProvider;
+use ZnLib\Rpc\Domain\Forms\RpcAuthGuestForm;
 use ZnLib\Rpc\Domain\Libs\RpcClient;
 use ZnTool\Test\Traits\AssertTrait;
 use ZnTool\Test\Traits\BaseUrlTrait;
@@ -52,6 +52,7 @@ abstract class BaseRpcTest extends TestCase
 
     protected function createRequest(string $login = null): RpcRequestEntity
     {
+        $this->authLogin = $login;
         $request = new RpcRequestEntity();
         if ($this->defaultRpcMethod()) {
             $request->setMethod($this->defaultRpcMethod());
@@ -60,11 +61,11 @@ abstract class BaseRpcTest extends TestCase
             $request->setMetaItem(HttpHeaderEnum::VERSION, $this->defaultRpcMethodVersion());
         }
         if ($login) {
-            $authorizationToken = $this->rpcProvider->getTokenByForm(new RpcAuthByLoginForm($login, $this->defaultPassword));
+//            $authorizationToken = $this->rpcProvider->getTokenByForm(new RpcAuthByLoginForm($login, $this->defaultPassword));
             //dd($authorizationToken);
 //            $this->rpcProvider->authByLogin($login, $this->defaultPassword);
 //            $authorizationToken = $this->authProvider->authBy($login, $this->defaultPassword);
-            $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
+//            $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
         }
         return $request;
     }
@@ -108,7 +109,12 @@ abstract class BaseRpcTest extends TestCase
 
     protected function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {
-        return $this->rpcProvider->sendRequestByEntity($requestEntity);
+        if ($this->authLogin) {
+            $authForm = new RpcAuthByLoginForm($this->authLogin, $this->defaultPassword);
+        } else {
+            $authForm = new RpcAuthGuestForm();
+        }
+        return $this->rpcProvider->sendRequestByEntity($requestEntity, $authForm);
         //return $this->rpcProvider->sendRequestByEntity($requestEntity);
     }
 
@@ -120,7 +126,7 @@ abstract class BaseRpcTest extends TestCase
         $request->setMeta($meta);
         $request->setId($id);
         return $this->sendRequestByEntity($request);
-        
+
 //        return $this->getRpcProvider($this->getBaseUrl())->sendRequest($method, $params, $meta, $id);
 //        return $this->rpcProvider->sendRequest($method, $params, $meta, $id);
     }
