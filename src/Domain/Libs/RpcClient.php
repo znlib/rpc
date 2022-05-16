@@ -27,17 +27,17 @@ class RpcClient
     private $guzzleClient;
     private $isStrictMode = true;
     private $accept = 'application/json';
-    private $authAgent;
+//    private $authAgent;
     private $requestEncoder;
     private $responseEncoder;
     protected $headers = [];
 
-    public function __construct(Client $guzzleClient, RequestEncoder $requestEncoder, ResponseEncoder $responseEncoder, AuthorizationInterface $authAgent = null)
+    public function __construct(Client $guzzleClient, RequestEncoder $requestEncoder, ResponseEncoder $responseEncoder/*, AuthorizationInterface $authAgent = null*/)
     {
         $this->guzzleClient = $guzzleClient;
         $this->requestEncoder = $requestEncoder;
         $this->responseEncoder = $responseEncoder;
-        $this->setAuthAgent($authAgent);
+//        $this->setAuthAgent($authAgent);
     }
 
     public function getHeaders(): array
@@ -60,7 +60,7 @@ class RpcClient
         $this->guzzleClient = $guzzleClient;
     }
 
-    public function getAuthAgent(): ?AuthorizationInterface
+   /* public function getAuthAgent(): ?AuthorizationInterface
     {
         return $this->authAgent;
     }
@@ -68,7 +68,7 @@ class RpcClient
     public function setAuthAgent(AuthorizationInterface $authAgent = null)
     {
         $this->authAgent = $authAgent;
-    }
+    }*/
 
     private function responseToRpcResponse(ResponseInterface $response): RpcResponseEntity
     {

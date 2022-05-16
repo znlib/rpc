@@ -9,16 +9,27 @@ class RpcAuthProvider
 {
 
     protected $rpcProvider;
+    protected $authMethod = 'authentication.getTokenByPassword';
 
     public function __construct(RpcProvider $rpcProvider)
     {
         $this->rpcProvider = $rpcProvider;
     }
 
+    public function getAuthMethod(): string
+    {
+        return $this->authMethod;
+    }
+
+    public function setAuthMethod(string $authMethod): void
+    {
+        $this->authMethod = $authMethod;
+    }
+
     public function authRequest(string $login, string $password): RpcResponseEntity
     {
         $request = new RpcRequestEntity();
-        $request->setMethod('authentication.getTokenByPassword');
+        $request->setMethod($this->authMethod);
         $request->setParams([
             'login' => $login,
             'password' => $password,
