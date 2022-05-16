@@ -2,6 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Facades;
 
+use ZnCore\Base\Enums\EnvEnum;
+use ZnCore\Base\Libs\App\Helpers\EnvHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
@@ -13,9 +15,14 @@ class RpcClientFacade
 
     private $authLogin;
     private $authPassword;
-    
-    public function __construct(string $authLogin = null, string $authPassword = null)
+    private $appEnv;
+
+    public function __construct(string $appEnv = null)
     {
+        $this->appEnv = $appEnv ?: EnvHelper::getAppEnv();
+    }
+    
+    public function authBy(string $authLogin = null, string $authPassword = null) {
         $this->authLogin = $authLogin;
         $this->authPassword = $authPassword;
     }
@@ -37,14 +44,16 @@ class RpcClientFacade
         return $response;
     }
 
-    public static function createRpcProvider(string $baseUrl): RpcProvider
+    public function createRpcProvider(string $baseUrl, int $rpcVersion = 1): RpcProvider
     {
         $rpcProvider = new RpcProvider();
         $rpcProvider->setBaseUrl($baseUrl);
-        $rpcProvider->getRpcClient()->setHeaders([
-            'env-name' => 'test',
-        ]);
-        $rpcProvider->setDefaultRpcMethodVersion(1);
+        if($this->appEnv == EnvEnum::TEST) {
+            $rpcProvider->getRpcClient()->setHeaders([
+                'env-name' => 'test',
+            ]);
+        }
+        $rpcProvider->setDefaultRpcMethodVersion($rpcVersion);
         return $rpcProvider;
     }
 }

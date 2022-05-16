@@ -2,11 +2,11 @@
 
 namespace ZnLib\Rest\Tests\Unit\DSig;
 
-use ZnLib\Rpc\Test\Traits\DataTestTrait;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCrypt\Base\Domain\Exceptions\FailSignatureException;
 use ZnCrypt\Base\Domain\Exceptions\InvalidDigestException;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnTool\Test\Traits\DataTestTrait;
 
 final class RpcResponseDSigTest extends BaseRpcDSigTest
 {
