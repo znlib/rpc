@@ -7,6 +7,7 @@ use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
+use ZnLib\Rpc\Domain\Forms\BaseRpcAuthForm;
 use ZnLib\Rpc\Domain\Forms\RpcAuthByLoginForm;
 use ZnLib\Rpc\Domain\Forms\RpcAuthGuestForm;
 use ZnLib\Rpc\Domain\Libs\RpcClient;
@@ -60,13 +61,13 @@ abstract class BaseRpcTest extends TestCase
         if ($this->defaultRpcMethodVersion()) {
             $request->setMetaItem(HttpHeaderEnum::VERSION, $this->defaultRpcMethodVersion());
         }
-        if ($login) {
-//            $authorizationToken = $this->rpcProvider->getTokenByForm(new RpcAuthByLoginForm($login, $this->defaultPassword));
+        /*if ($login) {
+            $authorizationToken = $this->rpcProvider->getTokenByForm(new RpcAuthByLoginForm($login, $this->defaultPassword));
             //dd($authorizationToken);
 //            $this->rpcProvider->authByLogin($login, $this->defaultPassword);
 //            $authorizationToken = $this->authProvider->authBy($login, $this->defaultPassword);
-//            $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
-        }
+            $request->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
+        }*/
         return $request;
     }
 
@@ -107,9 +108,11 @@ abstract class BaseRpcTest extends TestCase
         return $assert;
     }
 
-    protected function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
+    protected function sendRequestByEntity(RpcRequestEntity $requestEntity, ?BaseRpcAuthForm $authForm = null): RpcResponseEntity
     {
-        if ($this->authLogin) {
+        if($authForm) {
+            
+        } elseif ($this->authLogin) {
             $authForm = new RpcAuthByLoginForm($this->authLogin, $this->defaultPassword);
         } else {
             $authForm = new RpcAuthGuestForm();
