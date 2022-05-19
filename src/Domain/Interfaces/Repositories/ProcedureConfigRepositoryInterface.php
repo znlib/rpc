@@ -3,7 +3,10 @@
 namespace ZnLib\Rpc\Domain\Interfaces\Repositories;
 
 use ZnCore\Base\Exceptions\NotFoundException;
+use ZnCore\Base\Helpers\DeprecateHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
+
+DeprecateHelper::hardThrow();
 
 interface ProcedureConfigRepositoryInterface
 {

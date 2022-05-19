@@ -22,6 +22,8 @@ class MethodEntity implements ValidateEntityByMetadataInterface, UniqueInterface
     private $handlerMethod = null;
     private $version = null;
     private $statusId = StatusEnum::ENABLED;
+    private $title = null;
+    private $description = null;
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
@@ -133,5 +135,23 @@ class MethodEntity implements ValidateEntityByMetadataInterface, UniqueInterface
         $this->statusId = $statusId;
     }
 
-}
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+}

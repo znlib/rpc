@@ -5,6 +5,7 @@ namespace ZnLib\Rpc\Domain\Helpers;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnCore\Base\Libs\App\Interfaces\ConfigManagerInterface;
+use ZnUser\Rbac\Domain\Facades\FixtureGeneratorFacade;
 
 class RoutesHelper
 {
@@ -15,6 +16,25 @@ class RoutesHelper
         foreach ($routesPath as $file) {
             $routes = include $file;
             $collection = ArrayHelper::merge($collection, $routes);
+        }
+        $collection = self::loadTitle($collection);
+        return $collection;
+    }
+
+    private static function loadTitle($collection) {
+        $itemCollection = FixtureGeneratorFacade::generateItemCollection();
+        $itemCollectionIndexed = ArrayHelper::index($itemCollection, 'name');
+        foreach ($collection as &$item) {
+            $permissionName = $item['permission_name'];
+            $permissionItem = ArrayHelper::getValue($itemCollectionIndexed, $permissionName);
+            if($permissionItem) {
+                if(empty($item['title']) && !empty($permissionItem['title'])) {
+                    $item['title'] = $permissionItem['title'];
+                }
+                if(empty($item['description']) && !empty($permissionItem['description'])) {
+                    $item['description'] = $permissionItem['description'];
+                }
+            }
         }
         return $collection;
     }

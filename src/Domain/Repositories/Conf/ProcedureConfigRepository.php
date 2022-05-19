@@ -3,11 +3,14 @@
 namespace ZnLib\Rpc\Domain\Repositories\Conf;
 
 use ZnCore\Base\Exceptions\NotFoundException;
+use ZnCore\Base\Helpers\DeprecateHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\ProcedureConfigRepositoryInterface;
+
+DeprecateHelper::hardThrow();
 
 class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
 {

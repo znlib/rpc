@@ -49,6 +49,8 @@ class MethodService extends BaseCrudService implements MethodServiceInterface
             'handler_class' => 'ZnLib\Rpc\Rpc\Controllers\FixtureController',
             'handler_method' => 'import',
             'status_id' => 100,
+            'title' => null,
+            'description' => null,
         ];
         return $this->createEntity($attributes);
     }

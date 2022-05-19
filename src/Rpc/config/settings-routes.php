@@ -13,6 +13,8 @@ return [
         'handler_class' => SettingsController::class,
         'handler_method' => 'update',
         'status_id' => 100,
+        'title' => null,
+        'description' => null,
     ],
     [
         'method_name' => 'rpcSettings.view',
@@ -23,5 +25,7 @@ return [
         'handler_class' => SettingsController::class,
         'handler_method' => 'view',
         'status_id' => 100,
+        'title' => null,
+        'description' => null,
     ],
 ];
