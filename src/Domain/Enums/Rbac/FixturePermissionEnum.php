@@ -12,7 +12,7 @@ class FixturePermissionEnum implements GetLabelsInterface
     public static function getLabels()
     {
         return [
-            self::FIXTURE_IMPORT => 'Импорт фикстур',
+            self::FIXTURE_IMPORT => 'Фикстуры. Импорт',
         ];
     }
 }
