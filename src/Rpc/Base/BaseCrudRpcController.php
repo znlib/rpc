@@ -120,16 +120,18 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $entity = $this->service->oneById($id, $query);
         return $this->serializeResult($entity);
     }
-    
-    protected function prepareForm(?array $params, object $formInstance = null) {
-        if($this->formClass) {
-            if(!$formInstance) {
-                $formInstance = ClassHelper::createInstance($this->formClass);
-            }
-            EntityHelper::setAttributes($formInstance, $params);
-            ValidationHelper::validateEntity($formInstance);
-            $params = EntityHelper::toArray($formInstance);
+
+    protected function prepareForm(?array $params, object $formInstance = null)
+    {
+        if (!$formInstance && $this->formClass) {
+            $formInstance = ClassHelper::createInstance($this->formClass);
         }
+        if (!$formInstance) {
+            return $params;
+        }
+        EntityHelper::setAttributes($formInstance, $params);
+        ValidationHelper::validateEntity($formInstance);
+        $params = EntityHelper::toArray($formInstance);
         return $params;
     }
 
@@ -156,11 +158,11 @@ abstract class BaseCrudRpcController extends BaseRpcController
         $data = $requestEntity->getParams();
 
         $data = $this->prepareForm($data);
-        
-        if(isset($data['id'])) {
+
+        if (isset($data['id'])) {
             unset($data['id']);
         }
-        
+
         $this->service->updateById($id, $data);
         $entity = $this->service->oneById($id);
 
