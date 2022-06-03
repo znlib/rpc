@@ -2,18 +2,29 @@
 
 namespace ZnLib\Rpc\Domain\Helpers;
 
+use ZnCore\Base\Enums\EnvEnum;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
+use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
 use ZnLib\Rpc\Domain\Exceptions\ParamNotFoundException;
+use ZnLib\Rpc\Domain\Facades\RpcClientFacade;
 
 class RequestHelper
 {
 
+    protected function sendRpcRequest(RpcRequestEntity $requestEntity, string $login = null): RpcResponseEntity
+    {
+        $rpcClientFacade = new RpcClientFacade(EnvEnum::TEST);
+//        $rpcClientFacade->authBy($login, 'Wwwqqq111');
+        $response = $rpcClientFacade->send($requestEntity, $login, 'Wwwqqq111');
+        return $response;
+    }
+    
     public static function createRequestCollection(array $requestData): RpcRequestCollection
     {
         $requestCollection = new RpcRequestCollection();
