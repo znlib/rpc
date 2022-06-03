@@ -78,6 +78,7 @@ class RpcAssert extends BaseAssert
     public function assertId($expected)
     {
         $this->assertEquals($expected, $this->response->getId());
+        return $this;
     }
 
     public function assertResult($expectedResult)
@@ -88,6 +89,7 @@ class RpcAssert extends BaseAssert
         } else {
             $this->assertEquals($expectedResult, $this->response->getResult());
         }
+        return $this;
     }
 
     public function assertCollectionSize(int $expected)
@@ -97,6 +99,7 @@ class RpcAssert extends BaseAssert
         if ($totalCount !== null) {
             $this->assertEquals($expected, $totalCount);
         }
+        return $this;
     }
 
     public function assertCollectionSizeByPath(int $expected, string $path)
@@ -107,18 +110,21 @@ class RpcAssert extends BaseAssert
         if($totalCount !== null) {
             $this->assertEquals($expected, $totalCount);
         }*/
+        return $this;
     }
 
     public function assertCollection($data)
     {
         $this->assertResult($data);
         $this->assertCollectionSize(count($data));
+        return $this;
     }
 
     public function assertCollectionIsEmpty()
     {
         $this->assertIsResult();
         $this->assertCollectionSize(0);
+        return $this;
     }
 
     public function assertCollectionItemsById(array $ids)
@@ -130,6 +136,7 @@ class RpcAssert extends BaseAssert
         sort($ids);
         sort($actualIds);
         $this->assertEquals($ids, $actualIds);
+        return $this;
     }
 
     public function assertCollectionItemsByAttribute(array $values, string $attributeName)
@@ -139,6 +146,7 @@ class RpcAssert extends BaseAssert
 
         $collection = $this->response->getResult();
         $this->assertItemsByAttribute($values, $attributeName, $collection);
+        return $this;
     }
 
     private function assertCollectionCount(int $expected)
