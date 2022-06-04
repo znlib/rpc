@@ -63,7 +63,7 @@ abstract class BaseRpcController implements RpcAuthInterface
     {
         $with = $requestEntity->getParamItem('with');
         if($with) {
-            $this->forgeWithfromrray($with);
+            $this->forgeWithfromrray($with, $query);
         }
     }
 
