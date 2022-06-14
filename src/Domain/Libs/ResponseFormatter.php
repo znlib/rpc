@@ -34,9 +34,9 @@ class ResponseFormatter
                     } catch (NoSuchPropertyException $e) {}
                 }
             }
-            $error['data'] = $data;
         }
 
+        $error['data'] = $data;
         $responseArray = [
             'error' => $error,
         ];
