@@ -27,6 +27,7 @@ use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
 use ZnLib\Rpc\Domain\Exceptions\SystemErrorException;
 use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Interfaces\Services\MethodServiceInterface;
+use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\CheckAccessSubscriber;
@@ -36,7 +37,7 @@ use ZnLib\Rpc\Domain\Subscribers\LogSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\RpcFirewallSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\TimestampSubscriber;
 
-class ProcedureService
+class ProcedureService implements ProcedureServiceInterface
 {
 
     use EventDispatcherTrait;
@@ -59,7 +60,7 @@ class ProcedureService
         $this->instanceProvider = $instanceProvider;
     }
 
-    public function subscribes(): array
+    public function subscribes_____________(): array
     {
         return [
             ApplicationAuthenticationSubscriber::class, // Аутентификация приложения
