@@ -4,7 +4,11 @@ namespace ZnLib\Rpc\Symfony4\HttpKernel;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
@@ -32,7 +36,8 @@ class RpcKernel extends BaseHttpKernel
         ResponseFormatter $responseFormatter,
         RpcJsonResponse $rpcJsonResponse,
         EventDispatcherInterface $dispatcher,
-        ProcedureServiceInterface $procedureService
+        ProcedureServiceInterface $procedureService,
+        RequestStack $requestStack = null
     )
     {
         $this->logger = $logger;
@@ -40,6 +45,7 @@ class RpcKernel extends BaseHttpKernel
         $this->rpcJsonResponse = $rpcJsonResponse;
         $this->setEventDispatcher($dispatcher);
         $this->procedureService = $procedureService;
+        $this->requestStack = $requestStack;
     }
 
     public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
@@ -69,7 +75,11 @@ class RpcKernel extends BaseHttpKernel
             $requestCollection = RequestHelper::createRequestCollection($requestData);
             $responseCollection = $this->handleData($requestCollection);
         }
-        return $this->rpcJsonResponse->send($responseCollection, $batchMode);
+        $response = $this->rpcJsonResponse->send($responseCollection, $batchMode);
+
+        $response = $this->filterResponse($response, $request, $type);
+
+        return $response;
     }
 
     protected function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
