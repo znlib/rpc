@@ -4,10 +4,10 @@ namespace ZnLib\Rpc\Symfony4\Web;
 
 use Illuminate\Container\Container;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use ZnLib\Rpc\Symfony4\Web\Controllers\DefaultController;
-use ZnLib\Rpc\Symfony4\Web\Controllers\DocsController;
-use ZnLib\Rpc\Symfony4\Web\Controllers\RpcController;
+use ZnCore\Base\Helpers\DeprecateHelper;
 use ZnLib\Web\Symfony4\MicroApp\BaseModule;
+
+DeprecateHelper::hardThrow();
 
 class BusModule extends BaseModule
 {

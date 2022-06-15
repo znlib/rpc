@@ -22,7 +22,7 @@ class RpcJsonResponse
         $this->logger = $logger;
     }
 
-    public function send(RpcResponseCollection $responseCollection, int $batchMode = RpcBatchModeEnum::AUTO): JsonResponse
+    public function encode(RpcResponseCollection $responseCollection, int $batchMode = RpcBatchModeEnum::AUTO)
     {
         $responseData = $this->collectionToArray($responseCollection);
         $this->logger->info('response', $responseData);
@@ -31,8 +31,21 @@ class RpcJsonResponse
         if($isAutoSingle || $isSingle) {
             $responseData = $responseData[0];
         }
-        return $this->sendJson($responseData);
+        return $responseData;
     }
+    
+//    public function send(RpcResponseCollection $responseCollection, int $batchMode = RpcBatchModeEnum::AUTO): JsonResponse
+//    {
+//        /*$responseData = $this->collectionToArray($responseCollection);
+//        $this->logger->info('response', $responseData);
+//        $isAutoSingle = $batchMode == RpcBatchModeEnum::AUTO && count($responseData) == 1;
+//        $isSingle = $batchMode == RpcBatchModeEnum::SINGLE;
+//        if($isAutoSingle || $isSingle) {
+//            $responseData = $responseData[0];
+//        }*/
+//        $responseData = $this->encode($responseCollection, $batchMode);
+//        return $this->sendJson($responseData);
+//    }
 
     private function collectionToArray(RpcResponseCollection $responseCollection): array
     {

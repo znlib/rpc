@@ -3,13 +3,12 @@
 namespace ZnLib\Rpc\Symfony4\HttpKernel;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use ZnCore\Base\Libs\App\Helpers\EnvHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
@@ -50,20 +49,40 @@ class RpcKernel extends BaseHttpKernel
 
     public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
     {
-        $requestRawData = $request->getContent();
-        $requestData = json_decode($requestRawData, true);
+        $jsonData = $request->getContent();
+        $responseData = $this->handleJsonData($jsonData);
+        $response = $this->createResponse($responseData);
+        $response = $this->filterResponse($response, $request, $type);
+        return $response;
+    }
+
+    protected function jsonErrorCodeToMessage(int $jsonErrorCode): string
+    {
+        $errorDescription = ErrorHelper::descriptionFromJsonErrorCode($jsonErrorCode);
+        $message = "Invalid request. Parse JSON error! {$errorDescription}";
+        return $message;
+    }
+
+    protected function createErrorResponseByMessage(string $message): RpcResponseCollection
+    {
+        $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, $message);
+        $responseCollection = new RpcResponseCollection();
+        $responseCollection->add($responseEntity);
+        return $responseCollection;
+    }
+
+    protected function handleJsonData(string $jsonData)
+    {
+        $requestData = json_decode($jsonData, true);
         $jsonErrorCode = json_last_error();
-        if ($jsonErrorCode || empty($requestData)) {
-            if ($jsonErrorCode) {
-                $errorDescription = ErrorHelper::descriptionFromJsonErrorCode($jsonErrorCode);
-                $message = "Invalid request. Parse JSON error! {$errorDescription}";
-            } else {
-                $message = "Invalid request. Empty request!";
-            }
-            //$this->logger->warning('request', $requestData ?: []);
-            $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, $message);
-            $responseCollection = new RpcResponseCollection();
-            $responseCollection->add($responseEntity);
+        if ($jsonErrorCode) {
+            $message = $this->jsonErrorCodeToMessage($jsonErrorCode);
+            $responseCollection = $this->createErrorResponseByMessage($message);
+            $batchMode = RpcBatchModeEnum::SINGLE;
+        } elseif (empty($requestData)) {
+//            $message = $this->jsonErrorCodeToMessage($jsonErrorCode);
+            $message = "Invalid request. Empty request!";
+            $responseCollection = $this->createErrorResponseByMessage($message);
             $batchMode = RpcBatchModeEnum::SINGLE;
         } else {
             //$this->logger->info('request', $requestData ?: []);
@@ -75,10 +94,19 @@ class RpcKernel extends BaseHttpKernel
             $requestCollection = RequestHelper::createRequestCollection($requestData);
             $responseCollection = $this->handleData($requestCollection);
         }
-        $response = $this->rpcJsonResponse->send($responseCollection, $batchMode);
+//        $response = $this->rpcJsonResponse->send($responseCollection, $batchMode);
 
-        $response = $this->filterResponse($response, $request, $type);
+        $responseData = $this->rpcJsonResponse->encode($responseCollection, $batchMode);
+        return $responseData;
+    }
 
+    private function createResponse(array $responseData): JsonResponse
+    {
+        $response = new JsonResponse();
+        if (EnvHelper::isDebug()) {
+            $response->setEncodingOptions(JSON_PRETTY_PRINT);
+        }
+        $response->setData($responseData);
         return $response;
     }
 

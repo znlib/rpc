@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Base\Exceptions\NotFoundException;
+use ZnCore\Base\Helpers\DeprecateHelper;
 use ZnCore\Contract\User\Exceptions\ForbiddenException;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
@@ -26,6 +27,8 @@ use ZnLib\Rpc\Domain\Helpers\RequestHelper;
 use ZnLib\Rpc\Domain\Interfaces\Services\ProcedureServiceInterface;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Domain\Libs\RpcJsonResponse;
+
+DeprecateHelper::hardThrow();
 
 class RpcController
 {
