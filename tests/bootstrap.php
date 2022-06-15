@@ -3,7 +3,8 @@
 //\ZnCore\Base\Libs\DotEnv\DotEnv::init();
 
 
-$container = \Illuminate\Container\Container::getInstance();
+
+$container = new \Illuminate\Container\Container();
 $znCore = new \ZnSandbox\Sandbox\App\Libs\ZnCore($container);
 $znCore->init();
 
