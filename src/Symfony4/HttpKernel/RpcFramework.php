@@ -5,7 +5,10 @@ namespace ZnLib\Rpc\Symfony4\HttpKernel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ZnCore\Base\Libs\Event\Traits\EventDispatcherTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
@@ -20,7 +23,7 @@ use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Domain\Libs\RpcJsonResponse;
 use ZnLib\Rpc\Domain\Services\ProcedureService2;
 
-class RpcFramework implements HttpKernel\HttpKernelInterface
+class RpcFramework implements HttpKernelInterface, TerminableInterface
 {
 
     use EventDispatcherTrait;
@@ -73,6 +76,14 @@ class RpcFramework implements HttpKernel\HttpKernelInterface
             $responseCollection = $this->handleData($requestCollection);
         }
         return $this->rpcJsonResponse->send($responseCollection, $batchMode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function terminate(Request $request, Response $response)
+    {
+        $this->getEventDispatcher()->dispatch(new TerminateEvent($this, $request, $response), KernelEvents::TERMINATE);
     }
 
     protected function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
