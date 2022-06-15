@@ -23,7 +23,7 @@ use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Domain\Libs\RpcJsonResponse;
 use ZnLib\Rpc\Domain\Services\ProcedureService2;
 
-class RpcFramework implements HttpKernelInterface, TerminableInterface
+class RpcKernel implements HttpKernelInterface, TerminableInterface
 {
 
     use EventDispatcherTrait;

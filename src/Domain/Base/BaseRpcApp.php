@@ -12,7 +12,7 @@ use ZnLib\Rpc\Domain\Subscribers\LanguageSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\LogSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\RpcFirewallSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\TimestampSubscriber;
-use ZnLib\Rpc\Symfony4\HttpKernel\RpcFramework;
+use ZnLib\Rpc\Symfony4\HttpKernel\RpcKernel;
 use ZnSandbox\Sandbox\App\Base\BaseApp;
 use ZnSandbox\Sandbox\App\Subscribers\WebDetectTestEnvSubscriber;
 
@@ -38,7 +38,7 @@ abstract class BaseRpcApp extends BaseApp
 
     protected function configContainer(ContainerConfiguratorInterface $containerConfigurator): void
     {
-        $containerConfigurator->singleton(HttpKernelInterface::class, RpcFramework::class);
+        $containerConfigurator->singleton(HttpKernelInterface::class, RpcKernel::class);
     }
 
     protected function configDispatcher(EventDispatcherInterface $dispatcher): void
