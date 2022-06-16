@@ -2,10 +2,14 @@
 
 namespace ZnLib\Rpc\Symfony4\Web\Controllers;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ZnCore\Base\Enums\Http\HttpHeaderEnum;
 use ZnCore\Base\Legacy\Yii\Helpers\Url;
+use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
+use ZnCore\Base\Libs\FileSystem\Helpers\MimeTypeHelper;
 use ZnLib\Rpc\Domain\Enums\Rbac\RpcDocPermissionEnum;
 use ZnLib\Rpc\Domain\Interfaces\Services\DocsServiceInterface;
 use ZnLib\Web\Symfony4\MicroApp\BaseWebController;
@@ -73,12 +77,9 @@ class DocsController extends BaseWebController implements ControllerAccessInterf
         $docsHtml = $this->docsService->loadByName($name);
 
         $entity = $this->docsService->oneByName($name);
-        $response = new Response($docsHtml);
-        $disposition = HeaderUtils::makeDisposition(
-            HeaderUtils::DISPOSITION_ATTACHMENT,
-            $name . '_' . date('Y-m-d_H-i-s') . '.html'
-        );
-        $response->headers->set('Content-Disposition', $disposition);
+        $fileName = $name . '_' . date('Y-m-d_H-i-s') . '.html';
+
+        $response = $this->downloadFileContent($docsHtml, $fileName);
         $response->send();
         exit();
 
