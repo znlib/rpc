@@ -42,18 +42,7 @@ abstract class BaseRpcApp extends BaseApp
         $containerConfigurator->singleton(HttpKernelInterface::class, RpcKernel::class);
     }
 
-    /*protected function configDispatcher(EventDispatcherInterface $dispatcher): void
-    {
-        $dispatcher->addSubscriber($this->container->get(ApplicationAuthenticationSubscriber::class)); // Аутентификация приложения
-        $dispatcher->addSubscriber($this->container->get(RpcFirewallSubscriber::class)); // Аутентификация пользователя
-        $dispatcher->addSubscriber($this->container->get(CheckAccessSubscriber::class)); // Проверка прав доступа
-        $dispatcher->addSubscriber($this->container->get(TimestampSubscriber::class)); // Проверка метки времени запроса и подстановка метки времени ответа
-        $dispatcher->addSubscriber($this->container->get(CryptoProviderSubscriber::class)); // Проверка подписи запроса и подписание ответа
-        $dispatcher->addSubscriber($this->container->get(LogSubscriber::class)); // Логирование запроса и ответа
-        $dispatcher->addSubscriber($this->container->get(LanguageSubscriber::class)); // Обработка языка
-    }*/
-
-    protected function configDispatcher2(EventDispatcherConfiguratorInterface $configurator): void
+    protected function configDispatcher(EventDispatcherConfiguratorInterface $configurator): void
     {
         $configurator->addSubscriber(ApplicationAuthenticationSubscriber::class); // Аутентификация приложения
         $configurator->addSubscriber(RpcFirewallSubscriber::class); // Аутентификация пользователя

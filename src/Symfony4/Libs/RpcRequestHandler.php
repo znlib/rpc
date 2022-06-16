@@ -2,13 +2,6 @@
 
 namespace ZnLib\Rpc\Symfony4\Libs;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolverInterface;
-use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use ZnCore\Base\Libs\App\Helpers\EnvHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
@@ -25,25 +18,15 @@ class RpcRequestHandler
 {
 
     protected $procedureService;
-//    protected $logger;
     protected $responseFormatter;
     protected $rpcJsonResponse;
 
     public function __construct(
-//        EventDispatcherInterface $dispatcher,
-//        ControllerResolverInterface $resolver,
-
-//        LoggerInterface $logger,
         ResponseFormatter $responseFormatter,
         RpcJsonResponse $rpcJsonResponse,
         ProcedureServiceInterface $procedureService
-
-//        RequestStack $requestStack = null,
-//        ArgumentResolverInterface $argumentResolver = null
     )
     {
-//        parent::__construct($dispatcher, $resolver, $requestStack, $argumentResolver);
-//        $this->logger = $logger;
         $this->responseFormatter = $responseFormatter;
         $this->rpcJsonResponse = $rpcJsonResponse;
         $this->procedureService = $procedureService;
@@ -58,7 +41,6 @@ class RpcRequestHandler
             $responseCollection = $this->createErrorResponseByMessage($message);
             $batchMode = RpcBatchModeEnum::SINGLE;
         } elseif (empty($requestData)) {
-//            $message = $this->jsonErrorCodeToMessage($jsonErrorCode);
             $message = "Invalid request. Empty request!";
             $responseCollection = $this->createErrorResponseByMessage($message);
             $batchMode = RpcBatchModeEnum::SINGLE;
@@ -72,8 +54,6 @@ class RpcRequestHandler
             $requestCollection = RequestHelper::createRequestCollection($requestData);
             $responseCollection = $this->handleData($requestCollection);
         }
-//        $response = $this->rpcJsonResponse->send($responseCollection, $batchMode);
-//dump($responseCollection);
         $responseData = $this->rpcJsonResponse->encode($responseCollection, $batchMode);
         return $responseData;
     }
