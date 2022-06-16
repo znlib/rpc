@@ -48,11 +48,9 @@ class DocsController extends BaseWebController implements ControllerAccessInterf
 
     public function index(Request $request): Response
     {
-
         $this->breadcrumbWidget->add('List docs', Url::to(['/json-rpc']));
         //$this->layout = __DIR__ . '/../../../../Common/views/layouts/main.php';
         $docs = $this->docsService->all();
-//        dd($docs);
         return $this->render('index', [
             'docs' => $docs,
         ]);
@@ -63,11 +61,12 @@ class DocsController extends BaseWebController implements ControllerAccessInterf
         $name = $request->query->get('name', 'index');
         $docsHtml = $this->docsService->loadByName($name);
         $response = new Response($docsHtml);
-        $response->send();
-        exit();
+//        $response->send();
 
-//        $this->layout = null;
-//        return $response;
+
+        $this->layout = null;
+//        exit();
+        return $response;
     }
 
     public function download(Request $request): Response

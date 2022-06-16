@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ZnCore\Base\Libs\App\Helpers\EnvHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
@@ -31,23 +33,26 @@ class RpcKernel extends BaseHttpKernel
     protected $rpcJsonResponse;
 
     public function __construct(
+        EventDispatcherInterface $dispatcher,
+        ControllerResolverInterface $resolver,
+
         LoggerInterface $logger,
         ResponseFormatter $responseFormatter,
         RpcJsonResponse $rpcJsonResponse,
-        EventDispatcherInterface $dispatcher,
         ProcedureServiceInterface $procedureService,
-        RequestStack $requestStack = null
+
+        RequestStack $requestStack = null,
+        ArgumentResolverInterface $argumentResolver = null
     )
     {
+        parent::__construct($dispatcher, $resolver, $requestStack, $argumentResolver);
         $this->logger = $logger;
         $this->responseFormatter = $responseFormatter;
         $this->rpcJsonResponse = $rpcJsonResponse;
-        $this->setEventDispatcher($dispatcher);
         $this->procedureService = $procedureService;
-        $this->requestStack = $requestStack;
     }
 
-    public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
+    protected function handleRaw(Request $request, int $type = self::MAIN_REQUEST): Response
     {
         $jsonData = $request->getContent();
         $responseData = $this->handleJsonData($jsonData);
@@ -56,14 +61,14 @@ class RpcKernel extends BaseHttpKernel
         return $response;
     }
 
-    protected function jsonErrorCodeToMessage(int $jsonErrorCode): string
+    private function jsonErrorCodeToMessage(int $jsonErrorCode): string
     {
         $errorDescription = ErrorHelper::descriptionFromJsonErrorCode($jsonErrorCode);
         $message = "Invalid request. Parse JSON error! {$errorDescription}";
         return $message;
     }
 
-    protected function createErrorResponseByMessage(string $message): RpcResponseCollection
+    private function createErrorResponseByMessage(string $message): RpcResponseCollection
     {
         $responseEntity = $this->responseFormatter->forgeErrorResponse(RpcErrorCodeEnum::SERVER_ERROR_INVALID_REQUEST, $message);
         $responseCollection = new RpcResponseCollection();
@@ -71,7 +76,7 @@ class RpcKernel extends BaseHttpKernel
         return $responseCollection;
     }
 
-    protected function handleJsonData(string $jsonData)
+    private function handleJsonData(string $jsonData)
     {
         $requestData = json_decode($jsonData, true);
         $jsonErrorCode = json_last_error();
@@ -110,7 +115,7 @@ class RpcKernel extends BaseHttpKernel
         return $response;
     }
 
-    protected function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
+    private function handleData(RpcRequestCollection $requestCollection): RpcResponseCollection
     {
         $responseCollection = new RpcResponseCollection();
         foreach ($requestCollection->getCollection() as $requestEntity) {
