@@ -17,7 +17,7 @@ class DocsController extends BaseWebController implements ControllerAccessInterf
 
     private $docsService;
     protected $breadcrumbWidget;
-    protected $viewsDir = __DIR__ . '/../views/front';
+    protected $viewsDir = __DIR__ . '/../views/docs';
 
     public function __construct(
         DocsServiceInterface $docsService,
@@ -61,12 +61,10 @@ class DocsController extends BaseWebController implements ControllerAccessInterf
         $name = $request->query->get('name', 'index');
         $docsHtml = $this->docsService->loadByName($name);
         $response = new Response($docsHtml);
-//        $response->send();
+        $response->send();
+        exit();
 
-
-        $this->layout = null;
-//        exit();
-        return $response;
+//        return $response;
     }
 
     public function download(Request $request): Response
