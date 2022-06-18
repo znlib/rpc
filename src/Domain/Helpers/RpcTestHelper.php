@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Helpers;
 
-use ZnCore\Base\Enums\EnvEnum;
+use ZnCore\Base\Libs\App\Enums\EnvEnum;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Facades\RpcClientFacade;

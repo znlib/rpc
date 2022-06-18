@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Helpers;
 
-use ZnCore\Base\Enums\EnvEnum;
+use ZnCore\Base\Libs\App\Enums\EnvEnum;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
