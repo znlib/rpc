@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\FileSystem\Helpers\FindFileHelper;
-use ZnCore\Base\Helpers\HtmlHelper;
+use ZnLib\Web\Helpers\HtmlHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\FileHelper;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface;
