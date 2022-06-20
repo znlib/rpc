@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Rpc\Base;
 
 use ZnCore\Base\Helpers\ClassHelper;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
-use ZnCore\Domain\Base\BaseCrudService;
+use ZnCore\Base\Libs\Service\Base\BaseCrudService;
 use ZnCore\Base\Libs\Validation\Exceptions\UnprocessibleEntityException;
 use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
 use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
