@@ -7,7 +7,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 use ZnCore\Base\Libs\Store\StoreFile;
 use ZnCore\Domain\Base\Repositories\BaseFileCrudRepository;
 use ZnCore\Base\Libs\EntityManager\Interfaces\EntityManagerInterface;
-use ZnCore\Domain\Libs\Query;
+use ZnCore\Base\Libs\Query\Entities\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;
