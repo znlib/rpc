@@ -8,14 +8,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Contract\User\Exceptions\ForbiddenException;
-use ZnCore\Domain\Traits\EntityManagerTrait;
+use ZnCore\Base\Libs\EntityManager\Traits\EntityManagerAwareTrait;
 use ZnUser\Rbac\Domain\Interfaces\Services\AssignmentServiceInterface;
 use ZnUser\Rbac\Domain\Interfaces\Services\ManagerServiceInterface;
 
 class CheckAccessSubscriber implements EventSubscriberInterface
 {
 
-    use EntityManagerTrait;
+    use EntityManagerAwareTrait;
 
     private $authService;
     private $managerService;

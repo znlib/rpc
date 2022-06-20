@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Subscribers;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnBundle\Language\Domain\Interfaces\Services\RuntimeLanguageServiceInterface;
-use ZnCore\Domain\Traits\EntityManagerTrait;
+use ZnCore\Base\Libs\EntityManager\Traits\EntityManagerAwareTrait;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
 use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
@@ -12,7 +12,7 @@ use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 class LanguageSubscriber implements EventSubscriberInterface
 {
 
-    use EntityManagerTrait;
+    use EntityManagerAwareTrait;
 
     private $languageService;
 

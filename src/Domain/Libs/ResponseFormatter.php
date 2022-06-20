@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Domain\Libs;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use ZnCore\Base\Libs\App\Helpers\EnvHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
-use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 
 class ResponseFormatter

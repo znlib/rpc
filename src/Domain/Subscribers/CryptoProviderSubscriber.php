@@ -9,12 +9,12 @@ use ZnLib\Rpc\Domain\Events\RpcResponseEvent;
 use ZnLib\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
 use ZnLib\Rpc\Symfony4\Web\Libs\CryptoProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ZnCore\Domain\Traits\EntityManagerTrait;
+use ZnCore\Base\Libs\EntityManager\Traits\EntityManagerAwareTrait;
 
 class CryptoProviderSubscriber implements EventSubscriberInterface
 {
 
-    use EntityManagerTrait;
+    use EntityManagerAwareTrait;
 
     private $cryptoProvider;
     private $settingsService;

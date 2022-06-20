@@ -7,10 +7,10 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Base\Enums\StatusEnum;
 use ZnCore\Domain\Constraints\Enum;
 use ZnCore\Contract\Domain\Interfaces\Entities\EntityIdInterface;
-use ZnCore\Base\Libs\Entity\Interfaces\ValidateEntityByMetadataInterface;
+use ZnCore\Base\Libs\Validation\Interfaces\ValidationByMetadataInterface;
 use ZnCore\Base\Libs\Entity\Interfaces\UniqueInterface;
 
-class MethodEntity implements ValidateEntityByMetadataInterface, UniqueInterface, EntityIdInterface
+class MethodEntity implements ValidationByMetadataInterface, UniqueInterface, EntityIdInterface
 {
 
     private $id = null;

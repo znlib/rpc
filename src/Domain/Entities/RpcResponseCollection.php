@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use ZnCore\Domain\Exceptions\UnprocessibleEntityException;
-use ZnCore\Domain\Helpers\ValidationHelper;
+use ZnCore\Base\Libs\Validation\Exceptions\UnprocessibleEntityException;
+use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
 
 class RpcResponseCollection extends BaseRpcCollection
 {

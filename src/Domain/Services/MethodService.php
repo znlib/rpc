@@ -6,7 +6,7 @@ use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Services\MethodServiceInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Domain\Base\BaseCrudService;
-use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
+use ZnCore\Base\Libs\EntityManager\Interfaces\EntityManagerInterface;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 
 class MethodService extends BaseCrudService implements MethodServiceInterface

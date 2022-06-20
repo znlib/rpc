@@ -15,7 +15,7 @@ use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnBundle\User\Domain\Interfaces\Services\IdentityServiceInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Libs\DotEnv\DotEnv;
-use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Web\Symfony4\MicroApp\Libs\CookieValue;

@@ -6,13 +6,13 @@ use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
 use ZnLib\Rpc\Domain\Events\RpcResponseEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ZnCore\Domain\Helpers\EntityHelper;
-use ZnCore\Domain\Traits\EntityManagerTrait;
+use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
+use ZnCore\Base\Libs\EntityManager\Traits\EntityManagerAwareTrait;
 
 class LogSubscriber implements EventSubscriberInterface
 {
 
-    use EntityManagerTrait;
+    use EntityManagerAwareTrait;
 
     private $logger;
 

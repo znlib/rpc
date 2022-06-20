@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Events;
 
 use Symfony\Contracts\EventDispatcher\Event;
 use ZnCore\Base\Helpers\DeprecateHelper;
-use ZnCore\Domain\Traits\Event\EventSkipHandleTrait;
+use ZnCore\Base\Libs\Event\Traits\EventSkipHandleTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 

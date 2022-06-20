@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Base\Helpers\EnumHelper;
 use ZnCore\Base\Libs\Entity\Interfaces\UniqueInterface;
-use ZnCore\Base\Libs\Entity\Interfaces\ValidateEntityByMetadataInterface;
+use ZnCore\Base\Libs\Validation\Interfaces\ValidationByMetadataInterface;
 
-class SettingsEntity implements ValidateEntityByMetadataInterface, UniqueInterface
+class SettingsEntity implements ValidationByMetadataInterface, UniqueInterface
 {
 
     private $cryptoProviderStrategy = 'default';

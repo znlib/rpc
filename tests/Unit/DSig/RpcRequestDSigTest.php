@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rest\Tests\Unit\DSig;
 
-use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
 use ZnCrypt\Base\Domain\Exceptions\FailSignatureException;
 use ZnCrypt\Base\Domain\Exceptions\InvalidDigestException;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;

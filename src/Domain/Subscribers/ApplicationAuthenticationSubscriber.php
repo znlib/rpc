@@ -7,13 +7,13 @@ use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Domain\Traits\EntityManagerTrait;
+use ZnCore\Base\Libs\EntityManager\Traits\EntityManagerAwareTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 
 class ApplicationAuthenticationSubscriber implements EventSubscriberInterface
 {
 
-    use EntityManagerTrait;
+    use EntityManagerAwareTrait;
 
     public static function getSubscribedEvents()
     {
