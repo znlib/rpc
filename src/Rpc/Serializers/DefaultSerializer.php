@@ -3,6 +3,7 @@
 namespace ZnLib\Rpc\Rpc\Serializers;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -29,7 +30,7 @@ class DefaultSerializer implements SerializerInterface
 
     public function encode($data): RpcResponseEntity
     {
-        if ($data instanceof Collection) {
+        if ($data instanceof Enumerable) {
             $result = $this->encodeCollection($data);
         } elseif ($data instanceof DataProvider) {
             $result = $this->encodeDataProvider($data);
@@ -80,7 +81,7 @@ class DefaultSerializer implements SerializerInterface
         return $array;
     }
 
-    protected function encodeCollection(Collection $collection)
+    protected function encodeCollection(Enumerable $collection)
     {
         $array = [];
         foreach ($collection as $entity) {

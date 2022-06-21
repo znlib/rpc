@@ -8,6 +8,11 @@ use ZnDatabase\Fixture\Domain\Services\FixtureService;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 
+/**
+ * Class FixtureController
+ * @package ZnLib\Rpc\Rpc\Controllers
+ * @todo перенести в пакет с фикстурами
+ */
 class FixtureController
 {
 
