@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use ZnCore\Base\Libs\Constraints\Boolean;
+use ZnCore\Base\Libs\Validation\Constraints\Boolean;
 use ZnCore\Base\Libs\Enum\Constraints\Enum;
 use ZnLib\Rpc\Domain\Enums\RpcCryptoProviderStrategyEnum;
 use Symfony\Component\Validator\Constraints as Assert;
