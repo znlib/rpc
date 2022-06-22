@@ -8,7 +8,7 @@ use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 use ZnCore\Base\Enums\Http\HttpMethodEnum;
 use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
-use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
+use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
 use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
 use ZnLib\Rest\Helpers\RestResponseHelper;

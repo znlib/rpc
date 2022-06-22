@@ -8,7 +8,7 @@ use ZnLib\Rpc\Domain\Enums\RpcCryptoProviderStrategyEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Base\Libs\Enum\Helpers\EnumHelper;
-use ZnCore\Base\Libs\Entity\Interfaces\UniqueInterface;
+use ZnCore\Domain\Entity\Interfaces\UniqueInterface;
 use ZnCore\Base\Libs\Validation\Interfaces\ValidationByMetadataInterface;
 
 class SettingsEntity implements ValidationByMetadataInterface, UniqueInterface

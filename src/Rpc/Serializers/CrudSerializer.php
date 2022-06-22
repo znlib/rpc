@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Rpc\Serializers;
 use Illuminate\Support\Collection;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use ZnCore\Base\Libs\DataProvider\Libs\DataProvider;
+use ZnCore\Domain\DataProvider\Libs\DataProvider;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
 

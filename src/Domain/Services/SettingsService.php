@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Domain\Services;
 use ZnLib\Rpc\Domain\Entities\SettingsEntity;
 use ZnLib\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
 use ZnSandbox\Sandbox\Settings\Domain\Interfaces\Services\SystemServiceInterface;
-use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
+use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
 
 class SettingsService implements SettingsServiceInterface

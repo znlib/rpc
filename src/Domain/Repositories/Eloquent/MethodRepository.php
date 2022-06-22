@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Repositories\Eloquent;
 
-use ZnCore\Base\Libs\Query\Entities\Query;
+use ZnCore\Domain\Query\Entities\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;

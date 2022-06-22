@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Rpc\Base;
 
 use ZnCore\Base\Legacy\Yii\Helpers\Inflector;
-use ZnCore\Base\Libs\Query\Entities\Query;
+use ZnCore\Domain\Query\Entities\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
