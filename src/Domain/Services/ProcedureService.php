@@ -9,6 +9,7 @@ use ZnCore\Base\Enums\Http\HttpStatusCodeEnum;
 use ZnCore\Base\Exceptions\NotFoundException;
 use ZnCore\Base\Libs\EventDispatcher\Traits\EventDispatcherTrait;
 use ZnCore\Base\Libs\InstanceProvider;
+use ZnCore\Base\Libs\Validation\Helpers\ErrorCollectionHelper;
 use ZnCore\Contract\User\Exceptions\ForbiddenException;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnCore\Base\Libs\QueryFilter\Exceptions\BadFilterValidateException;
@@ -133,7 +134,7 @@ class ProcedureService implements ProcedureServiceInterface
 
     private function handleUnprocessibleEntityException(UnprocessibleEntityException $e): RpcResponseEntity
     {
-        $errorData = ValidationHelper::collectionToArray($e->getErrorCollection());
+        $errorData = ErrorCollectionHelper::collectionToArray($e->getErrorCollection());
         if ($e instanceof BadFilterValidateException) {
             $message = 'Filter parameter validation error';
         } else {
