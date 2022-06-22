@@ -14,7 +14,7 @@ use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnBundle\User\Domain\Interfaces\Services\IdentityServiceInterface;
 use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Base\Libs\DotEnv\DotEnv;
+use ZnCore\Base\Libs\DotEnv\Domain\Libs\DotEnv;
 use ZnCore\Base\Libs\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;

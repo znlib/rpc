@@ -1,6 +1,6 @@
 <?php
 
-//\ZnCore\Base\Libs\DotEnv\DotEnv::init();
+//\ZnCore\Base\Libs\DotEnv\Domain\Libs\DotEnv::init();
 
 
 
