@@ -3,8 +3,8 @@
 namespace ZnLib\Rpc\Domain\Repositories\Conf;
 
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
-use ZnCore\Base\Libs\Develop\Helpers\DeprecateHelper;
-use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
+use ZnCore\Base\Develop\Helpers\DeprecateHelper;
+use ZnCore\Base\Arr\Helpers\ArrayHelper;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;

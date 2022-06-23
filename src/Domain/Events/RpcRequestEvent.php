@@ -2,10 +2,10 @@
 
 namespace ZnLib\Rpc\Domain\Events;
 
-use ZnCore\Base\Libs\Develop\Helpers\DeprecateHelper;
+use ZnCore\Base\Develop\Helpers\DeprecateHelper;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use Symfony\Contracts\EventDispatcher\Event;
-use ZnCore\Base\Libs\EventDispatcher\Traits\EventSkipHandleTrait;
+use ZnCore\Base\EventDispatcher\Traits\EventSkipHandleTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 
 class RpcRequestEvent extends Event

@@ -6,7 +6,7 @@ use ZnLib\Rpc\Domain\Entities\SettingsEntity;
 use ZnLib\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
 use ZnSandbox\Sandbox\Settings\Domain\Interfaces\Services\SystemServiceInterface;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
-use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
+use ZnCore\Base\Validation\Helpers\ValidationHelper;
 
 class SettingsService implements SettingsServiceInterface
 {

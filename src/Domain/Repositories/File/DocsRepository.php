@@ -3,8 +3,8 @@
 namespace ZnLib\Rpc\Domain\Repositories\File;
 
 use Illuminate\Support\Collection;
-use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
-use ZnCore\Base\Libs\FileSystem\Helpers\FindFileHelper;
+use ZnCore\Base\FileSystem\Helpers\FilePathHelper;
+use ZnCore\Base\FileSystem\Helpers\FindFileHelper;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface;

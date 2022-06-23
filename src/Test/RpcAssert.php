@@ -2,9 +2,9 @@
 
 namespace ZnLib\Rpc\Test;
 
-use ZnCore\Base\Libs\Http\Enums\HttpStatusCodeEnum;
-use ZnCore\Base\Libs\Develop\Helpers\DeprecateHelper;
-use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
+use ZnCore\Base\Http\Enums\HttpStatusCodeEnum;
+use ZnCore\Base\Develop\Helpers\DeprecateHelper;
+use ZnCore\Base\Arr\Helpers\ArrayHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;

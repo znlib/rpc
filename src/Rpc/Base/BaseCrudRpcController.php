@@ -2,12 +2,12 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
-use ZnCore\Base\Libs\Instance\Helpers\ClassHelper;
-use ZnCore\Base\Libs\DotEnv\Domain\Libs\DotEnv;
+use ZnCore\Base\Instance\Helpers\ClassHelper;
+use ZnCore\Base\DotEnv\Domain\Libs\DotEnv;
 use ZnCore\Domain\Service\Base\BaseCrudService;
-use ZnCore\Base\Libs\Validation\Exceptions\UnprocessibleEntityException;
+use ZnCore\Base\Validation\Exceptions\UnprocessibleEntityException;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
-use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
+use ZnCore\Base\Validation\Helpers\ValidationHelper;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;

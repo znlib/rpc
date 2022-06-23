@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Test\Traits;
 
 use ZnTool\Test\Repositories\DynamicFileRepository;
-use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
+use ZnCore\Base\Container\Helpers\ContainerHelper;
 
 trait RepositoryTestTrait
 {

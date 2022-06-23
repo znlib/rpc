@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Test\Traits;
 
-use ZnCore\Base\Libs\Develop\Helpers\DeprecateHelper;
-use ZnCore\Base\Libs\Store\StoreFile;
+use ZnCore\Base\Develop\Helpers\DeprecateHelper;
+use ZnCore\Base\Store\StoreFile;
 
 DeprecateHelper::hardThrow();
 

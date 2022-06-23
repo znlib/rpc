@@ -2,9 +2,9 @@
 
 namespace ZnLib\Rpc\Domain\Helpers;
 
-use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
-use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
-use ZnCore\Base\Libs\ConfigManager\Interfaces\ConfigManagerInterface;
+use ZnCore\Base\Arr\Helpers\ArrayHelper;
+use ZnCore\Base\Container\Helpers\ContainerHelper;
+use ZnCore\Base\ConfigManager\Interfaces\ConfigManagerInterface;
 use ZnUser\Rbac\Domain\Facades\FixtureGeneratorFacade;
 
 class RoutesHelper

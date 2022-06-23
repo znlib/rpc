@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Base;
 
-use ZnCore\Base\Libs\App\Helpers\EnvHelper;
-use ZnCore\Base\Libs\EventDispatcher\Traits\EventDispatcherTrait;
+use ZnCore\Base\App\Helpers\EnvHelper;
+use ZnCore\Base\EventDispatcher\Traits\EventDispatcherTrait;
 use ZnCore\Domain\Domain\Enums\EventEnum;
 use ZnCore\Domain\Domain\Interfaces\GetEntityClassInterface;
 use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;

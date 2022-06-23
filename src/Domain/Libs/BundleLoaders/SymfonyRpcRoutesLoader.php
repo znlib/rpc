@@ -2,9 +2,9 @@
 
 namespace ZnLib\Rpc\Domain\Libs\BundleLoaders;
 
-use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
-use ZnCore\Base\Libs\ConfigManager\Interfaces\ConfigManagerInterface;
-use ZnCore\Base\Libs\App\Loaders\BundleLoaders\BaseLoader;
+use ZnCore\Base\Arr\Helpers\ArrayHelper;
+use ZnCore\Base\ConfigManager\Interfaces\ConfigManagerInterface;
+use ZnCore\Base\App\Loaders\BundleLoaders\BaseLoader;
 
 class SymfonyRpcRoutesLoader extends BaseLoader
 {

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolverInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use ZnCore\Base\Libs\App\Helpers\EnvHelper;
+use ZnCore\Base\App\Helpers\EnvHelper;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Symfony4\Libs\RpcRequestHandler;
 use ZnLib\Web\Symfony4\HttpKernel\BaseHttpKernel;

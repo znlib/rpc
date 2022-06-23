@@ -4,14 +4,14 @@ namespace ZnLib\Rpc\Domain\Repositories\ConfigManager;
 
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
-use ZnCore\Base\Libs\Store\StoreFile;
-use ZnCore\Base\Libs\Store\Base\BaseFileCrudRepository;
+use ZnCore\Base\Store\StoreFile;
+use ZnCore\Base\Store\Base\BaseFileCrudRepository;
 use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;
-use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
+use ZnCore\Base\Arr\Helpers\ArrayHelper;
 
 class MethodRepository extends BaseFileCrudRepository implements MethodRepositoryInterface
 {

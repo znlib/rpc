@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use ZnCore\Base\Libs\Validation\Helpers\ValidationHelper;
+use ZnCore\Base\Validation\Helpers\ValidationHelper;
 
 class RpcRequestCollection extends BaseRpcCollection
 {

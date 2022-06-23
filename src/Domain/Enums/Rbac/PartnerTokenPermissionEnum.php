@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Enums\Rbac;
 
-use ZnCore\Base\Libs\Enum\Interfaces\GetLabelsInterface;
+use ZnCore\Base\Enum\Interfaces\GetLabelsInterface;
 
 class PartnerTokenPermissionEnum implements GetLabelsInterface
 {
