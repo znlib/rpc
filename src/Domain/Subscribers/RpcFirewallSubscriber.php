@@ -13,7 +13,7 @@ use ZnBundle\User\Domain\Enums\WebCookieEnum;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnBundle\User\Domain\Interfaces\Services\IdentityServiceInterface;
-use ZnCore\Base\Exceptions\NotFoundException;
+use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Base\Libs\DotEnv\Domain\Libs\DotEnv;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;

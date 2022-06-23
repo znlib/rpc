@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Enums;
 
-class HttpHeaderEnum extends \ZnCore\Base\Enums\Http\HttpHeaderEnum
+class HttpHeaderEnum extends \ZnCore\Base\Libs\Http\Enums\HttpHeaderEnum
 {
 
     const PARTNER_AUTHORIZATION = 'PartnerAuthorization';

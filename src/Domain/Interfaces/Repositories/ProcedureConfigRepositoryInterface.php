@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Interfaces\Repositories;
 
-use ZnCore\Base\Exceptions\NotFoundException;
-use ZnCore\Base\Helpers\DeprecateHelper;
+use ZnCore\Domain\Entity\Exceptions\NotFoundException;
+use ZnCore\Base\Libs\Develop\Helpers\DeprecateHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
 
 DeprecateHelper::hardThrow();

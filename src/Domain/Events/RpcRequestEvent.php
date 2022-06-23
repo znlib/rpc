@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Events;
 
-use ZnCore\Base\Helpers\DeprecateHelper;
+use ZnCore\Base\Libs\Develop\Helpers\DeprecateHelper;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use Symfony\Contracts\EventDispatcher\Event;
 use ZnCore\Base\Libs\EventDispatcher\Traits\EventSkipHandleTrait;
