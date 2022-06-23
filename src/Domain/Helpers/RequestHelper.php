@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Domain\Helpers;
 
 use ZnCore\Base\Libs\App\Enums\EnvEnum;
-use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
+use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;

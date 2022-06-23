@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ZnCore\Base\Libs\Http\Enums\HttpHeaderEnum;
-use ZnCore\Base\Legacy\Yii\Helpers\Url;
+use ZnLib\Web\Helpers\Url;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\FileSystem\Helpers\MimeTypeHelper;
 use ZnLib\Rpc\Domain\Enums\Rbac\RpcDocPermissionEnum;

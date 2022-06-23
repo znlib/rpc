@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
-use ZnCore\Base\Legacy\Yii\Helpers\Inflector;
+use ZnCore\Base\Libs\Text\Helpers\Inflector;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;

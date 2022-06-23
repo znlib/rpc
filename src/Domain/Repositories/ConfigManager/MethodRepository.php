@@ -11,7 +11,7 @@ use ZnCore\Domain\Query\Entities\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;
-use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
+use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
 
 class MethodRepository extends BaseFileCrudRepository implements MethodRepositoryInterface
 {

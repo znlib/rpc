@@ -3,13 +3,12 @@
 namespace ZnLib\Rpc\Domain\Repositories\File;
 
 use Illuminate\Support\Collection;
-use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Base\Libs\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\Libs\FileSystem\Helpers\FindFileHelper;
-use ZnLib\Web\Helpers\HtmlHelper;
-use ZnCore\Base\Legacy\Yii\Helpers\FileHelper;
+use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface;
+use ZnLib\Web\Helpers\HtmlHelper;
 
 class DocsRepository implements DocsRepositoryInterface
 {

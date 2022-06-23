@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Libs\BundleLoaders;
 
-use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
+use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
 use ZnCore\Base\Libs\ConfigManager\Interfaces\ConfigManagerInterface;
 use ZnCore\Base\Libs\App\Loaders\BundleLoaders\BaseLoader;
 

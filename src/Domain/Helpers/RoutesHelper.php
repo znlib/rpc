@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Helpers;
 
-use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
+use ZnCore\Base\Libs\Arr\Helpers\ArrayHelper;
 use ZnCore\Base\Libs\Container\Helpers\ContainerHelper;
 use ZnCore\Base\Libs\ConfigManager\Interfaces\ConfigManagerInterface;
 use ZnUser\Rbac\Domain\Facades\FixtureGeneratorFacade;
