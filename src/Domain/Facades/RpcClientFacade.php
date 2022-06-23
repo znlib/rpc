@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Facades;
 
-use ZnCore\Base\App\Enums\EnvEnum;
-use ZnCore\Base\App\Helpers\EnvHelper;
+use ZnCore\Base\Env\Enums\EnvEnum;
+use ZnCore\Base\Env\Helpers\EnvHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Libs\RpcProvider;

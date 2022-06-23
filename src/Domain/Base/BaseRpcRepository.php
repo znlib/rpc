@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Base;
 
-use ZnCore\Base\App\Helpers\EnvHelper;
+use ZnCore\Base\Env\Helpers\EnvHelper;
 use ZnCore\Base\EventDispatcher\Traits\EventDispatcherTrait;
 use ZnCore\Domain\Domain\Enums\EventEnum;
 use ZnCore\Domain\Domain\Interfaces\GetEntityClassInterface;
