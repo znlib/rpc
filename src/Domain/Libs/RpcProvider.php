@@ -22,7 +22,7 @@ class RpcProvider
 
     protected $requestEncoder;
     protected $responseEncoder;
-    protected $defaultPassword = 'Wwwqqq111';
+//    protected $defaultPassword = 'Wwwqqq111';
     protected $defaultRpcMethod;
     protected $defaultRpcMethodVersion = 1;
     protected $rpcClient;
@@ -136,7 +136,6 @@ class RpcProvider
             $authorizationToken = $this
                 ->getAuthProvider()
                 ->authBy($authForm->getLogin(), $authForm->getPassword());
-            
 //            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
             $token = $authorizationToken;
         }
