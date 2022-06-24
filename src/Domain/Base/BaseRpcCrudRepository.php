@@ -34,7 +34,7 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         return $responseEntity->getMetaItem('totalCount');
     }
 
-    public function all(Query $query = null): Enumerable
+    /*public function all(Query $query = null): Enumerable
     {
         $query = $this->forgeQuery($query);
         $collection = $this->findBy($query);
@@ -42,7 +42,7 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
 //        $queryFilter = $this->queryFilterInstance($query);
 //        $queryFilter->loadRelations($collection);
         return $collection;
-    }
+    }*/
 
     protected function findBy(Query $query = null): Enumerable
     {
