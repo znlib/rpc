@@ -8,7 +8,7 @@ use ZnCore\Base\Arr\Helpers\ArrayHelper;
 class SymfonyRpcRoutesLoader extends BaseLoader
 {
 
-    public function loadAll(array $bundles): array
+    public function loadAll(array $bundles): void
     {
         $config = [];
         foreach ($bundles as $bundle) {
@@ -16,6 +16,5 @@ class SymfonyRpcRoutesLoader extends BaseLoader
             $config = ArrayHelper::merge($config, $loadedConfig);
         }
         $this->getConfigManager()->set('rpcRoutes', $config);
-        return [];
     }
 }
