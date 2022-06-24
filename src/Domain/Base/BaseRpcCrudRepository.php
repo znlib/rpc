@@ -6,22 +6,21 @@ use Illuminate\Support\Enumerable;
 use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
-use ZnCore\Domain\Relation\Libs\QueryFilter;
 use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;
 use ZnCore\Domain\Repository\Interfaces\FindOneUniqueInterface;
-use ZnCore\Domain\Repository\Traits\RepositoryDeleteTrait;
-use ZnCore\Domain\Repository\Traits\RepositoryFindAllTrait;
-use ZnCore\Domain\Repository\Traits\RepositoryFindOneTrait;
+use ZnCore\Domain\Repository\Traits\CrudRepositoryDeleteTrait;
+use ZnCore\Domain\Repository\Traits\CrudRepositoryFindAllTrait;
+use ZnCore\Domain\Repository\Traits\CrudRepositoryFindOneTrait;
+use ZnCore\Domain\Repository\Traits\CrudRepositoryUpdateTrait;
 use ZnCore\Domain\Repository\Traits\RepositoryRelationTrait;
-use ZnCore\Domain\Repository\Traits\RepositoryUpdateTrait;
 
 abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRepositoryInterface, ForgeQueryByFilterInterface, FindOneUniqueInterface
 {
 
-    use RepositoryFindOneTrait;
-    use RepositoryFindAllTrait;
-    use RepositoryUpdateTrait;
-    use RepositoryDeleteTrait;
+    use CrudRepositoryFindOneTrait;
+    use CrudRepositoryFindAllTrait;
+    use CrudRepositoryUpdateTrait;
+    use CrudRepositoryDeleteTrait;
     use RepositoryRelationTrait;
 
     abstract public function methodPrefix(): string;

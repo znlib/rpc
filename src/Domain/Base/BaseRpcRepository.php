@@ -8,8 +8,7 @@ use ZnCore\Domain\Domain\Traits\DispatchEventTrait;
 use ZnCore\Domain\Domain\Traits\ForgeQueryTrait;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnCore\Domain\Repository\Base\BaseRepository;
-use ZnCore\Domain\Repository\Traits\MapperTrait;
-use ZnCore\Domain\Repository\Traits\RepositoryQueryFilterTrait;
+use ZnCore\Domain\Repository\Traits\RepositoryMapperTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
@@ -23,10 +22,9 @@ use ZnLib\Rpc\Domain\Libs\RpcProvider;
 abstract class BaseRpcRepository extends BaseRepository implements GetEntityClassInterface
 {
 
-    use MapperTrait;
+    use RepositoryMapperTrait;
     use DispatchEventTrait;
     use ForgeQueryTrait;
-    use RepositoryQueryFilterTrait;
 
     private $cache = [];
 
