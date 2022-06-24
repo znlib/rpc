@@ -37,9 +37,10 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
     public function all(Query $query = null): Enumerable
     {
         $query = $this->forgeQuery($query);
-        $queryFilter = $this->queryFilterInstance($query);
         $collection = $this->findBy($query);
-        $queryFilter->loadRelations($collection);
+        $this->loadRelations($collection, $query->getWith() ?: []);
+//        $queryFilter = $this->queryFilterInstance($query);
+//        $queryFilter->loadRelations($collection);
         return $collection;
     }
 
