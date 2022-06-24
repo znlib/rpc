@@ -11,6 +11,7 @@ use ZnCore\Domain\Repository\Interfaces\FindOneUniqueInterface;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryDeleteTrait;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryFindAllTrait;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryFindOneTrait;
+use ZnCore\Domain\Repository\Traits\CrudRepositoryInsertTrait;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryUpdateTrait;
 use ZnCore\Domain\Repository\Traits\RepositoryRelationTrait;
 
@@ -19,6 +20,7 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
 
     use CrudRepositoryFindOneTrait;
     use CrudRepositoryFindAllTrait;
+    use CrudRepositoryInsertTrait;
     use CrudRepositoryUpdateTrait;
     use CrudRepositoryDeleteTrait;
     use RepositoryRelationTrait;
@@ -68,10 +70,10 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         // TODO: Implement forgeQueryByFilter() method.
     }
 
-    public function create(EntityIdInterface $entity)
+    /*public function create(EntityIdInterface $entity)
     {
         // TODO: Implement create() method.
-    }
+    }*/
 
     public function deleteByCondition(array $condition)
     {
@@ -86,5 +88,10 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
     protected function updateQuery($id, array $data): void
     {
         // TODO: Implement updateQuery() method.
+    }
+
+    protected function insertRaw($entity): void
+    {
+        // TODO: Implement insertRaw() method.
     }
 }
