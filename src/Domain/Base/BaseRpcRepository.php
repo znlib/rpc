@@ -4,11 +4,12 @@ namespace ZnLib\Rpc\Domain\Base;
 
 use ZnCore\Base\Env\Helpers\EnvHelper;
 use ZnCore\Domain\Domain\Interfaces\GetEntityClassInterface;
+use ZnCore\Domain\Domain\Traits\DispatchEventTrait;
+use ZnCore\Domain\Domain\Traits\ForgeQueryTrait;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnCore\Domain\Repository\Base\BaseRepository;
 use ZnCore\Domain\Repository\Traits\MapperTrait;
-use ZnCore\Domain\Repository\Traits\RepositoryDispatchEventTrait;
-use ZnCore\Domain\Repository\Traits\RepositoryQueryTrait;
+use ZnCore\Domain\Repository\Traits\RepositoryQueryFilterTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
@@ -23,8 +24,9 @@ abstract class BaseRpcRepository extends BaseRepository implements GetEntityClas
 {
 
     use MapperTrait;
-    use RepositoryDispatchEventTrait;
-    use RepositoryQueryTrait;
+    use DispatchEventTrait;
+    use ForgeQueryTrait;
+    use RepositoryQueryFilterTrait;
 
     private $cache = [];
 
