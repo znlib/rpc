@@ -3,8 +3,6 @@
 namespace ZnLib\Rpc\Domain\Base;
 
 use Illuminate\Support\Enumerable;
-use ZnCore\Domain\DataProvider\Interfaces\DataProviderInterface;
-use ZnCore\Domain\DataProvider\Libs\DataProvider;
 use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Entity\Interfaces\UniqueInterface;
 use ZnCore\Domain\Query\Entities\Query;
@@ -16,12 +14,16 @@ use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRepositoryInterface, ForgeQueryByFilterInterface, FindOneUniqueInterface
 {
 
+    protected function getCache() {
+
+    }
+
     abstract public function methodPrefix(): string;
 
     public function count(Query $query = null): int
     {
         $query = $this->forgeQuery($query);
-        $query->limit(1);
+//        $query->limit(1);
         $requestEntity = $this->_all($query);
         return $requestEntity->getMetaItem('totalCount');
     }
@@ -29,6 +31,15 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
     public function all(Query $query = null): Enumerable
     {
         $query = $this->forgeQuery($query);
+        $queryFilter = $this->queryFilterInstance($query);
+
+        $collection = $this->findBy($query);
+        $queryFilter->loadRelations($collection);
+        return $collection;
+    }
+
+    protected function findBy(Query $query = null): Enumerable
+    {
         $responseEntity = $this->_all($query);
         $collection = $this
             ->getEntityManager()
@@ -36,7 +47,8 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         return $collection;
     }
 
-    protected function _all(Query $query = null): RpcResponseEntity {
+    protected function _all(Query $query = null): RpcResponseEntity
+    {
         $requestEntity = $this->createRequest('all');
         $responseEntity = $this->sendRequestByEntity($requestEntity);
         return $responseEntity;
