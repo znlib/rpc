@@ -41,7 +41,6 @@ class RoutesHelper
 
     private static function getRoutesPath(): array {
         $routes = self::getConfigManager()->get('rpcRoutes');
-//        $routes = $_ENV['RPC_ROUTES'];
         return $routes;
     }
     
