@@ -6,11 +6,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
+use ZnCore\Base\Validation\Helpers\ValidationHelper;
+use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnLib\Components\Http\Enums\HttpMethodEnum;
 use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
-use ZnCore\Domain\Entity\Helpers\EntityHelper;
-use ZnCore\Base\Validation\Helpers\ValidationHelper;
-use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
 use ZnLib\Rest\Helpers\RestResponseHelper;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
@@ -60,15 +59,15 @@ class RpcClient
         $this->guzzleClient = $guzzleClient;
     }
 
-   /* public function getAuthAgent(): ?AuthorizationInterface
-    {
-        return $this->authAgent;
-    }
+    /* public function getAuthAgent(): ?AuthorizationInterface
+     {
+         return $this->authAgent;
+     }
 
-    public function setAuthAgent(AuthorizationInterface $authAgent = null)
-    {
-        $this->authAgent = $authAgent;
-    }*/
+     public function setAuthAgent(AuthorizationInterface $authAgent = null)
+     {
+         $this->authAgent = $authAgent;
+     }*/
 
     public function sendRequestByEntity(RpcRequestEntity $requestEntity): RpcResponseEntity
     {

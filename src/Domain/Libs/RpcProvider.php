@@ -3,8 +3,6 @@
 namespace ZnLib\Rpc\Domain\Libs;
 
 use GuzzleHttp\Client;
-use ZnLib\Rest\Contract\Authorization\AuthorizationInterface;
-use ZnLib\Rest\Contract\Authorization\BearerAuthorization;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
@@ -27,7 +25,7 @@ class RpcProvider
     protected $defaultRpcMethodVersion = 1;
     protected $rpcClient;
     protected $baseUrl;
-    
+
     /** @var RpcAuthProvider */
     private $authProvider;
     private $authToken;
@@ -55,7 +53,7 @@ class RpcProvider
 
     public function getRpcClient(): RpcClient
     {
-        if(empty($this->rpcClient)) {
+        if (empty($this->rpcClient)) {
             $guzzleClient = $this->getGuzzleClient();
 //            $authAgent = $this->getAuthorizationContract($guzzleClient);
             $this->rpcClient = new RpcClient($guzzleClient, $this->requestEncoder, $this->responseEncoder/*, $authAgent*/);
@@ -74,7 +72,7 @@ class RpcProvider
 
     protected function getBaseUrl(): string
     {
-        if(empty($this->baseUrl)) {
+        if (empty($this->baseUrl)) {
             /** @todo костыль */
             $this->setBaseUrl($_ENV['RPC_URL']);
         }
@@ -114,41 +112,45 @@ class RpcProvider
         $requestEntity->setMetaItem(HttpHeaderEnum::TIMESTAMP, date(\DateTime::ISO8601));
     }
 
-    public function authByLogin(string $login, string $password): void {
+    public function authByLogin(string $login, string $password): void
+    {
         $this->authByForm(new RpcAuthByLoginForm($login, $password));
 //        $this->authToken = $this->getAuthProvider()->authBy($login, $password);
     }
 
-    public function authByForm(BaseRpcAuthForm $authForm): void {
+    public function authByForm(BaseRpcAuthForm $authForm): void
+    {
         $this->authToken = $this->getTokenByForm($authForm);
     }
 
-    public function getTokenByForm(BaseRpcAuthForm $authForm): ?string {
+    public function getTokenByForm(BaseRpcAuthForm $authForm): ?string
+    {
         $token = null;
         /*if($authForm == null && $this->authToken) {
             $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $this->authToken);
         }*/
-        if($authForm instanceof RpcAuthGuestForm) {
+        if ($authForm instanceof RpcAuthGuestForm) {
 //            $requestEntity->setMetaItem(HttpHeaderEnum::AUTHORIZATION, null);
             $token = null;
         }
-        if($authForm instanceof RpcAuthByLoginForm) {
+        if ($authForm instanceof RpcAuthByLoginForm) {
             $authorizationToken = $this
                 ->getAuthProvider()
                 ->authBy($authForm->getLogin(), $authForm->getPassword());
 //            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
             $token = $authorizationToken;
         }
-        if($authForm instanceof RpcAuthByTokenForm) {
+        if ($authForm instanceof RpcAuthByTokenForm) {
             $token = $authForm->getToken();
         }
         return $token;
     }
 
-    protected function prepareAuth(RpcRequestEntity $requestEntity, ?BaseRpcAuthForm $authForm): void {
-        if(!$authForm && $this->authToken) {
+    protected function prepareAuth(RpcRequestEntity $requestEntity, ?BaseRpcAuthForm $authForm): void
+    {
+        if (!$authForm && $this->authToken) {
             $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $this->authToken);
-        } elseif($authForm) {
+        } elseif ($authForm) {
             $token = $this->getTokenByForm($authForm);
             $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $token);
         }
