@@ -2,9 +2,9 @@
 
 namespace ZnLib\Rpc\Domain\Repositories\Conf;
 
-use ZnCore\Domain\Entity\Exceptions\NotFoundException;
-use ZnCore\Base\Develop\Helpers\DeprecateHelper;
 use ZnCore\Base\Arr\Helpers\ArrayHelper;
+use ZnCore\Base\Develop\Helpers\DeprecateHelper;
+use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\HandlerEntity;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
@@ -28,7 +28,7 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
             $handlerEntity = $this->getHandlerByName($method);
         } catch (NotFoundException $exception) {
             $args = explode(".", $method);
-            if(count($args) < 2) {
+            if (count($args) < 2) {
                 throw new NotFoundException('Not found handler');
             }
             $handlerEntity = $this->getHandlerByName($args[0]);

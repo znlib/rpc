@@ -6,7 +6,7 @@ use Exception;
 use Throwable;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 
-class MethodNotFoundException extends ServerErrorException
+class RpcMethodNotFoundException extends ServerErrorException
 {
 
     public function __construct($message = 'Not found method', $code = RpcErrorCodeEnum::SERVER_ERROR_METHOD_NOT_FOUND, Throwable $previous = null)

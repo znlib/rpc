@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Interfaces\Services;
 
-use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnCore\Domain\Service\Interfaces\CrudServiceInterface;
+use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
 
 interface MethodServiceInterface extends CrudServiceInterface

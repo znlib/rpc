@@ -7,7 +7,7 @@ use ZnLib\Rpc\Domain\Interfaces\Services\MethodServiceInterface;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Domain\Service\Base\BaseCrudService;
 use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;
-use ZnLib\Rpc\Domain\Exceptions\MethodNotFoundException;
+use ZnLib\Rpc\Domain\Exceptions\RpcMethodNotFoundException;
 
 class MethodService extends BaseCrudService implements MethodServiceInterface
 {
@@ -30,7 +30,7 @@ class MethodService extends BaseCrudService implements MethodServiceInterface
             if($methodName == 'fixture.import') {
                 $methodEntity = $this->createFixtureMethod();
             } else {
-                throw new MethodNotFoundException('Not found handler');
+                throw new RpcMethodNotFoundException('Not found handler');
             }
         }
         return $methodEntity;
