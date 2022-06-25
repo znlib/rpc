@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Test\Traits;
 
 use ZnCore\Base\Develop\Helpers\DeprecateHelper;
-use ZnCore\Base\Store\StoreFile;
+use ZnLib\Components\Store\StoreFile;
 
 DeprecateHelper::hardThrow();
 

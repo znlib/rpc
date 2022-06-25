@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Domain\Services;
 use Illuminate\Container\EntryNotFoundException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use ZnCore\Base\Http\Enums\HttpStatusCodeEnum;
+use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Base\EventDispatcher\Traits\EventDispatcherTrait;
 use ZnCore\Base\Instance\Libs\InstanceProvider;
