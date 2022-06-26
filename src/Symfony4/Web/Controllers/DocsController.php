@@ -7,14 +7,14 @@ use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ZnLib\Components\Http\Enums\HttpHeaderEnum;
-use ZnLib\Web\Components\Url\Helpers\Url;
+use ZnLib\Web\Url\Helpers\Url;
 use ZnCore\Base\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\FileSystem\Helpers\MimeTypeHelper;
 use ZnLib\Rpc\Domain\Enums\Rbac\RpcDocPermissionEnum;
 use ZnLib\Rpc\Domain\Interfaces\Services\DocsServiceInterface;
-use ZnLib\Web\Components\Controller\BaseWebController;
-use ZnLib\Web\Components\Controller\Interfaces\ControllerAccessInterface;
-use ZnLib\Web\Components\TwBootstrap\Widgets\Breadcrumb\BreadcrumbWidget;
+use ZnLib\Web\Controller\Base\BaseWebController;
+use ZnLib\Web\Controller\Interfaces\ControllerAccessInterface;
+use ZnLib\Web\TwBootstrap\Widgets\Breadcrumb\BreadcrumbWidget;
 
 class DocsController extends BaseWebController implements ControllerAccessInterface
 {

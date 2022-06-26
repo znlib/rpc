@@ -12,7 +12,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ZnCore\Base\Env\Helpers\EnvHelper;
 use ZnLib\Rpc\Domain\Libs\ResponseFormatter;
 use ZnLib\Rpc\Symfony4\Libs\RpcRequestHandler;
-use ZnLib\Web\Components\WebApp\Base\BaseHttpKernel;
+use ZnLib\Web\WebApp\Base\BaseHttpKernel;
 
 class RpcKernel extends BaseHttpKernel
 {

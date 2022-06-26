@@ -15,7 +15,7 @@ use ZnLib\Rpc\Domain\Subscribers\RpcFirewallSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\TimestampSubscriber;
 use ZnLib\Rpc\Symfony4\HttpKernel\RpcKernel;
 use ZnCore\Base\App\Base\BaseApp;
-use ZnLib\Web\Components\WebApp\Subscribers\WebDetectTestEnvSubscriber;
+use ZnLib\Web\WebApp\Subscribers\WebDetectTestEnvSubscriber;
 
 abstract class BaseRpcApp extends BaseApp
 {
