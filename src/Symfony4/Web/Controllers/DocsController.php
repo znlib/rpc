@@ -14,7 +14,7 @@ use ZnLib\Rpc\Domain\Enums\Rbac\RpcDocPermissionEnum;
 use ZnLib\Rpc\Domain\Interfaces\Services\DocsServiceInterface;
 use ZnLib\Web\Symfony4\MicroApp\BaseWebController;
 use ZnLib\Web\Symfony4\MicroApp\Interfaces\ControllerAccessInterface;
-use ZnLib\Web\Widgets\BreadcrumbWidget;
+use ZnLib\Web\Components\Widget\Widgets\BreadcrumbWidget;
 
 class DocsController extends BaseWebController implements ControllerAccessInterface
 {
