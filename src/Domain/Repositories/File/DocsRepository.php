@@ -8,7 +8,7 @@ use ZnCore\Base\FileSystem\Helpers\FindFileHelper;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface;
-use ZnLib\Web\Helpers\HtmlHelper;
+use ZnLib\Web\Components\Html\Helpers\HtmlHelper;
 
 class DocsRepository implements DocsRepositoryInterface
 {
