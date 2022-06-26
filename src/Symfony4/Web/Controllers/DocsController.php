@@ -14,7 +14,7 @@ use ZnLib\Rpc\Domain\Enums\Rbac\RpcDocPermissionEnum;
 use ZnLib\Rpc\Domain\Interfaces\Services\DocsServiceInterface;
 use ZnLib\Web\Components\Controller\BaseWebController;
 use ZnLib\Web\Components\Controller\Interfaces\ControllerAccessInterface;
-use ZnLib\Web\Components\Widget\Widgets\BreadcrumbWidget;
+use ZnLib\Web\Components\TwBootstrap\Widgets\Breadcrumb\BreadcrumbWidget;
 
 class DocsController extends BaseWebController implements ControllerAccessInterface
 {
