@@ -2,16 +2,21 @@
 
 namespace ZnLib\Rpc\Domain\Base;
 
+use App\Gosp\Message\Domain\Entities\ResponseEntity;
 use ZnCore\Base\Env\Helpers\EnvHelper;
+use ZnCore\Base\Validation\Exceptions\UnprocessibleEntityException;
+use ZnCore\Base\Validation\Helpers\ErrorCollectionHelper;
 use ZnCore\Domain\Domain\Interfaces\GetEntityClassInterface;
 use ZnCore\Domain\Domain\Traits\DispatchEventTrait;
 use ZnCore\Domain\Domain\Traits\ForgeQueryTrait;
+use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnCore\Domain\Repository\Base\BaseRepository;
 use ZnCore\Domain\Repository\Traits\RepositoryMapperTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
+use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Facades\RpcClientFacade;
 use ZnLib\Rpc\Domain\Forms\BaseRpcAuthForm;
@@ -88,6 +93,9 @@ abstract class BaseRpcRepository extends BaseRepository implements GetEntityClas
             $responseEntity = $this->sendRequest($requestEntity, $authForm);
             $this->cache[$requestHash] = $responseEntity;
         }
+        if($responseEntity->isError()) {
+            $this->handleError($responseEntity);
+        }
         return $responseEntity;
     }
 
@@ -100,5 +108,18 @@ abstract class BaseRpcRepository extends BaseRepository implements GetEntityClas
         }
         $responseEntity = $provider->sendRequestByEntity($requestEntity);
         return $responseEntity;
+    }
+
+    protected function handleError(RpcResponseEntity $rpcResponseEntity) {
+        $errorCode = $rpcResponseEntity->getError()['code'];
+        if($errorCode == RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS) {
+            $errors = $rpcResponseEntity->getError()['data'];
+            $errorCollection = ErrorCollectionHelper::itemArrayToCollection($errors);
+            throw new UnprocessibleEntityException($errorCollection);
+        }
+
+        if($errorCode == 404) {
+            throw new NotFoundException();
+        }
     }
 }

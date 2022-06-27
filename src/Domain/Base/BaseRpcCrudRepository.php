@@ -3,6 +3,7 @@
 namespace ZnLib\Rpc\Domain\Base;
 
 use Illuminate\Support\Enumerable;
+use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
 use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;
@@ -44,12 +45,19 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         return $collection;
     }
 
-    /*public function oneById($id, Query $query = null): EntityIdInterface
+    public function oneById($id, Query $query = null): EntityIdInterface
     {
-        // TODO: Implement oneById() method.
+        $requestEntity = $this->createRequest('oneById');
+        $requestEntity->setParamItem('id', $id);
+        $responseEntity = $this->sendRequestByEntity($requestEntity);
+        //dd($responseEntity);
+        $entity = $this
+            ->getEntityManager()
+            ->createEntity($this->getEntityClass(), $responseEntity->getResult() ?: []);
+        return $entity;
     }
 
-    public function oneByUnique(UniqueInterface $entity): EntityIdInterface
+    /*public function oneByUnique(UniqueInterface $entity): EntityIdInterface
     {
         // TODO: Implement oneByUnique() method.
     }*/
