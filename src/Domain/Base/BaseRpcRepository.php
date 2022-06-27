@@ -84,15 +84,21 @@ abstract class BaseRpcRepository extends BaseRepository implements GetEntityClas
     {
         $requestHash = $this->getRequestHash($requestEntity);
         $responseEntity = $this->cache[$requestHash] ?? null;
-        if (!$responseEntity) {
-            $provider = $this->getRpcProvider();
-            $authForm = $authForm ?: $this->authBy();
-            if (!$authForm instanceof RpcAuthGuestForm) {
-                $provider->authByForm($authForm);
-            }
-            $responseEntity = $provider->sendRequestByEntity($requestEntity);
+        if (!$responseEntity || EnvHelper::isTest()) {
+            $responseEntity = $this->sendRequest($requestEntity, $authForm);
             $this->cache[$requestHash] = $responseEntity;
         }
+        return $responseEntity;
+    }
+
+    protected function sendRequest(RpcRequestEntity $requestEntity, BaseRpcAuthForm $authForm = null): RpcResponseEntity
+    {
+        $provider = $this->getRpcProvider();
+        $authForm = $authForm ?: $this->authBy();
+        if (!$authForm instanceof RpcAuthGuestForm) {
+            $provider->authByForm($authForm);
+        }
+        $responseEntity = $provider->sendRequestByEntity($requestEntity);
         return $responseEntity;
     }
 }
