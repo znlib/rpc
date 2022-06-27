@@ -3,7 +3,6 @@
 namespace ZnLib\Rpc\Domain\Base;
 
 use Illuminate\Support\Enumerable;
-use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
 use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;
@@ -35,23 +34,13 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         return $responseEntity->getMetaItem('totalCount');
     }
 
-    /*public function all(Query $query = null): Enumerable
-    {
-        $query = $this->forgeQuery($query);
-        $collection = $this->findBy($query);
-        $this->loadRelations($collection, $query->getWith() ?: []);
-//        $queryFilter = $this->queryFilterInstance($query);
-//        $queryFilter->loadRelations($collection);
-        return $collection;
-    }*/
-
     protected function findBy(Query $query = null): Enumerable
     {
         $requestEntity = $this->createRequest('all');
         $responseEntity = $this->sendRequestByEntity($requestEntity);
         $collection = $this
             ->getEntityManager()
-            ->createEntityCollection($this->getEntityClass(), $responseEntity->getResult());
+            ->createEntityCollection($this->getEntityClass(), $responseEntity->getResult() ?: []);
         return $collection;
     }
 
