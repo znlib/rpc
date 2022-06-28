@@ -14,11 +14,11 @@ class RpcAuthByTokenForm extends BaseRpcAuthForm
 
     public function getToken(): ?string
     {
-        return $this->login;
+        return $this->token;
     }
 
     public function setToken(?string $token): void
     {
-        $this->login = $token;
+        $this->token = $token;
     }
 }

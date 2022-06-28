@@ -103,10 +103,10 @@ abstract class BaseRpcRepository extends BaseRepository implements GetEntityClas
     {
         $provider = $this->getRpcProvider();
         $authForm = $authForm ?: $this->authBy();
-        if (!$authForm instanceof RpcAuthGuestForm) {
+        /*if (!$authForm instanceof RpcAuthGuestForm) {
             $provider->authByForm($authForm);
-        }
-        $responseEntity = $provider->sendRequestByEntity($requestEntity);
+        }*/
+        $responseEntity = $provider->sendRequestByEntity($requestEntity, $authForm);
         return $responseEntity;
     }
 

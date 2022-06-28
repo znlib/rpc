@@ -126,19 +126,13 @@ class RpcProvider
     public function getTokenByForm(BaseRpcAuthForm $authForm): ?string
     {
         $token = null;
-        /*if($authForm == null && $this->authToken) {
-            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $this->authToken);
-        }*/
         if ($authForm instanceof RpcAuthGuestForm) {
-//            $requestEntity->setMetaItem(HttpHeaderEnum::AUTHORIZATION, null);
             $token = null;
         }
         if ($authForm instanceof RpcAuthByLoginForm) {
-            $authorizationToken = $this
+            $token = $this
                 ->getAuthProvider()
                 ->authBy($authForm->getLogin(), $authForm->getPassword());
-//            $requestEntity->addMeta(HttpHeaderEnum::AUTHORIZATION, $authorizationToken);
-            $token = $authorizationToken;
         }
         if ($authForm instanceof RpcAuthByTokenForm) {
             $token = $authForm->getToken();
