@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Base;
 
-use App\Gosp\Message\Domain\Entities\ResponseEntity;
+use OrleuPackage\Gosp\Message\Domain\Entities\ResponseEntity;
 use ZnCore\Base\Env\Helpers\EnvHelper;
 use ZnCore\Base\Validation\Exceptions\UnprocessibleEntityException;
 use ZnCore\Base\Validation\Helpers\ErrorCollectionHelper;
