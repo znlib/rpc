@@ -10,7 +10,7 @@ use ZnCore\Base\Validation\Helpers\ValidationHelper;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnLib\Components\Http\Enums\HttpMethodEnum;
 use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
-use ZnLib\Rest\Helpers\RestResponseHelper;
+use ZnLib\Components\Http\Helpers\RestResponseHelper;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Encoders\ResponseEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
