@@ -14,6 +14,7 @@ class RpcErrorHandler
     public function handle(RpcResponseEntity $rpcResponseEntity)
     {
         $errorCode = $rpcResponseEntity->getError()['code'];
+        $message = $rpcResponseEntity->getError()['message'];
         if ($errorCode == RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS) {
             $errors = $rpcResponseEntity->getError()['data'];
             $errorCollection = ErrorCollectionHelper::itemArrayToCollection($errors);
@@ -21,7 +22,9 @@ class RpcErrorHandler
         }
 
         if ($errorCode == 404) {
-            throw new NotFoundException();
+            throw new NotFoundException($message);
         }
+
+        throw new \Exception($message);
     }
 }
