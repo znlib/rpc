@@ -2,7 +2,6 @@
 
 namespace ZnLib\Rpc\Domain\Base;
 
-use OrleuPackage\Gosp\Message\Domain\Entities\ResponseEntity;
 use ZnCore\Base\Env\Helpers\EnvHelper;
 use ZnCore\Base\Validation\Exceptions\UnprocessibleEntityException;
 use ZnCore\Base\Validation\Helpers\ErrorCollectionHelper;
@@ -93,7 +92,7 @@ abstract class BaseRpcRepository extends BaseRepository implements GetEntityClas
             $responseEntity = $this->sendRequest($requestEntity, $authForm);
             $this->cache[$requestHash] = $responseEntity;
         }
-        if($responseEntity->isError()) {
+        if ($responseEntity->isError()) {
             $this->handleError($responseEntity);
         }
         return $responseEntity;
@@ -110,15 +109,16 @@ abstract class BaseRpcRepository extends BaseRepository implements GetEntityClas
         return $responseEntity;
     }
 
-    protected function handleError(RpcResponseEntity $rpcResponseEntity) {
+    protected function handleError(RpcResponseEntity $rpcResponseEntity)
+    {
         $errorCode = $rpcResponseEntity->getError()['code'];
-        if($errorCode == RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS) {
+        if ($errorCode == RpcErrorCodeEnum::SERVER_ERROR_INVALID_PARAMS) {
             $errors = $rpcResponseEntity->getError()['data'];
             $errorCollection = ErrorCollectionHelper::itemArrayToCollection($errors);
             throw new UnprocessibleEntityException($errorCollection);
         }
 
-        if($errorCode == 404) {
+        if ($errorCode == 404) {
             throw new NotFoundException();
         }
     }
