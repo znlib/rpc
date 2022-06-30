@@ -57,9 +57,9 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         return $entity;
     }
 
-    /*public function oneByUnique(UniqueInterface $entity): EntityIdInterface
+    /*public function findOneByUnique(UniqueInterface $entity): EntityIdInterface
     {
-        // TODO: Implement oneByUnique() method.
+        // TODO: Implement findOneByUnique() method.
     }*/
 
     public function forgeQueryByFilter(object $filterModel, Query $query)
