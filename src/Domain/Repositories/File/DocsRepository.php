@@ -15,7 +15,7 @@ class DocsRepository implements DocsRepositoryInterface
 
     public function oneByName(string $name): DocEntity
     {
-        $collection = $this->all();
+        $collection = $this->findAll();
         foreach ($collection as $entity) {
             if ($entity->getName() == $name) {
                 return $entity;
