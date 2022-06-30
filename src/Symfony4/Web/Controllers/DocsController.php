@@ -76,7 +76,7 @@ class DocsController extends BaseWebController implements ControllerAccessInterf
         $name = $request->query->get('name', 'index');
         $docsHtml = $this->docsService->loadByName($name);
 
-        $entity = $this->docsService->oneByName($name);
+        $entity = $this->docsService->findOneByName($name);
         $fileName = $name . '_' . date('Y-m-d_H-i-s') . '.html';
 
         $response = $this->downloadFileContent($docsHtml, $fileName);

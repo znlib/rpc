@@ -45,7 +45,7 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         return $collection;
     }
 
-    public function oneById($id, Query $query = null): EntityIdInterface
+    public function findOneById($id, Query $query = null): EntityIdInterface
     {
         $requestEntity = $this->createRequest('oneById');
         $requestEntity->setParamItem('id', $id);

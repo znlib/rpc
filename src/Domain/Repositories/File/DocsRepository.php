@@ -13,7 +13,7 @@ use ZnLib\Web\Html\Helpers\HtmlHelper;
 class DocsRepository implements DocsRepositoryInterface
 {
 
-    public function oneByName(string $name): DocEntity
+    public function findOneByName(string $name): DocEntity
     {
         $collection = $this->findAll();
         foreach ($collection as $entity) {
