@@ -27,7 +27,7 @@ class DocsRepository implements DocsRepositoryInterface
     /**
      * @return Collection | DocEntity[]
      */
-    public function all(): Collection
+    public function findAll(): Collection
     {
         $dir = $this->distDirectory();
         $files = FindFileHelper::scanDir($dir);

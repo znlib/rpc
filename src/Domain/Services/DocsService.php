@@ -23,9 +23,9 @@ class DocsService implements DocsServiceInterface
         return $this->docsRepository->oneByName($name);
     }
     
-    public function all(): Collection
+    public function findAll(): Collection
     {
-        return $this->docsRepository->all();
+        return $this->docsRepository->findAll();
     }
 
     public function loadByName(string $name): string

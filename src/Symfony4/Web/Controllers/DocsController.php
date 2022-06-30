@@ -54,7 +54,7 @@ class DocsController extends BaseWebController implements ControllerAccessInterf
     {
         $this->breadcrumbWidget->add('List docs', Url::to(['/json-rpc']));
         //$this->layout = __DIR__ . '/../../../../Common/views/layouts/main.php';
-        $docs = $this->docsService->all();
+        $docs = $this->docsService->findAll();
         return $this->render('index', [
             'docs' => $docs,
         ]);
