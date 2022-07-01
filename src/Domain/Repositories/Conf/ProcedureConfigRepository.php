@@ -22,7 +22,7 @@ class ProcedureConfigRepository implements ProcedureConfigRepositoryInterface
         $this->busConfig = $busConfig;
     }
 
-    public function oneByMethodName(string $method): HandlerEntity
+    public function findOneByMethodName(string $method): HandlerEntity
     {
         try {
             $handlerEntity = $this->getHandlerByName($method);

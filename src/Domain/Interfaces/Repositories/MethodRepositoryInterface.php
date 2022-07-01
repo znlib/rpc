@@ -14,5 +14,5 @@ interface MethodRepositoryInterface extends CrudRepositoryInterface
      * @param int $version
      * @return MethodEntity
      */
-    public function oneByMethodName(string $method, int $version): MethodEntity;
+    public function findOneByMethodName(string $method, int $version): MethodEntity;
 }

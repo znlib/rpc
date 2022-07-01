@@ -84,7 +84,7 @@ class ProcedureService implements ProcedureServiceInterface
                 throw new InvalidRequestException('Empty method version');
             }
 
-            $methodEntity = $this->methodService->oneByMethodName($requestEntity->getMethod(), $version);
+            $methodEntity = $this->methodService->findOneByMethodName($requestEntity->getMethod(), $version);
             $this->triggerBefore($requestEntity, $methodEntity);
             $parameters = [
                 RpcRequestEntity::class => $requestEntity

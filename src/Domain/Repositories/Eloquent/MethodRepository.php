@@ -20,7 +20,7 @@ class MethodRepository extends BaseEloquentCrudRepository implements MethodRepos
         return MethodEntity::class;
     }
 
-    public function oneByMethodName(string $method, int $version): MethodEntity
+    public function findOneByMethodName(string $method, int $version): MethodEntity
     {
         $query = new Query();
         $query->where('version', $version);

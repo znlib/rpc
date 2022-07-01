@@ -16,5 +16,5 @@ interface ProcedureConfigRepositoryInterface
      * @return HandlerEntity
      * @throws NotFoundException
      */
-    public function oneByMethodName(string $method): HandlerEntity;
+    public function findOneByMethodName(string $method): HandlerEntity;
 }

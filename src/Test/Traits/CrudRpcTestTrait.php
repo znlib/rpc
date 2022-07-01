@@ -69,7 +69,27 @@ trait CrudRpcTestTrait
         return $this->sendRequestByEntity($request);
     }
 
+    /**
+     * @param int $id
+     * @param string|null $login
+     * @param array $params
+     * @return RpcResponseEntity
+     * @deprecated
+     */
     protected function oneById(int $id, string $login = null, array $params = []): RpcResponseEntity
+    {
+        $request = $this->createRequest($login);
+        $request->setMethod($this->baseMethod() . '.oneById');
+        $request->setParamItem('id', $id);
+        if ($params) {
+            foreach ($params as $paramKey => $paramValue) {
+                $request->setParamItem($paramKey, $paramValue);
+            }
+        }
+        return $this->sendRequestByEntity($request);
+    }
+
+    protected function findOneById(int $id, string $login = null, array $params = []): RpcResponseEntity
     {
         $request = $this->createRequest($login);
         $request->setMethod($this->baseMethod() . '.oneById');
@@ -84,8 +104,8 @@ trait CrudRpcTestTrait
 
     protected function assertExistsById(int $id, string $login = null)
     {
-        $response = $this->oneById($id, $login);
-        $expectedItem = $this->getRepository()->oneByIdAsArray($id);
+        $response = $this->findOneById($id, $login);
+        $expectedItem = $this->getRepository()->findOneByIdAsArray($id);
         $this->getRpcAssert($response)->assertResult(['id' => $expectedItem['id']]);
     }
 
@@ -111,13 +131,13 @@ trait CrudRpcTestTrait
 
     protected function assertNotFoundById(int $id, string $login = null)
     {
-        $response = $this->oneById($id, $login);
+        $response = $this->findOneById($id, $login);
         $this->getRpcAssert($response)->assertNotFound();
     }
 
     protected function assertItem(array $data, string $login = null)
     {
-        $response = $this->oneById($data['id'], $login);
+        $response = $this->findOneById($data['id'], $login);
         $this->getRpcAssert($response)->assertResult($data);
     }
 

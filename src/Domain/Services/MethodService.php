@@ -22,10 +22,10 @@ class MethodService extends BaseCrudService implements MethodServiceInterface
         return MethodEntity::class;
     }
 
-    public function oneByMethodName(string $methodName, int $version): MethodEntity
+    public function findOneByMethodName(string $methodName, int $version): MethodEntity
     {
         try {
-            $methodEntity = $this->getRepository()->oneByMethodName($methodName, $version);
+            $methodEntity = $this->getRepository()->findOneByMethodName($methodName, $version);
         } catch (NotFoundException $e) {
             if($methodName == 'fixture.import') {
                 $methodEntity = $this->createFixtureMethod();
