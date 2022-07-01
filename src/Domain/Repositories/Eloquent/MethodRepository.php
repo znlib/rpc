@@ -25,7 +25,7 @@ class MethodRepository extends BaseEloquentCrudRepository implements MethodRepos
         $query = new Query();
         $query->where('version', $version);
         $query->where('method_name', $method);
-        return $this->one($query);
+        return $this->findOne($query);
     }
 }
 

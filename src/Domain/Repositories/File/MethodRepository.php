@@ -26,7 +26,7 @@ class MethodRepository extends BaseFileCrudRepository implements MethodRepositor
         $query = new Query();
         $query->where('version', $version);
         $query->where('method_name', $method);
-        return $this->one($query);
+        return $this->findOne($query);
     }
 
     protected function getItems(): array
