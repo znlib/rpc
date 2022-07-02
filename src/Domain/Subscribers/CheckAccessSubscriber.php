@@ -6,7 +6,7 @@ use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
 use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
-use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
+use ZnUser\Authentication\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Contract\User\Exceptions\ForbiddenException;
 use ZnCore\Domain\EntityManager\Traits\EntityManagerAwareTrait;
 use ZnUser\Rbac\Domain\Interfaces\Services\AssignmentServiceInterface;

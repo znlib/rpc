@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Subscribers;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use ZnBundle\User\Domain\Interfaces\Services\AuthServiceInterface;
+use ZnUser\Authentication\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
