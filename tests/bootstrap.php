@@ -4,7 +4,7 @@
 
 
 
-$container = new \Illuminate\Container\Container();
+$container = new \ZnCore\Base\Container\Libs\Container();
 $znCore = new \ZnCore\Base\App\Libs\ZnCore($container);
 $znCore->init();
 
