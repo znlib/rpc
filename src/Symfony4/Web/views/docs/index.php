@@ -4,7 +4,7 @@
  * @var $docs Collection | DocEntity[]
  */
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 
 ?>

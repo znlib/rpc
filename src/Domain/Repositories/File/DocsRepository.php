@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Repositories\File;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnCore\Base\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\FileSystem\Helpers\FindFileHelper;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;

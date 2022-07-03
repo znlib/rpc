@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 use ZnLib\Rpc\Domain\Helpers\DocContentHelper;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface;

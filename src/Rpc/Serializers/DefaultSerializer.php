@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Rpc\Serializers;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Enumerable;
+use ZnCore\Domain\Collection\Libs\Collection;
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;

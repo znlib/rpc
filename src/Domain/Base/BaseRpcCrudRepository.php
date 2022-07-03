@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Base;
 
-use Illuminate\Support\Enumerable;
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;

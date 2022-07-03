@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Rpc\Serializers;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use ZnCore\Domain\DataProvider\Libs\DataProvider;

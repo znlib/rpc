@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use Illuminate\Support\Collection;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 
