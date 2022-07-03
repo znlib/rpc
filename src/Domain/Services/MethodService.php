@@ -41,7 +41,7 @@ class MethodService extends BaseCrudService implements MethodServiceInterface
         $attributes = [
             'id' => 6,
             'method_name' => 'fixture.import',
-            'version' => 1,
+            'version' => '1',
             'is_verify_eds' => false,
             'is_verify_auth' => false,
 //          'permission_name' => 'oFixtureImport',
