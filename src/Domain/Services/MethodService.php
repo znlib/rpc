@@ -22,7 +22,7 @@ class MethodService extends BaseCrudService implements MethodServiceInterface
         return MethodEntity::class;
     }
 
-    public function findOneByMethodName(string $methodName, int $version): MethodEntity
+    public function findOneByMethodName(string $methodName, string $version): MethodEntity
     {
         try {
             $methodEntity = $this->getRepository()->findOneByMethodName($methodName, $version);
@@ -41,7 +41,7 @@ class MethodService extends BaseCrudService implements MethodServiceInterface
         $attributes = [
             'id' => 6,
             'method_name' => 'fixture.import',
-            'version' => '1',
+            'version' => 1,
             'is_verify_eds' => false,
             'is_verify_auth' => false,
 //          'permission_name' => 'oFixtureImport',
