@@ -10,7 +10,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "guzzlehttp/guzzle": ">5.3",
+    "guzzlehttp/guzzle": "^7.4",
     "zncore/domain": "0.x-dev",
     "znlib/components": "0.x-dev",
     "symfony/http-foundation": "^4.4|^5.0",
