@@ -25,7 +25,7 @@ class DocsRepository implements DocsRepositoryInterface
     }
 
     /**
-     * @return Collection | DocEntity[]
+     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | DocEntity[]
      */
     public function findAll(): Collection
     {

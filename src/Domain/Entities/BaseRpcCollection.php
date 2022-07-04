@@ -9,7 +9,7 @@ use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
 class BaseRpcCollection
 {
 
-    /** @var Collection | EntityIdInterface[] */
+    /** @var \ZnCore\Domain\Collection\Interfaces\Enumerable | EntityIdInterface[] */
     protected $collection;
 
     public function __construct()
