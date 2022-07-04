@@ -57,12 +57,14 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
     public function findOneById($id, Query $query = null): EntityIdInterface
     {
         $requestEntity = $this->createRequest('oneById');
-        $requestEntity->setParamItem('id', $id);
+        $params = RpcQueryHelper::query2RpcParams($query);
+        $params['id'] = $id;
+        $requestEntity->setParams($params);
+//        $requestEntity->setParamItem('id', $id);
         $responseEntity = $this->sendRequestByEntity($requestEntity);
-        //dd($responseEntity);
 
         $entity = $this->mapperDecodeEntity($responseEntity->getResult() ?: []);
-        
+
         /*$entity = $this
             ->getEntityManager()
             ->createEntity($this->getEntityClass(), $responseEntity->getResult() ?: []);*/
