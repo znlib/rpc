@@ -28,7 +28,7 @@ class RpcQueryHelper
         }
     }
 
-    public static function setJoin(Query $query, Builder $queryBuilder)
+    public static function setJoin(Query $query, array &$params)
     {
         if($query->getWith()) {
             $params['with'] = $query->getWith();
