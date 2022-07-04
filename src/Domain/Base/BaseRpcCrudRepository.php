@@ -35,7 +35,6 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         $params = RpcQueryHelper::query2RpcParams($query);
         $requestEntity->setParams($params);
         $responseEntity = $this->sendRequestByEntity($requestEntity);
-//        dd($params);
         return $responseEntity->getMetaItem('totalCount');
     }
 
@@ -45,7 +44,6 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         $params = RpcQueryHelper::query2RpcParams($query);
         $requestEntity->setParams($params);
         $responseEntity = $this->sendRequestByEntity($requestEntity);
-
         $collection = $this->mapperDecodeCollection($responseEntity->getResult() ?: []);
 
         /*$collection = $this
@@ -60,9 +58,7 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
         $params = RpcQueryHelper::query2RpcParams($query);
         $params['id'] = $id;
         $requestEntity->setParams($params);
-//        $requestEntity->setParamItem('id', $id);
         $responseEntity = $this->sendRequestByEntity($requestEntity);
-
         $entity = $this->mapperDecodeEntity($responseEntity->getResult() ?: []);
 
         /*$entity = $this
