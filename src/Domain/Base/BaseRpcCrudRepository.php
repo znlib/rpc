@@ -14,6 +14,7 @@ use ZnCore\Domain\Repository\Traits\CrudRepositoryFindOneTrait;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryInsertTrait;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryUpdateTrait;
 use ZnCore\Domain\Repository\Traits\RepositoryRelationTrait;
+use ZnLib\Rpc\Domain\Helpers\RpcQueryHelper;
 
 abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRepositoryInterface, ForgeQueryByFilterInterface, FindOneUniqueInterface
 {
@@ -38,6 +39,8 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
     protected function findBy(Query $query = null): Enumerable
     {
         $requestEntity = $this->createRequest('all');
+        $params = RpcQueryHelper::query2RpcParams($query);
+        $requestEntity->setParams($params);
         $responseEntity = $this->sendRequestByEntity($requestEntity);
         $collection = $this
             ->getEntityManager()
