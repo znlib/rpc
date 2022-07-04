@@ -2,7 +2,6 @@
 
 namespace ZnLib\Rpc\Test;
 
-use PHPUnit\Framework\TestCase;
 use ZnCore\Domain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
@@ -11,11 +10,12 @@ use ZnLib\Rpc\Domain\Forms\BaseRpcAuthForm;
 use ZnLib\Rpc\Domain\Forms\RpcAuthByLoginForm;
 use ZnLib\Rpc\Domain\Forms\RpcAuthGuestForm;
 use ZnLib\Rpc\Domain\Libs\RpcClient;
+use ZnTool\Test\Base\BaseTestCase;
 use ZnTool\Test\Traits\AssertTrait;
 use ZnTool\Test\Traits\BaseUrlTrait;
 use ZnTool\Test\Traits\FixtureTrait;
 
-abstract class BaseRpcTest extends TestCase
+abstract class BaseRpcTest extends BaseTestCase
 {
 
     use FixtureTrait;
@@ -85,7 +85,7 @@ abstract class BaseRpcTest extends TestCase
         $result = $response->getResult();
         $token = $result['token'];*/
 
-        $this->assertContains('bearer', $token);
+        $this->assertStringContainsString('bearer', $token);
     }
 
     /*protected function authRequest(string $login, string $password): RpcResponseEntity
@@ -110,8 +110,8 @@ abstract class BaseRpcTest extends TestCase
 
     protected function sendRequestByEntity(RpcRequestEntity $requestEntity, ?BaseRpcAuthForm $authForm = null): RpcResponseEntity
     {
-        if($authForm) {
-            
+        if ($authForm) {
+
         } elseif ($this->authLogin) {
             $authForm = new RpcAuthByLoginForm($this->authLogin, $this->defaultPassword);
         } else {
