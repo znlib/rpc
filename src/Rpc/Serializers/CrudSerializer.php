@@ -2,10 +2,10 @@
 
 namespace ZnLib\Rpc\Rpc\Serializers;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Collection\Libs\Collection;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
+use ZnCore\Domain\Collection\Libs\Collection;
 use ZnCore\Domain\DataProvider\Libs\DataProvider;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
@@ -29,7 +29,7 @@ class _______CrudSerializer implements SerializerInterface
     public function encode($data): RpcResponseEntity
     {
         $result = null;
-        if ($data instanceof Collection) {
+        if ($data instanceof Enumerable) {
             $result = $this->encodeCollection($data);
         } elseif ($data instanceof DataProvider) {
             $result = $this->encodeDataProvider($data);

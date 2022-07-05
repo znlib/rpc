@@ -3,7 +3,6 @@
 namespace ZnLib\Rpc\Domain\Services;
 
 use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Collection\Libs\Collection;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 use ZnLib\Rpc\Domain\Helpers\DocContentHelper;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface;
@@ -23,7 +22,7 @@ class DocsService implements DocsServiceInterface
     {
         return $this->docsRepository->findOneByName($name);
     }
-    
+
     public function findAll(): Enumerable
     {
         return $this->docsRepository->findAll();
