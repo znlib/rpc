@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Repositories\File;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use ZnCore\Base\FileSystem\Helpers\FilePathHelper;
 use ZnCore\Base\FileSystem\Helpers\FindFileHelper;
@@ -25,9 +26,9 @@ class DocsRepository implements DocsRepositoryInterface
     }
 
     /**
-     * @return \ZnCore\Domain\Collection\Interfaces\Enumerable | DocEntity[]
+     * @return Enumerable | DocEntity[]
      */
-    public function findAll(): Collection
+    public function findAll(): Enumerable
     {
         $dir = $this->distDirectory();
         $files = FindFileHelper::scanDir($dir);

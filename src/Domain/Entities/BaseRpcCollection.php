@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use ZnCore\Domain\Entity\Exceptions\NotFoundException;
 use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
@@ -17,7 +18,7 @@ class BaseRpcCollection
         $this->collection = new Collection();
     }
 
-    public function getCollection(): Collection
+    public function getCollection(): Enumerable
     {
         return $this->collection;
     }
