@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Rpc\Serializers;
 
+use ZnCore\Domain\Collection\Interfaces\Enumerable;
 use ZnCore\Domain\Collection\Libs\Collection;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -69,7 +70,7 @@ class _______CrudSerializer implements SerializerInterface
         return $array;
     }
 
-    protected function encodeCollection(Collection $collection)
+    protected function encodeCollection(Enumerable $collection)
     {
         $array = [];
         foreach ($collection as $entity) {
