@@ -3,8 +3,8 @@
 namespace ZnLib\Rpc\Domain\Libs;
 
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use ZnCore\Base\Env\Helpers\EnvHelper;
-use ZnCore\Base\Arr\Helpers\ArrayHelper;
+use ZnCore\Env\Helpers\EnvHelper;
+use ZnCore\Arr\Helpers\ArrayHelper;
 use ZnCore\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 

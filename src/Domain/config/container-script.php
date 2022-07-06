@@ -1,6 +1,6 @@
 <?php
 
-use ZnCore\Base\Env\Helpers\EnvHelper;
+use ZnCore\Env\Helpers\EnvHelper;
 
 return [
     'singletons' => [

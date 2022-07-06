@@ -3,18 +3,18 @@
 namespace ZnLib\Rpc\Domain\Base;
 
 use ZnCore\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Query\Entities\Query;
-use ZnCore\Domain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
-use ZnCore\Domain\QueryFilter\Traits\ForgeQueryFilterTrait;
-use ZnCore\Domain\QueryFilter\Traits\QueryFilterTrait;
-use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;
-use ZnCore\Domain\Repository\Interfaces\FindOneUniqueInterface;
-use ZnCore\Domain\Repository\Traits\CrudRepositoryDeleteTrait;
-use ZnCore\Domain\Repository\Traits\CrudRepositoryFindAllTrait;
-use ZnCore\Domain\Repository\Traits\CrudRepositoryFindOneTrait;
-use ZnCore\Domain\Repository\Traits\CrudRepositoryInsertTrait;
-use ZnCore\Domain\Repository\Traits\CrudRepositoryUpdateTrait;
-use ZnCore\Domain\Repository\Traits\RepositoryRelationTrait;
+use ZnCore\Query\Entities\Query;
+use ZnCore\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
+use ZnCore\QueryFilter\Traits\ForgeQueryFilterTrait;
+use ZnCore\QueryFilter\Traits\QueryFilterTrait;
+use ZnCore\Repository\Interfaces\CrudRepositoryInterface;
+use ZnCore\Repository\Interfaces\FindOneUniqueInterface;
+use ZnCore\Repository\Traits\CrudRepositoryDeleteTrait;
+use ZnCore\Repository\Traits\CrudRepositoryFindAllTrait;
+use ZnCore\Repository\Traits\CrudRepositoryFindOneTrait;
+use ZnCore\Repository\Traits\CrudRepositoryInsertTrait;
+use ZnCore\Repository\Traits\CrudRepositoryUpdateTrait;
+use ZnCore\Repository\Traits\RepositoryRelationTrait;
 use ZnCore\Entity\Interfaces\EntityIdInterface;
 use ZnLib\Rpc\Domain\Helpers\RpcQueryHelper;
 

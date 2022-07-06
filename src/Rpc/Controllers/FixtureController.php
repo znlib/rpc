@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Rpc\Controllers;
 
 use Exception;
-use ZnCore\Base\Env\Helpers\EnvHelper;
+use ZnCore\Env\Helpers\EnvHelper;
 use ZnDatabase\Fixture\Domain\Services\FixtureService;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;

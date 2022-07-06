@@ -7,11 +7,11 @@ use Symfony\Contracts\Cache\CacheInterface;
 use ZnLib\Components\Store\StoreFile;
 use ZnLib\Components\Store\Base\BaseFileCrudRepository;
 use ZnCore\EntityManager\Interfaces\EntityManagerInterface;
-use ZnCore\Domain\Query\Entities\Query;
+use ZnCore\Query\Entities\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;
-use ZnCore\Base\Arr\Helpers\ArrayHelper;
+use ZnCore\Arr\Helpers\ArrayHelper;
 
 class MethodRepository extends BaseFileCrudRepository implements MethodRepositoryInterface
 {

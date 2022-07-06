@@ -3,8 +3,8 @@
 namespace ZnLib\Rpc\Domain\Helpers;
 
 use Illuminate\Database\Query\Builder;
-use ZnCore\Domain\Query\Entities\Join;
-use ZnCore\Domain\Query\Entities\Query;
+use ZnCore\Query\Entities\Join;
+use ZnCore\Query\Entities\Query;
 
 class RpcQueryHelper
 {

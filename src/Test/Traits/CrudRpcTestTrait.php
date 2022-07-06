@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Test\Traits;
 
 use Tests\Enums\UserEnum;
 use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
-use ZnCore\Base\Arr\Helpers\ArrayHelper;
+use ZnCore\Arr\Helpers\ArrayHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Test\RpcAssert;

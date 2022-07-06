@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Test;
 
 use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
 use ZnCore\Base\Develop\Helpers\DeprecateHelper;
-use ZnCore\Base\Arr\Helpers\ArrayHelper;
+use ZnCore\Arr\Helpers\ArrayHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
