@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Test;
 
 use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
-use ZnCore\Base\Develop\Helpers\DeprecateHelper;
+use ZnCore\Code\Helpers\DeprecateHelper;
 use ZnCore\Arr\Helpers\ArrayHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
