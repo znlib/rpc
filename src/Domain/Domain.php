@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain;
 
-use ZnCore\Domain\Domain\Interfaces\DomainInterface;
+use ZnCore\Domain\Interfaces\DomainInterface;
 
 class Domain implements DomainInterface
 {
