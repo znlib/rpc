@@ -3,9 +3,10 @@
 namespace ZnLib\Rpc\Domain\Base;
 
 use ZnCore\Collection\Interfaces\Enumerable;
-use ZnCore\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
+use ZnCore\Domain\QueryFilter\Traits\ForgeQueryFilterTrait;
+use ZnCore\Domain\QueryFilter\Traits\QueryFilterTrait;
 use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;
 use ZnCore\Domain\Repository\Interfaces\FindOneUniqueInterface;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryDeleteTrait;
@@ -14,6 +15,7 @@ use ZnCore\Domain\Repository\Traits\CrudRepositoryFindOneTrait;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryInsertTrait;
 use ZnCore\Domain\Repository\Traits\CrudRepositoryUpdateTrait;
 use ZnCore\Domain\Repository\Traits\RepositoryRelationTrait;
+use ZnCore\Entity\Interfaces\EntityIdInterface;
 use ZnLib\Rpc\Domain\Helpers\RpcQueryHelper;
 
 abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRepositoryInterface, ForgeQueryByFilterInterface, FindOneUniqueInterface
@@ -25,6 +27,7 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
     use CrudRepositoryUpdateTrait;
     use CrudRepositoryDeleteTrait;
     use RepositoryRelationTrait;
+    use ForgeQueryFilterTrait;
 
     abstract public function methodPrefix(): string;
 
@@ -71,11 +74,6 @@ abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRe
     {
         // TODO: Implement findOneByUnique() method.
     }*/
-
-    public function forgeQueryByFilter(object $filterModel, Query $query)
-    {
-        // TODO: Implement forgeQueryByFilter() method.
-    }
 
     /*public function create(EntityIdInterface $entity)
     {
