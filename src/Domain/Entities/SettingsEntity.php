@@ -2,14 +2,14 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use ZnCore\Base\Validation\Constraints\Boolean;
+use ZnCore\Validation\Constraints\Boolean;
 use ZnCore\Base\Enum\Constraints\Enum;
 use ZnLib\Rpc\Domain\Enums\RpcCryptoProviderStrategyEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Base\Enum\Helpers\EnumHelper;
-use ZnCore\Domain\Entity\Interfaces\UniqueInterface;
-use ZnCore\Base\Validation\Interfaces\ValidationByMetadataInterface;
+use ZnCore\Entity\Interfaces\UniqueInterface;
+use ZnCore\Validation\Interfaces\ValidationByMetadataInterface;
 
 class SettingsEntity implements ValidationByMetadataInterface, UniqueInterface
 {

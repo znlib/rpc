@@ -1,14 +1,14 @@
 <?php
 
-//\ZnCore\Base\DotEnv\Domain\Libs\DotEnv::init();
+//\ZnCore\DotEnv\Domain\Libs\DotEnv::init();
 
 
 
-$container = new \ZnCore\Base\Container\Libs\Container();
-$znCore = new \ZnCore\Base\App\Libs\ZnCore($container);
+$container = new \ZnCore\Container\Libs\Container();
+$znCore = new \ZnCore\App\Libs\ZnCore($container);
 $znCore->init();
 
-/** @var \ZnCore\Base\App\Interfaces\AppInterface $appFactory */
+/** @var \ZnCore\App\Interfaces\AppInterface $appFactory */
 $appFactory = $container->get(\ZnTool\Test\Libs\TestApp::class);
 $appFactory->setBundles([
     

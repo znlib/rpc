@@ -2,15 +2,15 @@
 
 namespace ZnLib\Rpc\Domain\Entities;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Collection\Libs\Collection;
-use ZnCore\Domain\Entity\Exceptions\NotFoundException;
-use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
+use ZnCore\Collection\Interfaces\Enumerable;
+use ZnCore\Collection\Libs\Collection;
+use ZnCore\Entity\Exceptions\NotFoundException;
+use ZnCore\Entity\Interfaces\EntityIdInterface;
 
 class BaseRpcCollection
 {
 
-    /** @var \ZnCore\Domain\Collection\Interfaces\Enumerable | EntityIdInterface[] */
+    /** @var \ZnCore\Collection\Interfaces\Enumerable | EntityIdInterface[] */
     protected $collection;
 
     public function __construct()

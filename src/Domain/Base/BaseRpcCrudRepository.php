@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Domain\Base;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
-use ZnCore\Domain\Entity\Interfaces\EntityIdInterface;
+use ZnCore\Collection\Interfaces\Enumerable;
+use ZnCore\Entity\Interfaces\EntityIdInterface;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnCore\Domain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
 use ZnCore\Domain\Repository\Interfaces\CrudRepositoryInterface;

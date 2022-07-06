@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var $docs \ZnCore\Domain\Collection\Interfaces\Enumerable | DocEntity[]
+ * @var $docs \ZnCore\Collection\Interfaces\Enumerable | DocEntity[]
  */
 
 use ZnLib\Rpc\Domain\Entities\DocEntity;

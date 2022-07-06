@@ -3,11 +3,11 @@
 namespace ZnLib\Rpc\Rpc\Base;
 
 use ZnCore\Base\Instance\Helpers\ClassHelper;
-use ZnCore\Base\DotEnv\Domain\Libs\DotEnv;
+use ZnCore\DotEnv\Domain\Libs\DotEnv;
 use ZnCore\Domain\Service\Base\BaseCrudService;
-use ZnCore\Base\Validation\Exceptions\UnprocessibleEntityException;
-use ZnCore\Domain\Entity\Helpers\EntityHelper;
-use ZnCore\Base\Validation\Helpers\ValidationHelper;
+use ZnCore\Validation\Exceptions\UnprocessibleEntityException;
+use ZnCore\Entity\Helpers\EntityHelper;
+use ZnCore\Validation\Helpers\ValidationHelper;
 use ZnCore\Domain\Query\Entities\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;

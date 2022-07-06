@@ -6,8 +6,8 @@ use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
 use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
-use ZnCore\Domain\Entity\Exceptions\NotFoundException;
-use ZnCore\Domain\EntityManager\Traits\EntityManagerAwareTrait;
+use ZnCore\Entity\Exceptions\NotFoundException;
+use ZnCore\EntityManager\Traits\EntityManagerAwareTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 
 class ApplicationAuthenticationSubscriber implements EventSubscriberInterface

@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Domain\Services;
 
 use ZnLib\Rpc\Domain\Interfaces\Services\VersionHandlerServiceInterface;
-use ZnCore\Domain\EntityManager\Interfaces\EntityManagerInterface;
+use ZnCore\EntityManager\Interfaces\EntityManagerInterface;
 use ZnCore\Domain\Service\Base\BaseCrudService;
 use ZnLib\Rpc\Domain\Entities\VersionHandlerEntity;
 

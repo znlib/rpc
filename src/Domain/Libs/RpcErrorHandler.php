@@ -2,9 +2,9 @@
 
 namespace ZnLib\Rpc\Domain\Libs;
 
-use ZnCore\Base\Validation\Exceptions\UnprocessibleEntityException;
-use ZnCore\Base\Validation\Helpers\ErrorCollectionHelper;
-use ZnCore\Domain\Entity\Exceptions\NotFoundException;
+use ZnCore\Validation\Exceptions\UnprocessibleEntityException;
+use ZnCore\Validation\Helpers\ErrorCollectionHelper;
+use ZnCore\Entity\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 

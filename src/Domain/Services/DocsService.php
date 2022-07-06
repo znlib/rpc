@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
-use ZnCore\Domain\Collection\Interfaces\Enumerable;
+use ZnCore\Collection\Interfaces\Enumerable;
 use ZnLib\Rpc\Domain\Entities\DocEntity;
 use ZnLib\Rpc\Domain\Helpers\DocContentHelper;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\DocsRepositoryInterface;

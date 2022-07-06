@@ -4,8 +4,8 @@ namespace ZnLib\Rpc\Domain\Base;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use ZnCore\Base\Container\Interfaces\ContainerConfiguratorInterface;
-use ZnCore\Base\EventDispatcher\Interfaces\EventDispatcherConfiguratorInterface;
+use ZnCore\Container\Interfaces\ContainerConfiguratorInterface;
+use ZnCore\EventDispatcher\Interfaces\EventDispatcherConfiguratorInterface;
 use ZnLib\Rpc\Domain\Subscribers\ApplicationAuthenticationSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\CheckAccessSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\CryptoProviderSubscriber;
@@ -14,7 +14,7 @@ use ZnLib\Rpc\Domain\Subscribers\LogSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\RpcFirewallSubscriber;
 use ZnLib\Rpc\Domain\Subscribers\TimestampSubscriber;
 use ZnLib\Rpc\Symfony4\HttpKernel\RpcKernel;
-use ZnCore\Base\App\Base\BaseApp;
+use ZnCore\App\Base\BaseApp;
 use ZnLib\Web\WebApp\Subscribers\WebDetectTestEnvSubscriber;
 
 abstract class BaseRpcApp extends BaseApp
