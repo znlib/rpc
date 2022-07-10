@@ -3,7 +3,6 @@
 namespace ZnLib\Rpc\Domain\Events;
 
 use Symfony\Contracts\EventDispatcher\Event;
-use ZnCore\Code\Helpers\DeprecateHelper;
 use ZnCore\EventDispatcher\Traits\EventSkipHandleTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
