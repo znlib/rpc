@@ -13,6 +13,7 @@
     "guzzlehttp/guzzle": "^7.4",
     "zncore/domain": "0.x-dev",
     "znlib/components": "0.x-dev",
+    "znlib/settings": "0.x-dev",
     "symfony/http-foundation": "^4.4|^5.0",
     "symfony/routing": "^4.4|^5.0",
     "symfony/config": "^4.4|^5.0"
