@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Domain\Repositories\ConfigManager;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use ZnLib\Components\Store\StoreFile;
-use ZnLib\Components\Store\Base\BaseFileCrudRepository;
+use ZnDomain\Сomponents\FileRepository\Base\BaseFileCrudRepository;
 use ZnDomain\EntityManager\Interfaces\EntityManagerInterface;
 use ZnCore\Query\Entities\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
