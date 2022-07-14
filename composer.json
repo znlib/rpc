@@ -11,7 +11,8 @@
   "minimum-stability": "dev",
   "require": {
     "guzzlehttp/guzzle": "^7.4",
-    "zncore/domain": "0.x-dev",
+    "znpack/core": "0.x-dev",
+    "znpack/domain": "0.x-dev",
     "znlib/components": "0.x-dev",
     "znlib/settings": "0.x-dev",
     "symfony/http-foundation": "^4.4|^5.0",
