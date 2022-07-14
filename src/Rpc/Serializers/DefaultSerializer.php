@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use ZnCore\Arr\Helpers\ArrayHelper;
 use ZnCore\Collection\Interfaces\Enumerable;
-use ZnCore\DataProvider\Libs\DataProvider;
+use ZnDomain\DataProvider\Libs\DataProvider;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Helpers\ResponseHelper;
 

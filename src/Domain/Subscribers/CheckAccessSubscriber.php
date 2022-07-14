@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
 use ZnUser\Authentication\Domain\Interfaces\Services\AuthServiceInterface;
 use ZnCore\Contract\User\Exceptions\ForbiddenException;
-use ZnCore\EntityManager\Traits\EntityManagerAwareTrait;
+use ZnDomain\EntityManager\Traits\EntityManagerAwareTrait;
 use ZnUser\Rbac\Domain\Interfaces\Services\AssignmentServiceInterface;
 use ZnUser\Rbac\Domain\Interfaces\Services\ManagerServiceInterface;
 

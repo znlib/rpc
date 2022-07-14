@@ -12,7 +12,7 @@ use ZnCore\Instance\Libs\InstanceProvider;
 use ZnCore\Validation\Helpers\ErrorCollectionHelper;
 use ZnCore\Contract\User\Exceptions\ForbiddenException;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
-use ZnCore\QueryFilter\Exceptions\BadFilterValidateException;
+use ZnDomain\QueryFilter\Exceptions\BadFilterValidateException;
 use ZnCore\Validation\Exceptions\UnprocessibleEntityException;
 use ZnCore\Entity\Helpers\EntityHelper;
 use ZnCore\Validation\Helpers\ValidationHelper;
