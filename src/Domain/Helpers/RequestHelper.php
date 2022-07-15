@@ -2,16 +2,15 @@
 
 namespace ZnLib\Rpc\Domain\Helpers;
 
-use ZnCore\Env\Enums\EnvEnum;
 use ZnCore\Arr\Helpers\ArrayHelper;
-use ZnDomain\Entity\Helpers\EntityHelper;
+use ZnCore\Code\Helpers\PropertyHelper;
+use ZnCore\Env\Enums\EnvEnum;
 use ZnLib\Rpc\Domain\Encoders\RequestEncoder;
 use ZnLib\Rpc\Domain\Entities\RpcRequestCollection;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
-use ZnLib\Rpc\Domain\Exceptions\ParamNotFoundException;
 use ZnLib\Rpc\Domain\Facades\RpcClientFacade;
 
 class RequestHelper
@@ -24,7 +23,7 @@ class RequestHelper
         $response = $rpcClientFacade->send($requestEntity, $login, 'Wwwqqq111');
         return $response;
     }
-    
+
     public static function createRequestCollection(array $requestData): RpcRequestCollection
     {
         $requestCollection = new RpcRequestCollection();
@@ -40,14 +39,15 @@ class RequestHelper
         return $requestCollection;
     }
 
-    public static function isBatchRequest(array $requestData): bool {
+    public static function isBatchRequest(array $requestData): bool
+    {
         return ArrayHelper::isIndexed($requestData);
     }
 
     private static function forgeRequestEntity(array $requestItem): RpcRequestEntity
     {
         $requestEntity = new RpcRequestEntity();
-        EntityHelper::setAttributes($requestEntity, $requestItem);
+        PropertyHelper::setAttributes($requestEntity, $requestItem);
         return $requestEntity;
     }
 

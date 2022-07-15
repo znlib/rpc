@@ -2,13 +2,14 @@
 
 namespace ZnLib\Rpc\Rpc\Base;
 
-use ZnCore\Instance\Helpers\ClassHelper;
+use ZnCore\Code\Helpers\PropertyHelper;
 use ZnCore\DotEnv\Domain\Libs\DotEnv;
+use ZnCore\Instance\Helpers\ClassHelper;
+use ZnDomain\Entity\Helpers\EntityHelper;
+use ZnDomain\Query\Entities\Query;
 use ZnDomain\Service\Base\BaseCrudService;
 use ZnDomain\Validator\Exceptions\UnprocessibleEntityException;
-use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnDomain\Validator\Helpers\ValidationHelper;
-use ZnDomain\Query\Entities\Query;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Exceptions\InvalidRequestException;
@@ -129,7 +130,7 @@ abstract class BaseCrudRpcController extends BaseRpcController
         if (!$formInstance) {
             return $params;
         }
-        EntityHelper::setAttributes($formInstance, $params);
+        PropertyHelper::setAttributes($formInstance, $params);
         ValidationHelper::validateEntity($formInstance);
         $params = EntityHelper::toArray($formInstance);
         return $params;

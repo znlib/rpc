@@ -3,8 +3,9 @@
 namespace ZnLib\Rpc\Domain\Libs;
 
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use ZnCore\Env\Helpers\EnvHelper;
 use ZnCore\Arr\Helpers\ArrayHelper;
+use ZnCore\Code\Helpers\PropertyHelper;
+use ZnCore\Env\Helpers\EnvHelper;
 use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 
@@ -27,11 +28,13 @@ class ResponseFormatter
                 try {
                     $attributes = EntityHelper::toArray($e);
                     $data = ArrayHelper::merge($attributes, $data);
-                } catch (NoSuchPropertyException $e) {}
+                } catch (NoSuchPropertyException $e) {
+                }
                 if ($e->getPrevious() instanceof \Throwable) {
                     try {
                         $data['previous'] = EntityHelper::toArray($e->getPrevious());
-                    } catch (NoSuchPropertyException $e) {}
+                    } catch (NoSuchPropertyException $e) {
+                    }
                 }
             }
         }
@@ -42,7 +45,7 @@ class ResponseFormatter
         ];
 
         $responseEntity = new RpcResponseEntity;
-        EntityHelper::setAttributes($responseEntity, $responseArray);
+        PropertyHelper::setAttributes($responseEntity, $responseArray);
         return $responseEntity;
     }
 }

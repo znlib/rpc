@@ -2,10 +2,11 @@
 
 namespace ZnLib\Rpc\Rpc\Controllers;
 
-use ZnLib\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
+use ZnCore\Code\Helpers\PropertyHelper;
 use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
+use ZnLib\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
 
 class SettingsController
 {
@@ -21,7 +22,7 @@ class SettingsController
     {
         $body = $requestEntity->getParams();
         $settingsEntity = $this->service->view();
-        EntityHelper::setAttributes($settingsEntity, $body);
+        PropertyHelper::setAttributes($settingsEntity, $body);
         $this->service->update($settingsEntity);
         return new RpcResponseEntity();
     }

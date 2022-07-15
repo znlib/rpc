@@ -6,8 +6,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
-use ZnDomain\Validator\Helpers\ValidationHelper;
+use ZnCore\Code\Helpers\PropertyHelper;
 use ZnDomain\Entity\Helpers\EntityHelper;
+use ZnDomain\Validator\Helpers\ValidationHelper;
 use ZnLib\Components\Http\Enums\HttpMethodEnum;
 use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
 use ZnLib\Components\Http\Helpers\RestResponseHelper;
@@ -95,7 +96,7 @@ class RpcClient
         foreach ($data as $item) {
             $rpcResponse = new RpcResponseEntity();
             $item = $this->responseEncoder->decode($item);
-            EntityHelper::setAttributes($rpcResponse, $item);
+            PropertyHelper::setAttributes($rpcResponse, $item);
             $responseCollection->add($rpcResponse);
         }
         return $responseCollection;
@@ -120,7 +121,7 @@ class RpcClient
 //            dd($data);
             throw new \Exception('Empty response');
         }
-        EntityHelper::setAttributes($rpcResponse, $data);
+        PropertyHelper::setAttributes($rpcResponse, $data);
         return $rpcResponse;
     }
 

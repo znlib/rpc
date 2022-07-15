@@ -2,9 +2,10 @@
 
 namespace ZnLib\Rest\Tests\Unit\DSig;
 
-use ZnDomain\Entity\Helpers\EntityHelper;
+use ZnCore\Code\Helpers\PropertyHelper;
 use ZnCrypt\Base\Domain\Exceptions\FailSignatureException;
 use ZnCrypt\Base\Domain\Exceptions\InvalidDigestException;
+use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnTool\Test\Traits\DataTestTrait;
 
@@ -37,7 +38,7 @@ final class RpcRequestDSigTest extends BaseRpcDSigTest
     {
         $requestEntity = new RpcRequestEntity();
         $signedData = $this->loadData('signedRequest.json');
-        EntityHelper::setAttributes($requestEntity, $signedData);
+        PropertyHelper::setAttributes($requestEntity, $signedData);
         $dSig = $this->getDSig();
         $dSig->verifyRequest($requestEntity);
         $this->assertTrue(true);
@@ -47,7 +48,7 @@ final class RpcRequestDSigTest extends BaseRpcDSigTest
     {
         $requestEntity = new RpcRequestEntity();
         $signedData = $this->loadData('signedRequestFailDigest.json');
-        EntityHelper::setAttributes($requestEntity, $signedData);
+        PropertyHelper::setAttributes($requestEntity, $signedData);
         $dSig = $this->getDSig();
         $this->expectException(InvalidDigestException::class);
         $dSig->verifyRequest($requestEntity);
@@ -57,7 +58,7 @@ final class RpcRequestDSigTest extends BaseRpcDSigTest
     {
         $requestEntity = new RpcRequestEntity();
         $signedData = $this->loadData('signedRequestFailSignature.json');
-        EntityHelper::setAttributes($requestEntity, $signedData);
+        PropertyHelper::setAttributes($requestEntity, $signedData);
         $dSig = $this->getDSig();
         $this->expectException(FailSignatureException::class);
         $dSig->verifyRequest($requestEntity);

@@ -2,13 +2,14 @@
 
 namespace ZnLib\Rpc\Symfony4\Web\Libs;
 
-use ZnDomain\Entity\Helpers\EntityHelper;
+use ZnCore\Code\Helpers\PropertyHelper;
 use ZnCrypt\Base\Domain\Enums\EncodingEnum;
 use ZnCrypt\Base\Domain\Enums\HashAlgoEnum;
 use ZnCrypt\Base\Domain\Enums\OpenSslAlgoEnum;
 use ZnCrypt\Pki\Domain\Libs\Rsa\RsaStoreInterface;
 use ZnCrypt\Pki\JsonDSig\Domain\Entities\SignatureEntity;
 use ZnCrypt\Pki\JsonDSig\Domain\Libs\OpenSsl\OpenSslSignature;
+use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 
@@ -46,7 +47,7 @@ class JsonDSigCryptoProvider implements CryptoProviderInterface
     {
         $requestArray = EntityHelper::toArray($requestEntity);
         $signatureEntity = new SignatureEntity();
-        EntityHelper::setAttributes($signatureEntity, $requestEntity->getMetaItem('signature'));
+        PropertyHelper::setAttributes($signatureEntity, $requestEntity->getMetaItem('signature'));
         unset($requestArray['meta']['signature']);
         $openSslSignature = $this->getOpenSslSignature();
         $openSslSignature->verify($requestArray, $signatureEntity);
@@ -69,7 +70,7 @@ class JsonDSigCryptoProvider implements CryptoProviderInterface
     {
         $responseArray = EntityHelper::toArray($responseEntity);
         $signatureEntity = new SignatureEntity();
-        EntityHelper::setAttributes($signatureEntity, $responseEntity->getMetaItem('signature'));
+        PropertyHelper::setAttributes($signatureEntity, $responseEntity->getMetaItem('signature'));
         unset($responseArray['meta']['signature']);
         $openSslSignature = $this->getOpenSslSignature();
         $openSslSignature->verify($responseArray, $signatureEntity);

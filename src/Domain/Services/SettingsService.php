@@ -2,6 +2,7 @@
 
 namespace ZnLib\Rpc\Domain\Services;
 
+use ZnCore\Code\Helpers\PropertyHelper;
 use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnDomain\Validator\Helpers\ValidationHelper;
 use ZnLib\Rpc\Domain\Entities\SettingsEntity;
@@ -34,7 +35,7 @@ class SettingsService implements SettingsServiceInterface
     {
         $data = $this->systemService->view('rpc');
         $settingsEntity = new SettingsEntity();
-        EntityHelper::setAttributes($settingsEntity, $data);
+        PropertyHelper::setAttributes($settingsEntity, $data);
         return $settingsEntity;
     }
 }
