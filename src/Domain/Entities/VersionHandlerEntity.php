@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Domain\Entities;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnLib\Components\Status\Enums\StatusEnum;
-use ZnDomain\Сomponents\EnumRepository\Constraints\Enum;
+use ZnDomain\Сomponents\Constraints\Enum;
 use ZnDomain\Validator\Interfaces\ValidationByMetadataInterface;
 use ZnDomain\Entity\Interfaces\UniqueInterface;
 use ZnDomain\Entity\Interfaces\EntityIdInterface;
