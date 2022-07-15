@@ -5,7 +5,7 @@ namespace ZnLib\Rpc\Domain\Libs;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ZnCore\Env\Helpers\EnvHelper;
-use ZnCore\Entity\Helpers\EntityHelper;
+use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcResponseCollection;
 use ZnLib\Rpc\Domain\Enums\RpcBatchModeEnum;
 use ZnLib\Rpc\Domain\Interfaces\Encoders\ResponseEncoderInterface;

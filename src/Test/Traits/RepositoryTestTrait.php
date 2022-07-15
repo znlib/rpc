@@ -2,8 +2,8 @@
 
 namespace ZnLib\Rpc\Test\Traits;
 
-use ZnTool\Test\Repositories\DynamicFileRepository;
 use ZnCore\Container\Helpers\ContainerHelper;
+use ZnDomain\Сomponents\FileRepository\Repositories\Dynamic\DynamicFileRepository;
 
 trait RepositoryTestTrait
 {

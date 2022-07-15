@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Domain\Base;
 
 use ZnCore\Collection\Interfaces\Enumerable;
-use ZnCore\Query\Entities\Query;
+use ZnDomain\Query\Entities\Query;
 use ZnDomain\QueryFilter\Interfaces\ForgeQueryByFilterInterface;
 use ZnDomain\QueryFilter\Traits\ForgeQueryFilterTrait;
 use ZnDomain\QueryFilter\Traits\QueryFilterTrait;
@@ -15,7 +15,7 @@ use ZnDomain\Repository\Traits\CrudRepositoryFindOneTrait;
 use ZnDomain\Repository\Traits\CrudRepositoryInsertTrait;
 use ZnDomain\Repository\Traits\CrudRepositoryUpdateTrait;
 use ZnDomain\Repository\Traits\RepositoryRelationTrait;
-use ZnCore\Entity\Interfaces\EntityIdInterface;
+use ZnDomain\Entity\Interfaces\EntityIdInterface;
 use ZnLib\Rpc\Domain\Helpers\RpcQueryHelper;
 
 abstract class BaseRpcCrudRepository extends BaseRpcRepository implements CrudRepositoryInterface, ForgeQueryByFilterInterface, FindOneUniqueInterface

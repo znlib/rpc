@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Domain\Repositories\File;
 
 use ZnDomain\Сomponents\FileRepository\Base\BaseFileCrudRepository;
-use ZnCore\Query\Entities\Query;
+use ZnDomain\Query\Entities\Query;
 use ZnDatabase\Eloquent\Domain\Base\BaseEloquentCrudRepository;
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Repositories\MethodRepositoryInterface;

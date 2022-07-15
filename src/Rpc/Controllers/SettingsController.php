@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Rpc\Controllers;
 
 use ZnLib\Rpc\Domain\Interfaces\Services\SettingsServiceInterface;
-use ZnCore\Entity\Helpers\EntityHelper;
+use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 

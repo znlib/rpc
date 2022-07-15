@@ -6,9 +6,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnLib\Components\Status\Enums\StatusEnum;
 use ZnCore\Enum\Constraints\Enum;
-use ZnCore\Validation\Interfaces\ValidationByMetadataInterface;
-use ZnCore\Entity\Interfaces\UniqueInterface;
-use ZnCore\Entity\Interfaces\EntityIdInterface;
+use ZnDomain\Validator\Interfaces\ValidationByMetadataInterface;
+use ZnDomain\Entity\Interfaces\UniqueInterface;
+use ZnDomain\Entity\Interfaces\EntityIdInterface;
 
 class VersionHandlerEntity implements ValidationByMetadataInterface, UniqueInterface, EntityIdInterface
 {

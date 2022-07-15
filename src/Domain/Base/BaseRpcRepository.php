@@ -3,13 +3,13 @@
 namespace ZnLib\Rpc\Domain\Base;
 
 use ZnCore\Env\Helpers\EnvHelper;
-use ZnCore\Validation\Exceptions\UnprocessibleEntityException;
-use ZnCore\Validation\Helpers\ErrorCollectionHelper;
+use ZnDomain\Validator\Exceptions\UnprocessibleEntityException;
+use ZnDomain\Validator\Helpers\ErrorCollectionHelper;
 use ZnDomain\Domain\Interfaces\GetEntityClassInterface;
 use ZnDomain\Domain\Traits\DispatchEventTrait;
 use ZnDomain\Domain\Traits\ForgeQueryTrait;
-use ZnCore\Entity\Exceptions\NotFoundException;
-use ZnCore\Entity\Helpers\EntityHelper;
+use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnDomain\Repository\Base\BaseRepository;
 use ZnDomain\Repository\Traits\RepositoryMapperTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;

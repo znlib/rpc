@@ -2,7 +2,7 @@
 
 namespace ZnLib\Rpc\Symfony4\Web\Libs;
 
-use ZnCore\Entity\Helpers\EntityHelper;
+use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnCrypt\Base\Domain\Enums\EncodingEnum;
 use ZnCrypt\Base\Domain\Enums\HashAlgoEnum;
 use ZnCrypt\Base\Domain\Enums\OpenSslAlgoEnum;

@@ -5,8 +5,8 @@ namespace ZnLib\Rpc\Domain\Entities;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use ZnCore\Arr\Helpers\ArrayHelper;
-use ZnCore\Entity\Interfaces\EntityIdInterface;
-use ZnCore\Validation\Interfaces\ValidationByMetadataInterface;
+use ZnDomain\Entity\Interfaces\EntityIdInterface;
+use ZnDomain\Validator\Interfaces\ValidationByMetadataInterface;
 use ZnLib\Rpc\Domain\Enums\RpcVersionEnum;
 
 class RpcResponseEntity implements EntityIdInterface, ValidationByMetadataInterface
