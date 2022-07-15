@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Services;
 
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
 use ZnLib\Rpc\Domain\Interfaces\Services\MethodServiceInterface;
-use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnCore\Contract\Common\Exceptions\NotFoundException;
 use ZnDomain\Service\Base\BaseCrudService;
 use ZnDomain\EntityManager\Interfaces\EntityManagerInterface;
 use ZnLib\Rpc\Domain\Exceptions\RpcMethodNotFoundException;

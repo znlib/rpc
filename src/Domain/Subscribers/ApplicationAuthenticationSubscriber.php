@@ -6,7 +6,7 @@ use ZnLib\Rpc\Domain\Enums\RpcEventEnum;
 use ZnLib\Rpc\Domain\Events\RpcRequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ZnCore\Contract\User\Exceptions\UnauthorizedException;
-use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnCore\Contract\Common\Exceptions\NotFoundException;
 use ZnDomain\EntityManager\Traits\EntityManagerAwareTrait;
 use ZnLib\Rpc\Domain\Entities\RpcRequestEntity;
 

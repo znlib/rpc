@@ -3,7 +3,7 @@
 namespace ZnLib\Rpc\Domain\Interfaces\Repositories;
 
 use ZnLib\Rpc\Domain\Entities\MethodEntity;
-use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnCore\Contract\Common\Exceptions\NotFoundException;
 use ZnDomain\Repository\Interfaces\CrudRepositoryInterface;
 
 interface MethodRepositoryInterface extends CrudRepositoryInterface

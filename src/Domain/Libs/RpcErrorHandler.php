@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Libs;
 
 use ZnDomain\Validator\Exceptions\UnprocessibleEntityException;
 use ZnDomain\Validator\Helpers\ErrorCollectionHelper;
-use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnCore\Contract\Common\Exceptions\NotFoundException;
 use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\RpcErrorCodeEnum;
 

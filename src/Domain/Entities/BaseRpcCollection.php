@@ -4,7 +4,7 @@ namespace ZnLib\Rpc\Domain\Entities;
 
 use ZnCore\Collection\Interfaces\Enumerable;
 use ZnCore\Collection\Libs\Collection;
-use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnCore\Contract\Common\Exceptions\NotFoundException;
 use ZnDomain\Entity\Interfaces\EntityIdInterface;
 
 class BaseRpcCollection

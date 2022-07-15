@@ -6,7 +6,7 @@ use Illuminate\Container\EntryNotFoundException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ZnLib\Components\Http\Enums\HttpStatusCodeEnum;
-use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnCore\Contract\Common\Exceptions\NotFoundException;
 use ZnCore\EventDispatcher\Traits\EventDispatcherTrait;
 use ZnCore\Instance\Libs\InstanceProvider;
 use ZnDomain\Validator\Helpers\ErrorCollectionHelper;

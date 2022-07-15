@@ -8,7 +8,7 @@ use ZnDomain\Validator\Helpers\ErrorCollectionHelper;
 use ZnDomain\Domain\Interfaces\GetEntityClassInterface;
 use ZnDomain\Domain\Traits\DispatchEventTrait;
 use ZnDomain\Domain\Traits\ForgeQueryTrait;
-use ZnDomain\Entity\Exceptions\NotFoundException;
+use ZnCore\Contract\Common\Exceptions\NotFoundException;
 use ZnDomain\Entity\Helpers\EntityHelper;
 use ZnDomain\Repository\Base\BaseRepository;
 use ZnDomain\Repository\Traits\RepositoryMapperTrait;
