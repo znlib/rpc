@@ -97,12 +97,12 @@ abstract class BaseRpcTest extends BaseTestCase
             'password' => $password,
         ]);
         return $response;
-    }*/
+    }
 
     protected function authBy(string $login, string $password): string
     {
         return $this->rpcProvider->authByLogin($login, $password);
-    }
+    }*/
 
     protected function getRpcAssert(RpcResponseEntity $response = null): RpcAssert
     {
