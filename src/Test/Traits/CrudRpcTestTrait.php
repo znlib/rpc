@@ -16,7 +16,7 @@ trait CrudRpcTestTrait
 
     abstract protected function baseMethod(): string;
 
-    abstract protected function createRequest(string $login = null): RpcRequestEntity;
+    abstract protected function createRequest($login = null): RpcRequestEntity;
 
     abstract protected function getRpcAssert(RpcResponseEntity $response = null): RpcAssert;
 

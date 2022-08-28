@@ -8,12 +8,14 @@ use ZnLib\Rpc\Domain\Entities\RpcResponseEntity;
 use ZnLib\Rpc\Domain\Enums\HttpHeaderEnum;
 use ZnLib\Rpc\Domain\Forms\BaseRpcAuthForm;
 use ZnLib\Rpc\Domain\Forms\RpcAuthByLoginForm;
+use ZnLib\Rpc\Domain\Forms\RpcAuthByTokenForm;
 use ZnLib\Rpc\Domain\Forms\RpcAuthGuestForm;
 use ZnLib\Rpc\Domain\Libs\RpcClient;
 use ZnTool\Test\Base\BaseTestCase;
 use ZnTool\Test\Traits\AssertTrait;
 use ZnTool\Test\Traits\BaseUrlTrait;
 use ZnTool\Test\Traits\FixtureTrait;
+use ZnUser\Authentication\Domain\Fixtures\TokenTestFixture;
 
 abstract class BaseRpcTest extends BaseTestCase
 {
@@ -51,7 +53,7 @@ abstract class BaseRpcTest extends BaseTestCase
         $this->authProvider = $authProvider;
     }*/
 
-    protected function createRequest(string $login = null): RpcRequestEntity
+    protected function createRequest($login = null): RpcRequestEntity
     {
         $this->authLogin = $login;
         $request = new RpcRequestEntity();
@@ -112,6 +114,11 @@ abstract class BaseRpcTest extends BaseTestCase
     {
         if ($authForm) {
 
+        } elseif (is_numeric($this->authLogin)) {
+            $tokenFixture = new TokenTestFixture();
+            $tokenValue = $tokenFixture->generateToken($this->authLogin);
+            $authForm = new RpcAuthByTokenForm("bearer $tokenValue");
+//            dd($authForm);
         } elseif ($this->authLogin) {
             $authForm = new RpcAuthByLoginForm($this->authLogin, $this->defaultPassword);
         } else {
